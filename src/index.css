@@ -83,6 +83,11 @@ textarea {
   box-shadow: var(--default-shadow);
 }
 
+.default-icon-size {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 #search-spinner {
   width: 1rem;
   height: 1rem;

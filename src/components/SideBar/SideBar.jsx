@@ -3,6 +3,14 @@ import classNames from "classnames";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
+import {
+  HomeIcon,
+  PlusCircledIcon,
+  CountdownTimerIcon,
+  ArchiveIcon,
+  HamburgerMenuIcon,
+  ChevronLeftIcon,
+} from "@radix-ui/react-icons";
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +21,7 @@ const SideBar = () => {
   return (
     <div className="sidebar">
       <div role="button" className="menu-btn" onClick={toggleSlideIn}>
-        <i className="fa fa-bars btn-icon" aria-hidden="true"></i>
+        <HamburgerMenuIcon className="default-icon-size" />
         <span className="sr-only">toggle extended sidebar menu</span>
       </div>
 
@@ -22,28 +30,28 @@ const SideBar = () => {
           <ul className="mini-sidebar-list">
             <li className="mini-sidebar-list-item">
               <Link className="mini-sidebar-link" to="/">
-                <i className="fa fa-home btn-icon" aria-hidden="true"></i>
+                <HomeIcon className="default-icon-size" />
                 <span className="btn-text">Home</span>
               </Link>
             </li>
 
             <li className="mini-sidebar-list-item">
               <Link className="mini-sidebar-link" to="create">
-                <i className="fa fa-plus btn-icon" aria-hidden="true"></i>
+                <PlusCircledIcon className="default-icon-size" />
                 <span className="btn-text">Create</span>
               </Link>
             </li>
 
             <li className="mini-sidebar-list-item">
               <Link className="mini-sidebar-link" to="history">
-                <i className="fa fa-history btn-icon" aria-hidden="true"></i>
+                <CountdownTimerIcon className="default-icon-size" />
                 <span className="btn-text">History</span>
               </Link>
             </li>
 
             <li className="mini-sidebar-list-item">
               <Link className="mini-sidebar-link" to="library">
-                <i className="fa fa-archive btn-icon" aria-hidden="true"></i>
+                <ArchiveIcon className="default-icon-size" />
                 <span className="btn-text">Library</span>
               </Link>
             </li>
@@ -61,7 +69,11 @@ const SideBar = () => {
         className={classNames("slide-in-box", {
           "slide-in": isOpen,
         })}
-      ></div>
+      >
+        <div role="button" className="close-btn" onClick={toggleSlideIn}>
+          <ChevronLeftIcon className="default-icon-size" />
+        </div>
+      </div>
     </div>
   );
 };

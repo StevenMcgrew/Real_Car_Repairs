@@ -22,10 +22,6 @@
   transform: scale(0.95);
 }
 
-.btn-icon {
-  font-size: 1.25rem;
-}
-
 .btn-text {
   font-size: 0.6875rem;
   font-family: sans-serif;
@@ -54,7 +50,7 @@
   list-style: none;
 }
 
-.mini-sidbar-list-item {
+.mini-sidebar-list-item {
   outline: none;
   user-select: none;
 }
@@ -91,8 +87,9 @@
   height: 100vh;
   width: 16.25rem;
   height: 100%;
+  color: white;
   background: var(--bg-gradient);
-  border-top-right-radius: 1.875rem;
+  border-top-right-radius: 1.25rem;
   box-shadow: var(--sidebar-shadow);
   transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   transform: translate(-16.3rem, 0);
@@ -106,6 +103,18 @@
 .fade-in {
   display: block;
   animation: fadeIn 0.7s;
+}
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  margin: 0.875rem 0.9375rem 0 auto;
+  cursor: pointer;
 }
 
 @keyframes fadeIn {
