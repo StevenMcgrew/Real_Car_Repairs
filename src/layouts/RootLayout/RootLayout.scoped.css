@@ -1,0 +1,26 @@
+.root-grid {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "side head"
+    "side main"
+    "side foot";
+}
+
+.head-area {
+  grid-area: head;
+}
+
+.side-area {
+  grid-area: side;
+}
+
+.main-area {
+  grid-area: main;
+}
+
+.foot-area {
+  grid-area: foot;
+}
