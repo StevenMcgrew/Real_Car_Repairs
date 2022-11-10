@@ -4,6 +4,7 @@ import "./RootLayout.scoped.css";
 import { Outlet, Link, useNavigation } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import SideBar from "../../components/SideBar/SideBar";
+import UserDropdown from "../../components/UserDropdown/UserDropdown";
 
 const RootLayout = () => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ const RootLayout = () => {
     <div className="root-grid">
       <div className="head-area">
         <Header logoSrc="/car-service-96x96.png" title="Real Car Repairs">
-          <button>Right</button>
+          <UserDropdown />
         </Header>
       </div>
 

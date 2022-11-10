@@ -1,15 +1,16 @@
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/blue.css";
+@import "@radix-ui/colors/grass.css";
+@import "@radix-ui/colors/crimson.css";
+
 :root {
-  --body-bg: #f5f6fa;
-  --card-bg: white;
-  --text: #1d253b;
-  --muted-text: #6c757d;
-  --primary-color: #1d8cf8;
-  --secondary-color: lightblue;
+  --primary1: var(--blue1);
+  --primary3: var(--blue3);
+  --primary4: var(--blue4);
+  --primary6: var(--blue6);
+  --primary9: var(--blue9);
+  --primary11: var(--blue11);
   --bg-gradient: linear-gradient(0deg, #3358f4, #1d8cf8);
-  --default-radius: 0.3125rem;
-  --default-shadow: 0 1px 15px 0 hsla(0, 0%, 48.2%, 0.05);
-  --sidebar-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.1),
-    0 4px 20px 0 rgba(0, 0, 0, 0.15);
 }
 
 html {
@@ -31,6 +32,15 @@ html {
 }
 
 body {
+  --body-bg: #f5f6fa;
+  --card-bg: white;
+  --text: #1d253b;
+  --muted-text: var(--mauve11);
+  --separator: var(--mauve8);
+  --default-radius: 0.3125rem;
+  --default-shadow: 0 1px 15px 0 hsla(0, 0%, 48.2%, 0.05);
+  --sidebar-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.1),
+    0 4px 20px 0 rgba(0, 0, 0, 0.15);
   font-size: 1rem;
   margin: 0;
   min-height: 100vh;
@@ -106,4 +116,30 @@ textarea {
   to {
     transform: rotate(360deg);
   }
+}
+
+.dark-theme {
+  --body-bg: #1e1e2f;
+  --card-bg: #27293d;
+  --text: white;
+}
+
+.green {
+  --primary1: var(--grass1);
+  --primary3: var(--grass3);
+  --primary4: var(--grass4);
+  --primary6: var(--grass6);
+  --primary9: var(--grass9);
+  --primary11: var(--grass11);
+  --bg-gradient: linear-gradient(0deg, #0098f0, #00f2c3);
+}
+
+.pink {
+  --primary1: var(--crimson1);
+  --primary3: var(--crimson3);
+  --primary4: var(--crimson4);
+  --primary6: var(--crimson6);
+  --primary9: var(--crimson9);
+  --primary11: var(--crimson11);
+  --bg-gradient: linear-gradient(0deg, #ba54f5, #e14eca);
 }
