@@ -4,6 +4,16 @@
   min-height: 3.5625rem;
 }
 
+.header-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5625rem;
+  height: 3.5625rem;
+  cursor: pointer;
+  margin-left: 0.3rem;
+}
+
 .title {
   margin: 0;
   font-size: 1.3rem;
@@ -23,4 +33,10 @@
 .right-content {
   display: inline-block;
   margin-left: auto;
+}
+
+@media only screen and (min-width: 852px) {
+  .header-menu-btn {
+    display: none;
+  }
 }

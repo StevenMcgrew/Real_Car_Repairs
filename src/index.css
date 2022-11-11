@@ -1,3 +1,4 @@
+@import "@radix-ui/colors/blackA.css";
 @import "@radix-ui/colors/mauve.css";
 @import "@radix-ui/colors/blue.css";
 @import "@radix-ui/colors/grass.css";
@@ -10,6 +11,7 @@
   --primary6: var(--blue6);
   --primary9: var(--blue9);
   --primary11: var(--blue11);
+  --accent-color: #1d8cf8;
   --bg-gradient: linear-gradient(0deg, #3358f4, #1d8cf8);
 }
 
@@ -122,6 +124,7 @@ textarea {
   --body-bg: #1e1e2f;
   --card-bg: #27293d;
   --text: white;
+  --muted-text: var(--mauve8);
 }
 
 .green {
@@ -131,6 +134,7 @@ textarea {
   --primary6: var(--grass6);
   --primary9: var(--grass9);
   --primary11: var(--grass11);
+  --accent-color: #00f2c3;
   --bg-gradient: linear-gradient(0deg, #0098f0, #00f2c3);
 }
 
@@ -141,5 +145,6 @@ textarea {
   --primary6: var(--crimson6);
   --primary9: var(--crimson9);
   --primary11: var(--crimson11);
+  --accent-color: #e14eca;
   --bg-gradient: linear-gradient(0deg, #ba54f5, #e14eca);
 }

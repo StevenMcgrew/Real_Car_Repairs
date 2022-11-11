@@ -3,8 +3,9 @@ import "./RootLayout.scoped.css";
 
 import { Outlet, Link, useNavigation } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import SideBar from "../../components/SideBar/SideBar";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import UserDropdown from "../../components/UserDropdown/UserDropdown";
+import Footer from "../../components/Footer/Footer";
 
 const RootLayout = () => {
   const navigation = useNavigation();
@@ -22,7 +23,7 @@ const RootLayout = () => {
       </div>
 
       <div className="side-area">
-        <SideBar />
+        <Sidebar />
       </div>
 
       <div className={mainClassNames}>
@@ -30,7 +31,7 @@ const RootLayout = () => {
       </div>
 
       <div className="foot-area">
-        <button>Footer</button>
+        <Footer />
       </div>
     </div>
   );
