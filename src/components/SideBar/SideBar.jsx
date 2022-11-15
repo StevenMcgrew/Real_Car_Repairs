@@ -62,78 +62,67 @@ const Sidebar = () => {
         <div role='button' className='close-btn' onClick={toggleSlideIn}>
           <ChevronLeftIcon className='default-icon-size' />
         </div>
-        <ScrollArea.Root className='ScrollAreaRoot'>
-          <ScrollArea.Viewport className='ScrollAreaViewport'>
-            <nav className='slidein-nav'>
-              <ul className='slidein-ul'>
-                <li>
-                  <Link className='slidein-Link first-link' to='/' onClick={toggleSlideIn}>
-                    <HomeIcon className='default-icon-size' />
-                    <span className='slidein-span'>Home</span>
-                  </Link>
-                </li>
+        <nav className='slidein-nav custom-scrollbars slidein-scrollbar'>
+          <ul className='slidein-ul'>
+            <li>
+              <Link className='slidein-Link first-link' to='/' onClick={toggleSlideIn}>
+                <HomeIcon className='default-icon-size' />
+                <span className='slidein-span'>Home</span>
+              </Link>
+            </li>
 
-                <li>
-                  <Link className='slidein-Link' to='create' onClick={toggleSlideIn}>
-                    <PlusCircledIcon className='default-icon-size' />
-                    <span className='slidein-span'>Create</span>
-                  </Link>
-                </li>
+            <li>
+              <Link className='slidein-Link' to='create' onClick={toggleSlideIn}>
+                <PlusCircledIcon className='default-icon-size' />
+                <span className='slidein-span'>Create</span>
+              </Link>
+            </li>
 
-                <li>
-                  <Link className='slidein-Link' to='history' onClick={toggleSlideIn}>
-                    <CountdownTimerIcon className='default-icon-size' />
-                    <span className='slidein-span'>History</span>
-                  </Link>
-                </li>
+            <li>
+              <Link className='slidein-Link' to='history' onClick={toggleSlideIn}>
+                <CountdownTimerIcon className='default-icon-size' />
+                <span className='slidein-span'>History</span>
+              </Link>
+            </li>
 
-                <li>
-                  <Link className='slidein-Link' to='library' onClick={toggleSlideIn}>
-                    <ArchiveIcon className='default-icon-size' />
-                    <span className='slidein-span'>Library</span>
-                  </Link>
-                </li>
+            <li>
+              <Link className='slidein-Link' to='library' onClick={toggleSlideIn}>
+                <ArchiveIcon className='default-icon-size' />
+                <span className='slidein-span'>Library</span>
+              </Link>
+            </li>
 
-                <Separator.Root className='SeparatorRoot' decorative />
+            <Separator.Root className='SeparatorRoot' decorative />
 
-                <li>
-                  <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
-                    <InfoCircledIcon className='default-icon-size' />
-                    <span className='slidein-span'>About</span>
-                  </Link>
-                </li>
+            <li>
+              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+                <InfoCircledIcon className='default-icon-size' />
+                <span className='slidein-span'>About</span>
+              </Link>
+            </li>
 
-                <li>
-                  <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
-                    <EnvelopeClosedIcon className='default-icon-size' />
-                    <span className='slidein-span'>Contact</span>
-                  </Link>
-                </li>
+            <li>
+              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+                <EnvelopeClosedIcon className='default-icon-size' />
+                <span className='slidein-span'>Contact</span>
+              </Link>
+            </li>
 
-                <li>
-                  <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
-                    <ListBulletIcon className='default-icon-size' />
-                    <span className='slidein-span'>Terms & Conditions</span>
-                  </Link>
-                </li>
+            <li>
+              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+                <ListBulletIcon className='default-icon-size' />
+                <span className='slidein-span'>Terms & Conditions</span>
+              </Link>
+            </li>
 
-                <li>
-                  <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
-                    <FileTextIcon className='default-icon-size' />
-                    <span className='slidein-span'>Privacy Policy</span>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </ScrollArea.Viewport>
-          <ScrollArea.Scrollbar className='ScrollAreaScrollbar' orientation='vertical'>
-            <ScrollArea.Thumb className='ScrollAreaThumb' />
-          </ScrollArea.Scrollbar>
-          <ScrollArea.Scrollbar className='ScrollAreaScrollbar' orientation='horizontal'>
-            <ScrollArea.Thumb className='ScrollAreaThumb' />
-          </ScrollArea.Scrollbar>
-          <ScrollArea.Corner className='ScrollAreaCorner' />
-        </ScrollArea.Root>
+            <li>
+              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+                <FileTextIcon className='default-icon-size' />
+                <span className='slidein-span'>Privacy Policy</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </>
   );
