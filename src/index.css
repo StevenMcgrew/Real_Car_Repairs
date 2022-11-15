@@ -13,6 +13,8 @@
   --primary11: var(--blue11);
   --accent-color: #1d8cf8;
   --bg-gradient: linear-gradient(0deg, #3358f4, #1d8cf8);
+  --backdrop-color: #00000080;
+
 }
 
 html {

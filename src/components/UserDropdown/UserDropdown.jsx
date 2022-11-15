@@ -1,6 +1,9 @@
 import './UserDropdown.scoped.css';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { showModal } from '../Modal/modalSlice';
 
+// Components
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Avatar from '@radix-ui/react-avatar';
 import { PersonIcon, DotFilledIcon } from '@radix-ui/react-icons';
@@ -18,8 +21,8 @@ const UserDropdown = () => {
   const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
   const [accentColor, setAccentColor] = useState(getInitialColor);
 
-  const handleDarkModeChange = () => {
-    setIsDarkMode(!isDarkMode);
+  const handleDarkModeChange = (value) => {
+    setIsDarkMode(value);
   };
 
   const handleColorChange = (value) => {
@@ -36,6 +39,8 @@ const UserDropdown = () => {
     localStorage.setItem('accentColor', accentColor);
   }, [accentColor]);
 
+  const dispatch = useDispatch()
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
@@ -50,22 +55,29 @@ const UserDropdown = () => {
       <DropdownMenu.Portal>
         <DropdownMenu.Content className='DropdownMenuContent' sideOffset={5}>
           <DropdownMenu.Label className='DropdownMenuLabel'>ACCOUNT</DropdownMenu.Label>
-          <DropdownMenu.Item className='DropdownMenuItem'>Sign In</DropdownMenu.Item>
 
-          <DropdownMenu.Item className='DropdownMenuItem'>Sign Up</DropdownMenu.Item>
+          <DropdownMenu.Item className='DropdownMenuItem'
+            onSelect={() => dispatch(showModal({ title: 'Sign In', content: 'SignInForm' }))}>
+            Sign In
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Item className='DropdownMenuItem'
+            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+            Sign Up
+          </DropdownMenu.Item>
 
           <DropdownMenu.Separator className='DropdownMenuSeparator' />
 
           <DropdownMenu.Label className='DropdownMenuLabel'>MODE</DropdownMenu.Label>
           <DropdownMenu.RadioGroup value={isDarkMode} onValueChange={handleDarkModeChange}>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={false}>
+            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={false} onSelect={(e) => e.preventDefault()}>
               <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
                 <DotFilledIcon />
               </DropdownMenu.ItemIndicator>
               <div className='color-dot light-dot'></div>
               Light
             </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={true}>
+            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={true} onSelect={(e) => e.preventDefault()}>
               <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
                 <DotFilledIcon />
               </DropdownMenu.ItemIndicator>
@@ -78,21 +90,21 @@ const UserDropdown = () => {
 
           <DropdownMenu.Label className='DropdownMenuLabel'>COLOR</DropdownMenu.Label>
           <DropdownMenu.RadioGroup value={accentColor} onValueChange={handleColorChange}>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='blue'>
+            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='blue' onSelect={(e) => e.preventDefault()}>
               <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
                 <DotFilledIcon />
               </DropdownMenu.ItemIndicator>
               <div className='color-dot blue-dot'></div>
               Blue
             </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='green'>
+            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='green' onSelect={(e) => e.preventDefault()}>
               <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
                 <DotFilledIcon />
               </DropdownMenu.ItemIndicator>
               <div className='color-dot green-dot'></div>
               Green
             </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='pink'>
+            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='pink' onSelect={(e) => e.preventDefault()}>
               <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
                 <DotFilledIcon />
               </DropdownMenu.ItemIndicator>

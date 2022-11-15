@@ -2,6 +2,7 @@ import './Header.scoped.css';
 import { useDispatch } from 'react-redux';
 import { toggleSlideInOpen } from '../../components/Sidebar/sidebarSlice.js';
 
+// Components
 import { Link } from 'react-router-dom';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 
