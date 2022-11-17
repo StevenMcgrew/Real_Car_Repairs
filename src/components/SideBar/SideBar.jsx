@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSlideInOpen } from './sidebarSlice.js';
 
 import { Link } from 'react-router-dom';
-import * as ScrollArea from '@radix-ui/react-scroll-area';
 import * as Separator from '@radix-ui/react-separator';
 import { HomeIcon, PlusCircledIcon, CountdownTimerIcon, ArchiveIcon, HamburgerMenuIcon, ChevronLeftIcon, InfoCircledIcon, EnvelopeClosedIcon, ListBulletIcon, FileTextIcon } from '@radix-ui/react-icons';
 

@@ -1,0 +1,8 @@
+.signin-form {
+  min-width: 18.125rem;
+  padding: 0.625rem;
+}
+
+.signin-btn {
+  width: calc(100% - 2.5rem)
+}

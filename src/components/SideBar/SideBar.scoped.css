@@ -57,13 +57,13 @@
 
 .mini-sidebar-link {
   text-decoration: none;
-  color: white;
   min-height: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: var(--btn-text-color);
 }
 
 .mini-sidebar-link:active {
@@ -86,22 +86,43 @@
   left: 0;
   width: 16.25rem;
   height: 100%;
-  color: white;
   background: var(--bg-gradient);
   border-top-right-radius: 1.25rem;
   box-shadow: var(--sidebar-shadow);
   transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   transform: translate(-16.3rem, 0);
+  color: var(--btn-text-color);
 }
 
-.slide-in {
-  transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
-  transform: translate(0);
+.slidein-nav {
+  padding: 0rem 1.25rem;
+  height: calc(100% - 2.75rem);
+  overflow: auto;
 }
 
-.fade-in {
-  display: block;
-  animation: fadeIn 0.7s;
+.slidein-ul {
+  all: unset;
+  list-style: none;
+}
+
+.slidein-Link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem 0rem;
+  color: var(--btn-text-color);
+}
+
+.first-link {
+  padding-top: 0;
+  margin-top: 1rem;
+}
+
+.slidein-span {
+  padding-left: 0.9rem;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 .close-btn {
@@ -114,6 +135,24 @@
   border-radius: 50%;
   margin: 0.875rem 0.9375rem 0 auto;
   cursor: pointer;
+}
+
+.SeparatorRoot {
+  height: 1px;
+  background-color: #d6d6d6;
+  margin: 0.625rem;
+}
+
+/************** Animations ******************/
+
+.slide-in {
+  transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  transform: translate(0);
+}
+
+.fade-in {
+  display: block;
+  animation: fadeIn 0.7s;
 }
 
 @keyframes fadeIn {
@@ -130,46 +169,7 @@
   }
 }
 
-/************ Separator *********************/
-
-.SeparatorRoot {
-  height: 1px;
-  background-color: #d6d6d6;
-  margin: 0.625rem;
-}
-
-/********* my slide-in nav list styles ***********/
-
-.slidein-nav {
-  padding: 0rem 1.25rem;
-  height: calc(100% - 2.75rem);
-  overflow: auto;
-}
-
-.slidein-ul {
-  all: unset;
-  list-style: none;
-}
-
-.slidein-Link {
-  text-decoration: none;
-  color: white;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 1rem 0rem;
-}
-
-.first-link {
-  padding-top: 0;
-  margin-top: 1rem;
-}
-
-.slidein-span {
-  padding-left: 0.9rem;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-}
+/************ Media queries *************/
 
 @media only screen and (max-width: 852px) {
   .sidebar {
