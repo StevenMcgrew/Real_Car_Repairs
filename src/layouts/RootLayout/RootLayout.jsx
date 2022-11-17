@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import "./RootLayout.scoped.css";
+import carServiceImgUrl from '/car-service-96x96.png';
 
 //Components
 import { Outlet, useNavigation } from "react-router-dom";
@@ -20,7 +21,7 @@ const RootLayout = () => {
     <>
       <div className="root-grid">
         <div className="head-area">
-          <Header logoSrc="/car-service-96x96.png" title="Real Car Repairs">
+          <Header logoSrc={carServiceImgUrl} title="Real Car Repairs">
             <UserDropdown />
           </Header>
         </div>
