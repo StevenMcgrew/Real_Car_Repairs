@@ -1,9 +1,7 @@
 import './Modal.scoped.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { hideModal } from './modalSlice';
-import { clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 // Available components to be inserted into the modal
 import SignInForm from '../../components/forms/SignInForm/SignInForm';
@@ -16,13 +14,6 @@ const Modal = () => {
   const dispatch = useDispatch();
 
   const closeModal = () => dispatch(hideModal());
-
-  useEffect(() => {
-    // only using this for the cleanup function
-    return function cleanup() {
-      clearAllBodyScrollLocks();
-    };
-  }, []);
 
   return (
     <>

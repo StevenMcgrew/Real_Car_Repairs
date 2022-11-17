@@ -1,9 +1,7 @@
 import './Sidebar.scoped.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { toggleSlideInOpen } from './sidebarSlice.js';
-import { clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 import { Link } from 'react-router-dom';
 import * as Separator from '@radix-ui/react-separator';
@@ -14,13 +12,6 @@ const Sidebar = () => {
   const dispatch = useDispatch();
 
   const toggleSlideIn = () => dispatch(toggleSlideInOpen());
-
-  useEffect(() => {
-    // only using this for the cleanup function
-    return function cleanup() {
-      clearAllBodyScrollLocks();
-    };
-  }, []);
 
   return (
     <>
