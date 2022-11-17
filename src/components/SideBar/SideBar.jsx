@@ -1,7 +1,9 @@
 import './Sidebar.scoped.css';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { toggleSlideInOpen } from './sidebarSlice.js';
+import { clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 import { Link } from 'react-router-dom';
 import * as Separator from '@radix-ui/react-separator';
@@ -10,7 +12,15 @@ import { HomeIcon, PlusCircledIcon, CountdownTimerIcon, ArchiveIcon, HamburgerMe
 const Sidebar = () => {
   const isSlideInOpen = useSelector((state) => state.sidebar.isSlideInOpen);
   const dispatch = useDispatch();
+
   const toggleSlideIn = () => dispatch(toggleSlideInOpen());
+
+  useEffect(() => {
+    // only using this for the cleanup function
+    return function cleanup() {
+      clearAllBodyScrollLocks();
+    };
+  }, []);
 
   return (
     <>
