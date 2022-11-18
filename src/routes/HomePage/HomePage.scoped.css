@@ -1,7 +1,8 @@
-div {
-  width: 300px;
-  height: 300px;
-  padding: 1rem;
-  text-align: center;
-  margin-bottom: 1rem;
+.auto-grid {
+  --min-column-size: 225px;
+
+  display: grid;
+  gap: clamp(1rem, 5vmax, 1.625rem);
+  grid-template-columns: repeat(auto-fit,
+      minmax(min(100%, var(--min-column-size)), 1fr));
 }

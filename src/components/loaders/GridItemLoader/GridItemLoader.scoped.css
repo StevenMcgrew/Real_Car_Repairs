@@ -1,0 +1,52 @@
+.fake {
+  background-color: var(--loader-pulse-color-start);
+  border-radius: var(--default-radius);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.img {
+  height: 9rem;
+  border-bottom-left-radius: unset;
+  border-bottom-right-radius: unset;
+  animation: none;
+}
+
+.lower-container {
+  padding: 0.625rem;
+}
+
+.title {
+  height: 1.875rem;
+}
+
+.user-container {
+  display: flex;
+  padding-top: 0.625rem;
+  align-items: center;
+}
+
+.avatar {
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 100%;
+}
+
+.username {
+  height: 1.875rem;
+  width: calc(100% - 2.5rem);
+  margin-left: 0.625rem;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: var(--loader-pulse-color-start);
+  }
+
+  50% {
+    background-color: var(--loader-pulse-color-end);
+  }
+
+  100% {
+    background-color: var(--loader-pulse-color-start);
+  }
+}

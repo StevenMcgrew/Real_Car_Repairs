@@ -92,18 +92,22 @@ button {
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
+
 .DropdownMenuContent[data-side="top"],
 .DropdownMenuSubContent[data-side="top"] {
   animation-name: slideDownAndFade;
 }
+
 .DropdownMenuContent[data-side="right"],
 .DropdownMenuSubContent[data-side="right"] {
   animation-name: slideLeftAndFade;
 }
+
 .DropdownMenuContent[data-side="bottom"],
 .DropdownMenuSubContent[data-side="bottom"] {
   animation-name: slideUpAndFade;
 }
+
 .DropdownMenuContent[data-side="left"],
 .DropdownMenuSubContent[data-side="left"] {
   animation-name: slideRightAndFade;
@@ -127,10 +131,12 @@ button {
   color: var(--muted-text);
   cursor: pointer;
 }
+
 .DropdownMenuSubTrigger[data-state="open"] {
   background-color: var(--primary4);
   color: var(--primary11);
 }
+
 .DropdownMenuItem[data-disabled],
 .DropdownMenuCheckboxItem[data-disabled],
 .DropdownMenuRadioItem[data-disabled],
@@ -138,14 +144,6 @@ button {
   color: var(--mauve8);
   pointer-events: none;
 }
-
-/* .DropdownMenuItem[data-highlighted],
-.DropdownMenuCheckboxItem[data-highlighted],
-.DropdownMenuRadioItem[data-highlighted],
-.DropdownMenuSubTrigger[data-highlighted] {
-  background-color: var(--primary4);
-  color: var(--primary1);
-} */
 
 .DropdownMenuLabel {
   font-size: 14px;
@@ -178,9 +176,11 @@ button {
   padding-left: 20px;
   color: var(--mauve11);
 }
-[data-highlighted] > .RightSlot {
+
+[data-highlighted]>.RightSlot {
   color: white;
 }
+
 [data-disabled] .RightSlot {
   color: var(--mauve8);
 }
@@ -190,6 +190,7 @@ button {
     opacity: 0;
     transform: translateY(2px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -201,6 +202,7 @@ button {
     opacity: 0;
     transform: translateX(-2px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -212,6 +214,7 @@ button {
     opacity: 0;
     transform: translateY(-2px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -223,6 +226,7 @@ button {
     opacity: 0;
     transform: translateX(2px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);

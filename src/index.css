@@ -46,14 +46,28 @@ body {
   --error-text: rgb(236, 75, 75);
   --separator: var(--mauve8);
   --default-radius: 0.3125rem;
-  --default-shadow: 0 1px 15px 0 hsla(0, 0%, 48.2%, 0.05);
-  --sidebar-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.1),
-    0 4px 20px 0 rgba(0, 0, 0, 0.15);
+  --default-shadow: 0 1px 15px 0 hsl(0deg 0% 48% / 5%);
+  --sidebar-shadow: 0 2px 22px 0 rgb(0 0 0 / 10%), 0 4px 20px 0 rgb(0 0 0 / 15%);
+  --loader-pulse-color-start: #cfcfcf;
+  --loader-pulse-color-end: #adadad;
   font-size: 1rem;
   margin: 0;
   min-height: 100vh;
   background: var(--body-bg);
   color: var(--text);
+}
+
+.dark-theme {
+  --body-bg: #1e1e2f;
+  --card-bg: #27293d;
+  --text: white;
+  --muted-text: var(--mauve8);
+  --default-shadow: 0 1px 20px 0 rgb(0 0 0 / 10%);
+  --sidebar-shadow: 0 0 45px 0 rgb(0 0 0 / 60%);
+  --scrollbar-thumb-color: rgba(255, 255, 255, 0.25);
+  --scrollbar-thumb-hover-color: rgba(255, 255, 255, 0.4);
+  --loader-pulse-color-start: #343434;
+  --loader-pulse-color-end: #3f3f3f;
 }
 
 .sr-only {
@@ -201,15 +215,6 @@ button:active {
   to {
     transform: rotate(360deg);
   }
-}
-
-.dark-theme {
-  --body-bg: #1e1e2f;
-  --card-bg: #27293d;
-  --text: white;
-  --muted-text: var(--mauve8);
-  --scrollbar-thumb-color: rgba(255, 255, 255, 0.25);
-  --scrollbar-thumb-hover-color: rgba(255, 255, 255, 0.4);
 }
 
 .green {
