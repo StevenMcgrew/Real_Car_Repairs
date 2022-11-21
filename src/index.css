@@ -169,6 +169,7 @@ button {
   font-size: 0.875rem;
   text-transform: uppercase;
   font-weight: 600;
+  box-sizing: border-box;
 }
 
 button:active {

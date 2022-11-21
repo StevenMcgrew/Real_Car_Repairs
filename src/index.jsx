@@ -11,7 +11,9 @@ import ErrorPage from "./routes/ErrorPage/ErrorPage";
 import HomePage from "./routes/HomePage/HomePage";
 import CreatePage from "./routes/CreatePage/CreatePage";
 import HistoryPage from "./routes/HistoryPage/HistoryPage";
-import LibraryPage from "./routes/LibraryPage.jsx/LibraryPage";
+import LibraryPage from "./routes/LibraryPage/LibraryPage";
+import AboutPage from "./routes/AboutPage/AboutPage";
+import LegalPage from "./routes/LegalPage/LegalPage";
 
 const router = createHashRouter([
   {
@@ -39,6 +41,16 @@ const router = createHashRouter([
           {
             path: "library",
             element: <LibraryPage />,
+            errorElement: <div>Oops! There was an error.</div>,
+          },
+          {
+            path: "about",
+            element: <AboutPage />,
+            errorElement: <div>Oops! There was an error.</div>,
+          },
+          {
+            path: "legal",
+            element: <LegalPage />,
             errorElement: <div>Oops! There was an error.</div>,
           },
         ],

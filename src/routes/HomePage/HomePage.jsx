@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from 'react';
 
 import GridItem from "../../components/GridItem/GridItem";
-import GridItemLoader from "../../components/loaders/GridItemLoader/GridItemLoader";
+import GridItemLoader from "../../loaders/GridItemLoader/GridItemLoader";
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideModal } from './modalSlice';
 
 // Available components to be inserted into the modal
-import SignInForm from '../../components/forms/SignInForm/SignInForm';
-import SignUpForm from '../../components/forms/SignUpForm/SignUpForm';
+import SignInForm from '../../forms/SignInForm/SignInForm';
+import SignUpForm from '../../forms/SignUpForm/SignUpForm';
 
 const Modal = () => {
   const title = useSelector((state) => state.modal.title);

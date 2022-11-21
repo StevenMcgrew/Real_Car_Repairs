@@ -1,0 +1,9 @@
+.legal-page-container {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.legal-p {
+  white-space: pre-line;
+  color: var(--muted-text);
+}

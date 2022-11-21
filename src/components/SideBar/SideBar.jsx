@@ -32,21 +32,21 @@ const Sidebar = () => {
               </li>
 
               <li className='mini-sidebar-list-item'>
-                <Link className='mini-sidebar-link' to='create'>
+                <Link className='mini-sidebar-link' to='/create'>
                   <PlusCircledIcon className='default-icon-size' />
                   <span className='btn-text'>Create</span>
                 </Link>
               </li>
 
               <li className='mini-sidebar-list-item'>
-                <Link className='mini-sidebar-link' to='history'>
+                <Link className='mini-sidebar-link' to='/history'>
                   <CountdownTimerIcon className='default-icon-size' />
                   <span className='btn-text'>History</span>
                 </Link>
               </li>
 
               <li className='mini-sidebar-list-item'>
-                <Link className='mini-sidebar-link' to='library'>
+                <Link className='mini-sidebar-link' to='/library'>
                   <ArchiveIcon className='default-icon-size' />
                   <span className='btn-text'>Library</span>
                 </Link>
@@ -72,21 +72,21 @@ const Sidebar = () => {
             </li>
 
             <li>
-              <Link className='slidein-Link' to='create' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/create' onClick={toggleSlideIn}>
                 <PlusCircledIcon className='default-icon-size' />
                 <span className='slidein-span'>Create</span>
               </Link>
             </li>
 
             <li>
-              <Link className='slidein-Link' to='history' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/history' onClick={toggleSlideIn}>
                 <CountdownTimerIcon className='default-icon-size' />
                 <span className='slidein-span'>History</span>
               </Link>
             </li>
 
             <li>
-              <Link className='slidein-Link' to='library' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/library' onClick={toggleSlideIn}>
                 <ArchiveIcon className='default-icon-size' />
                 <span className='slidein-span'>Library</span>
               </Link>
@@ -95,28 +95,28 @@ const Sidebar = () => {
             <Separator.Root className='SeparatorRoot' decorative />
 
             <li>
-              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/about' onClick={toggleSlideIn}>
                 <InfoCircledIcon className='default-icon-size' />
                 <span className='slidein-span'>About</span>
               </Link>
             </li>
 
             <li>
-              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/legal' onClick={toggleSlideIn}>
                 <EnvelopeClosedIcon className='default-icon-size' />
                 <span className='slidein-span'>Contact</span>
               </Link>
             </li>
 
             <li>
-              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/legal' onClick={toggleSlideIn}>
                 <ListBulletIcon className='default-icon-size' />
                 <span className='slidein-span'>Terms & Conditions</span>
               </Link>
             </li>
 
             <li>
-              <Link className='slidein-Link' to='#' onClick={toggleSlideIn}>
+              <Link className='slidein-Link' to='/legal' onClick={toggleSlideIn}>
                 <FileTextIcon className='default-icon-size' />
                 <span className='slidein-span'>Privacy Policy</span>
               </Link>
