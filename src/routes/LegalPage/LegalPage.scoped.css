@@ -6,4 +6,5 @@
 .legal-p {
   white-space: pre-line;
   color: var(--muted-text);
+  font-size: 0.75rem;
 }

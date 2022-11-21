@@ -19,7 +19,7 @@
 }
 
 .main-area {
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0;
   grid-area: main;
 }
 
