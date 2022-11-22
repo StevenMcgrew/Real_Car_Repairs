@@ -20,7 +20,7 @@ const RepairStepInput = () => {
       </div>
 
       <div className='step-body'>
-        <div className='img-preview-root'>
+        <div>
           <span className="img-info">Image (optional)</span>
           <div className="img-preview">
             <div className="img-btns-box">
