@@ -2,7 +2,7 @@ import './SignInForm.scoped.css';
 import * as Yup from 'yup';
 
 import { Formik, Form } from 'formik';
-import TextInput from '../form-components/TextInput/TextInput';
+import TextInput from '../../form-components/TextInput/TextInput';
 
 const SignInForm = () => {
 

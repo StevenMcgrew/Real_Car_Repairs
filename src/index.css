@@ -127,6 +127,7 @@ label {
   white-space: nowrap;
   line-height: 2.375rem;
   padding-right: 1rem;
+  flex-shrink: 0;
 }
 
 input:-webkit-autofill,
@@ -161,6 +162,45 @@ input:focus {
   background-color: transparent;
 }
 
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: var(--text) !important;
+}
+
+select:focus-visible {
+  outline: none;
+}
+
+select {
+  display: block;
+  width: 100%;
+  padding: .375rem 2.25rem .375rem .75rem;
+  -moz-padding-start: calc(0.75rem - 3px);
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236e6e6e' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #6e6e6e;
+  border-radius: 0.4285rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 2.375rem;
+}
+
+select:focus {
+  border-color: var(--accent-color);
+  background-color: transparent;
+}
+
 button {
   all: unset;
   display: flex;
@@ -179,6 +219,15 @@ button {
 
 button:active {
   transform: scale(0.98);
+}
+
+.custom-form-group {
+  display: flex;
+  flex-wrap: none;
+}
+
+.input-and-error-group {
+  width: 100%;
 }
 
 .form-error-text {
@@ -213,16 +262,6 @@ button:active {
   top: 0.75rem;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .green {
   --primary1: var(--grass1);
   --primary3: var(--grass3);
@@ -248,7 +287,11 @@ button:active {
   --bg-gradient: linear-gradient(0deg, #ba54f5, #e14eca);
 }
 
-/************* Custom scrollbar ****************/
+/***********************************************************
+
+        Custom scrollbar 
+
+************************************************************/
 
 .custom-scrollbars {
   scrollbar-width: thin;
@@ -288,4 +331,32 @@ button:active {
 .slidein-scrollbar {
   --scrollbar-thumb-color: rgba(0, 0, 0, 0.25);
   --scrollbar-thumb-hover-color: rgba(0, 0, 0, 0.4);
+}
+
+/***********************************************************
+
+        Animations
+
+************************************************************/
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/***********************************************************
+
+        Media queries
+
+************************************************************/
+
+@media only screen and (max-width: 541px) {
+  .custom-form-group {
+    flex-wrap: wrap;
+  }
 }

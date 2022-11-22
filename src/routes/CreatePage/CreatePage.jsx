@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom"
+import './CreatePage.scoped.css';
+import CreationForm from "../../forms/CreationForm/CreationForm";
 
 
 const CreatePage = () => {
-    return (
-        <>
-            <div>CreatePage</div>
-            <Link to={`/`}>Go Home</Link>
-        </>
-    )
-}
+  return (
+    <div className="create-page-container">
+      <CreationForm />
+    </div>
+  );
+};
 
-export default CreatePage
+export default CreatePage;

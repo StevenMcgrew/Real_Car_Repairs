@@ -1,0 +1,30 @@
+.page-title {
+  margin-top: 0;
+  font-weight: 200;
+}
+
+.sub-header {
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.sub-body {
+  padding-left: 1.25rem;
+}
+
+.decode-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tags-p {
+  padding-left: 1.4375rem;
+  margin-top: 0;
+}
+
+@media only screen and (max-width: 415px) {
+  .sub-body {
+    padding-left: 0;
+  }
+}
