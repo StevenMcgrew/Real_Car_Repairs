@@ -20,21 +20,23 @@ const RepairStepInput = () => {
       </div>
 
       <div className='step-body'>
-        <div className="img-preview">
-          <p className="img-info">Image (optional)</p>
-          <div className="img-btns-box">
-            <label className='wrapping-label'>
-              <span className="add-img-label">Add Image</span>
-              <input className="hidden-img-input" type="file" accept=".jpg, .jpeg, .png, .bmp, .gif" />
-            </label>
-            <button type="button" className="remove-img-btn">Remove</button>
+        <div className='img-preview-root'>
+          <span className="img-info">Image (optional)</span>
+          <div className="img-preview">
+            <div className="img-btns-box">
+              <label className='wrapping-label'>
+                <span className="add-img-label">Add Image</span>
+                <input className="hidden-img-input" type="file" accept=".jpg, .jpeg, .png, .bmp, .gif" />
+              </label>
+              <button type="button" className="remove-img-btn">Remove</button>
+            </div>
           </div>
         </div>
-        <label className="textarea-and-label">
-          <span>Enter instructions for this step</span><br />
-          <textarea className="step-textarea" maxLength="1000" spellCheck={true} wrap="hard" autoCapitalize="none"
+        <div className="textarea-and-label">
+          <label htmlFor="stepText" className='step-text-label'>Enter instructions for this step</label>
+          <textarea id='stepText' name='step-text' className="step-textarea" maxLength="1000" spellCheck={true} wrap="hard" autoCapitalize="none"
             autoComplete="off" autoFocus={false}></textarea>
-        </label>
+        </div>
       </div>
 
     </div>

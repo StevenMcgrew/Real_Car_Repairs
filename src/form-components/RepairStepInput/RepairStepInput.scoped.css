@@ -20,6 +20,14 @@
   color: #6e6e6e;
 }
 
+.drag-handle:hover,
+.drag-handle:focus {
+  background-color: var(--accent-color);
+  color: var(--btn-text-color);
+  text-decoration: none;
+  cursor: ns-resize;
+}
+
 .sort-icon {
   width: 1.875rem;
   height: 1.875rem;
@@ -39,9 +47,7 @@
 }
 
 .close-btn:hover,
-.close-btn:focus,
-.drag-handle:hover,
-.drag-handle:focus {
+.close-btn:focus {
   background-color: var(--accent-color);
   color: var(--btn-text-color);
   text-decoration: none;
@@ -50,9 +56,10 @@
 
 .step-body {
   display: flex;
-  align-items: center;
-  padding: 1.25rem;
+  padding: 0rem 1.25rem 1.25rem 1.25rem;
 }
+
+.img-preview-root {}
 
 .img-preview {
   position: relative;
@@ -63,20 +70,20 @@
   background-position-y: center;
   background-size: contain;
   border: 1px solid #6e6e6e;
-  border-radius: 0.125rem;
+  border-radius: 0.4285rem;
 }
 
 .img-info {
-  text-align: center;
-  background-color: #0000007a;
-  margin: 0;
-  line-height: 1.875rem;
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted-text);
   white-space: nowrap;
+  line-height: 2.375rem;
+  padding: 0rem 0.375rem;
+  flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-left: 5px;
-  color: white;
-  font-size: 0.75rem;
+
 }
 
 .img-btns-box {
@@ -89,8 +96,9 @@
 
 .add-img-label {
   display: inline-block;
-  background-color: var(--accent-color);
-  color: var(--btn-text-color);
+  background-color: transparent;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
   padding: 0.625rem 1.25rem;
   cursor: pointer;
   border-radius: var(--default-radius);
@@ -98,8 +106,6 @@
   text-transform: uppercase;
   font-weight: 600;
   line-height: normal;
-  box-shadow: inset 0 0 0 1px #0000007a,
-    inset 0 0 0 2px white;
 }
 
 .add-img-label:active {
@@ -120,20 +126,22 @@
 .remove-img-btn {
   display: none;
   background-color: #0000007a;
-  box-shadow: inset 0 0 0 1px #0000007a,
-    inset 0 0 0 2px white;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
 }
 
 .textarea-and-label {
   flex-grow: 1;
-  margin: 0.375rem;
-  min-width: 16rem;
+  padding-left: 1.25rem;
 }
 
 .step-textarea {
   resize: none;
   width: 100%;
   line-height: normal;
-  /* overflow-y: hidden, is needed for my custom auto height behavior in javascript */
-  overflow-y: hidden;
+  height: 12.5rem;
+}
+
+.step-text-label {
+  padding: 0 0.375rem;
 }

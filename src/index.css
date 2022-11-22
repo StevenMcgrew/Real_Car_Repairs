@@ -221,6 +221,31 @@ button:active {
   transform: scale(0.98);
 }
 
+textarea {
+  display: block;
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 0.75rem;
+  line-height: 1.42857;
+  color: var(--text);
+  background-color: transparent;
+  background-clip: padding-box;
+  border: 1px solid #6e6e6e;
+  border-radius: 0.4285rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+textarea:focus {
+  border-color: var(--accent-color);
+  background-color: transparent;
+}
+
+textarea:focus-visible {
+  outline: none;
+}
+
 .custom-form-group {
   display: flex;
   flex-wrap: none;
