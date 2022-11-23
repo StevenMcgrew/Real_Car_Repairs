@@ -26,9 +26,9 @@ const SignInForm = () => {
         validationSchema={yupValidation}
         onSubmit={handleSubmit}>
         <Form className='signin-form'>
-          <TextInput type="email" label="Email Address" labelWidth="6.3rem" name="email" />
-          <TextInput type="password" label="Password" labelWidth="6.3rem" name="password" />
-          <button type="submit" className='signin-btn'>Sign Up</button>
+          <TextInput type="email" label="Email Address" labelWidth="7.4rem" name="email" />
+          <TextInput type="password" label="Password" labelWidth="7.4rem" name="password" />
+          <button type="submit" className='signin-btn'>Sign In</button>
         </Form>
       </Formik>
     </>

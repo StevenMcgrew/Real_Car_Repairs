@@ -1,6 +1,7 @@
 .step-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1.25rem;
 }
 
 .step-header {
@@ -17,7 +18,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 0.8rem;
-  color: #6e6e6e;
+  color: var(--neutral-gray);
 }
 
 .drag-handle:hover,
@@ -40,7 +41,7 @@
   height: 1.875rem;
   width: 1.875rem;
   margin-left: auto;
-  color: #6e6e6e;
+  color: var(--neutral-gray);
   font-size: 1.875rem;
   line-height: 1.875rem;
   border-radius: 50%;
@@ -56,24 +57,26 @@
 
 .step-body {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 0rem 1.25rem 1.25rem 1.25rem;
 }
 
 .img-preview {
   position: relative;
-  width: 12.5rem;
-  height: 12.5rem;
+  width: 19.3rem;
+  aspect-ratio: 16 /9;
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
   background-size: contain;
-  border: 1px solid #6e6e6e;
+  border: 1px solid var(--neutral-gray);
   border-radius: 0.4285rem;
 }
 
 .img-info {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: var(--muted-text);
   white-space: nowrap;
   line-height: 2.375rem;
@@ -137,9 +140,15 @@
   resize: none;
   width: 100%;
   line-height: normal;
-  height: 12.5rem;
+  height: 10.8rem;
 }
 
 .step-text-label {
   padding: 0 0.375rem;
+}
+
+@media only screen and (max-width: 599px) {
+  .textarea-and-label {
+    padding-left: 0;
+  }
 }

@@ -48,7 +48,7 @@
   height: 30px;
   width: 30px;
   margin-left: auto;
-  color: #6e6e6e;
+  color: var(--neutral-gray);
   font-size: 28px;
   border-radius: 50%;
   margin-right: -8px;

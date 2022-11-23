@@ -4,7 +4,7 @@ import CreationForm from "../../forms/CreationForm/CreationForm";
 
 const CreatePage = () => {
   return (
-    <div className="create-page-container">
+    <div className="page">
       <CreationForm />
     </div>
   );

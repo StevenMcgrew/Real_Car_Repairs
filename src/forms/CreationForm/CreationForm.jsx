@@ -1,6 +1,7 @@
 import './CreationForm.scoped.css';
 import { getCurrentYear } from '../../utils/vehicle-selection-utils';
 import * as Yup from 'yup';
+import { useState } from 'react';
 
 import { Formik, Form } from 'formik';
 import TextInput from '../../form-components/TextInput/TextInput';
@@ -8,11 +9,16 @@ import SelectInput from '../../form-components/SelectInput/SelectInput';
 import RepairStepInput from '../../form-components/RepairStepInput/RepairStepInput';
 
 const CreationForm = () => {
+  const [steps, setSteps] = useState([{ img: '', text: '' }]);
 
   const yupValidation = Yup.object({
     email: Yup.string().required('Email address is required'),
     password: Yup.string().required('Password is required')
   });
+
+  const addStep = () => {
+    setSteps([...steps, { img: '', text: '' }]);
+  };
 
   const handleSubmit = (values, { setSubmitting }) => {
     alert(JSON.stringify(values, null, 2));
@@ -39,7 +45,7 @@ const CreationForm = () => {
 
           <h3 className='sub-header'>Vehicle Selection:</h3>
           <div className='sub-body'>
-            <TextInput name='vin' label={`VIN Decoder (USA ${(getCurrentYear() - 27)}-present)`} fieldWidth='25rem' />
+            <TextInput name='vin' label={`VIN Decoder (USA ${(getCurrentYear() - 27)}-present)`} />
             <div className='decode-options'>
               <button type='button'>Decode</button>
               <p>or enter vehicle manually...</p>
@@ -62,8 +68,17 @@ const CreationForm = () => {
           </div>
 
           <h3 className='sub-header'>Repair Instructions:</h3>
-          <div className='sub-body'>
-            <RepairStepInput />
+          <div>
+            {steps.map((step, idx) => {
+              return < RepairStepInput key={idx} img={step.img} text={step.text} />;
+            })}
+          </div>
+
+          <div className="btns-panel">
+            <button type="button" onClick={addStep}>Add Step</button>
+            <button type="button">Save</button>
+            <button type="submit">Publish</button>
+            <button type="button">Delete</button>
           </div>
 
         </Form>

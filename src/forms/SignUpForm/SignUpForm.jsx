@@ -36,9 +36,9 @@ const SignUpForm = () => {
         validationSchema={yupValidation}
         onSubmit={handleSubmit}>
         <Form className='signup-form'>
-          <TextInput type="email" label="Email Address" labelWidth="6.3rem" name="email" />
-          <TextInput type="text" label="Username" labelWidth="6.3rem" name="username" />
-          <TextInput type="password" label="Password" labelWidth="6.3rem" name="password" />
+          <TextInput type="email" label="Email Address" labelWidth="7.4rem" name="email" />
+          <TextInput type="text" label="Username" labelWidth="7.4rem" name="username" />
+          <TextInput type="password" label="Password" labelWidth="7.4rem" name="password" />
           <button type="submit" className='signup-btn'>Sign Up</button>
         </Form>
       </Formik>

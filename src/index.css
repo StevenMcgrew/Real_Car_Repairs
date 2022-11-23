@@ -40,11 +40,12 @@ body {
   --body-bg: #f5f6fa;
   --card-bg: white;
   --text: #1d253b;
+  --neutral-gray: #6e6e6e;
   --scrollbar-thumb-color: rgba(0, 0, 0, 0.25);
   --scrollbar-thumb-hover-color: rgba(0, 0, 0, 0.4);
   --muted-text: var(--mauve11);
   --error-text: rgb(236, 75, 75);
-  --separator: var(--mauve8);
+  --separator: var(--neutral-gray);
   --default-radius: 0.3125rem;
   --default-shadow: 0 1px 15px 0 hsl(0deg 0% 48% / 5%);
   --sidebar-shadow: 0 2px 22px 0 rgb(0 0 0 / 10%), 0 4px 20px 0 rgb(0 0 0 / 15%);
@@ -58,8 +59,8 @@ body {
 }
 
 .dark-theme {
-  --body-bg: #1e1e2f;
-  --card-bg: #27293d;
+  --body-bg: #252525;
+  --card-bg: #343434;
   --text: white;
   --muted-text: var(--mauve8);
   --default-shadow: 0 1px 20px 0 rgb(0 0 0 / 10%);
@@ -122,7 +123,7 @@ textarea {
 
 label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: var(--muted-text);
   white-space: nowrap;
   line-height: 2.375rem;
@@ -144,9 +145,9 @@ input:focus-visible {
 
 input {
   padding: 0.625rem 1.125rem;
-  border: 1px solid #6e6e6e;
+  border: 1px solid var(--neutral-gray);
   border-radius: 0.4285rem;
-  font-size: .75rem;
+  font-size: .9rem;
   display: block;
   width: 100%;
   height: 2.375rem;
@@ -179,7 +180,7 @@ select {
   width: 100%;
   padding: .375rem 2.25rem .375rem .75rem;
   -moz-padding-start: calc(0.75rem - 3px);
-  font-size: .75rem;
+  font-size: .9rem;
   font-weight: 400;
   line-height: 1.5;
   color: var(--text);
@@ -188,7 +189,7 @@ select {
   background-repeat: no-repeat;
   background-position: right .75rem center;
   background-size: 16px 12px;
-  border: 1px solid #6e6e6e;
+  border: 1px solid var(--neutral-gray);
   border-radius: 0.4285rem;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -203,7 +204,7 @@ select:focus {
 
 button {
   all: unset;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   background: var(--accent-color);
@@ -225,12 +226,12 @@ textarea {
   display: block;
   width: 100%;
   padding: .375rem .75rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   line-height: 1.42857;
   color: var(--text);
   background-color: transparent;
   background-clip: padding-box;
-  border: 1px solid #6e6e6e;
+  border: 1px solid var(--neutral-gray);
   border-radius: 0.4285rem;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -257,7 +258,7 @@ textarea:focus-visible {
 
 .form-error-text {
   color: var(--error-text);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .form-error-text-spacer {
@@ -310,6 +311,19 @@ textarea:focus-visible {
   --accent-color: rgb(225, 78, 202);
   --accent-color-faded: rgb(225, 78, 202, 0.7);
   --bg-gradient: linear-gradient(0deg, #ba54f5, #e14eca);
+}
+
+.page {
+  max-width: 54rem;
+  margin: 0 auto;
+  border: 1px solid #636363;
+  border-radius: 2.125rem;
+  padding: 1.875rem;
+}
+
+.page-title {
+  margin-top: 0;
+  font-weight: 200;
 }
 
 /***********************************************************
@@ -383,5 +397,19 @@ textarea:focus-visible {
 @media only screen and (max-width: 541px) {
   .custom-form-group {
     flex-wrap: wrap;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .page {
+    border: none;
+    border-radius: 0;
+    padding: 0 1.875rem;
+  }
+}
+
+@media only screen and (max-width: 415px) {
+  .page {
+    padding: 0;
   }
 }

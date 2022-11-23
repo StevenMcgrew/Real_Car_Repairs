@@ -1,5 +1,4 @@
 .root-grid {
-  border-top: 2px solid var(--accent-color);
   min-height: 100vh;
   display: grid;
   grid-template-columns: auto 1fr;

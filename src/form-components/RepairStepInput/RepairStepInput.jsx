@@ -1,8 +1,10 @@
 import './RepairStepInput.scoped.css';
+import { imagesBaseUrl } from '../../config';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
-const RepairStepInput = () => {
+const RepairStepInput = (props) => {
+  const { img, text } = props;
 
   const deleteStep = () => {
     // delete the step
@@ -22,7 +24,7 @@ const RepairStepInput = () => {
       <div className='step-body'>
         <div>
           <span className="img-info">Image (optional)</span>
-          <div className="img-preview">
+          <div className="img-preview" style={img ? { backgroundImage: `url(${imagesBaseUrl}${img})` } : {}}>
             <div className="img-btns-box">
               <label className='wrapping-label'>
                 <span className="add-img-label">Add Image</span>
@@ -34,8 +36,19 @@ const RepairStepInput = () => {
         </div>
         <div className="textarea-and-label">
           <label htmlFor="stepText" className='step-text-label'>Enter instructions for this step</label>
-          <textarea id='stepText' name='step-text' className="step-textarea" maxLength="1000" spellCheck={true} wrap="hard" autoCapitalize="none"
-            autoComplete="off" autoFocus={false}></textarea>
+          <textarea
+            id='stepText'
+            name='step-text'
+            className="step-textarea"
+            maxLength="1000"
+            spellCheck={true}
+            wrap="hard"
+            autoCapitalize="none"
+            autoComplete="off"
+            autoFocus={false}
+            defaultValue={text}
+          >
+          </textarea>
         </div>
       </div>
 
