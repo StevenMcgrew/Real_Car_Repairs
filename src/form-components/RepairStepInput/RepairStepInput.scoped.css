@@ -1,4 +1,4 @@
-.step-container {
+.step-root {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.25rem;
@@ -59,7 +59,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 0rem 1.25rem 1.25rem 1.25rem;
+  padding: 0rem 1.25rem;
 }
 
 .img-preview {
