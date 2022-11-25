@@ -1,4 +1,67 @@
-export const getCurrentYear = () => {
-  let date = new Date();
-  return date.getFullYear();
+import { getCurrentYear } from "./general-utils";
+
+export const MANUFACTURERS = ["Acura", "Alfa Romeo", "Aston Martin", "Audi", "Bentley",
+  "BMW", "Bugatti", "Buick", "Cadillac", "Chevrolet", "Chrysler",
+  "Citroen", "Daewoo", "Daihatsu", "Dodge", "Eagle", "Ferrari",
+  "Fiat", "Ford", "Freightliner", "Geo", "GMC", "Honda", "Hummer",
+  "Hyundai", "Infiniti", "Isuzu", "Jaguar", "Jeep", "Kia", "Lamborghini",
+  "Land Rover", "Lexus", "Lincoln", "Lotus", "Maserati", "Maybach",
+  "Mazda", "Mercedes-Benz", "Mercury", "MINI", "Mitsubishi", "Nissan",
+  "Oldsmobile", "Opel", "Plymouth", "Pontiac", "Porsche", "Ram",
+  "Renault", "Rolls Royce", "Rover", "Saab", "Saturn", "Scion", "Seat",
+  "Skoda", "Smart", "Subaru", "Suzuki", "Toyota", "Volkswagen", "Volvo"];
+
+export const getEngineSizes = function (min = 0.1, max = 9.0) {
+  let arr = [];
+  for (let i = min; i <= max; i = i + 0.1) {
+    arr.push(i.toFixed(1) + 'L');
+  }
+  return arr;
+};
+
+const getStartingIndex = (startingYear, referenceYear, referenceIndex) => {
+  if (startingYear === referenceYear) {
+    return referenceIndex;
+  }
+
+  if (startingYear < referenceIndex) {
+    let startIdx = referenceIndex - (referenceYear - startingYear);
+    if (startIdx < 0) {
+      startIdx = startIdx + 30;
+    }
+    return startIdx;
+  }
+
+  if (startingYear > referenceYear) {
+    let startIdx = referenceIndex + (startingYear - referenceYear);
+    if (startIdx > 29) {
+      startIdx = startIdx - 30;
+    }
+    return startIdx;
+  }
+};
+
+export const getYearDecoderDict = () => {
+  let dict = {};
+  let tenthDigitPattern = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'W', 'X', 'Y'];
+  let startingYear = getCurrentYear() - 27;
+  let referenceYear = 2018;
+  let referenceIndex = 17; // the value at tenthDigitPattern[17] is L, which is for model year 2018
+  let startingIndex = getStartingIndex(startingYear, referenceYear, referenceIndex);
+
+  // Now we can build the dictionary
+  let i = startingYear;
+  let max = startingYear + 30;
+  for (i; i < max; i++) {
+    dict[tenthDigitPattern[startingIndex]] = i;
+    startingIndex++;
+    if (startingIndex > 29) { // If we get to the end of the array, we need to go to the start of the array. (The tenth digit pattern starts over every 30 years, so we also need to start over at the start of the array.)
+      startingIndex = 0;
+    }
+  }
+  return dict;
+};
+
+export const fetchVehicleDataByVin = (vin, year) => {
+
 };

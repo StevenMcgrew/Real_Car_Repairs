@@ -11,12 +11,12 @@ const SignUpForm = () => {
       .email('Invalid email address')
       .required('Email address is required'),
     username: Yup.string()
-      .min(3, 'Username must be 3 to 15 characters')
-      .max(15, 'Username must be 3 to 15 characters')
+      .min(3, 'Must be 3 to 15 characters')
+      .max(15, 'Must be 3 to 15 characters')
       .required('Username is required'),
     password: Yup.string()
-      .min(8, 'Password must be 8 to 128 characters')
-      .max(128, 'Password must be 8 to 128 characters')
+      .min(8, 'Must be 8 to 128 characters')
+      .max(128, 'Must be 8 to 128 characters')
       .required('Password is required')
   });
 

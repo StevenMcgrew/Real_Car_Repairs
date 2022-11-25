@@ -1,6 +1,7 @@
 import './RepairStepInput.scoped.css';
 import { imagesBaseUrl } from '../../config';
 import { useField } from 'formik';
+import { useState } from 'react';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
@@ -8,6 +9,18 @@ const RepairStepInput = (props) => {
   const { index, img, text, deleteClicked, imgFieldName, textFieldName } = props;
   const [imgField, imgMeta] = useField({ ...props, name: imgFieldName });
   const [textField, textMeta] = useField({ ...props, name: textFieldName });
+  const [previewImg, setPreviewImg] = useState('');
+
+  const handleImageChoice = (e) => {
+    const [file] = e.currentTarget.files;
+    if (file) {
+      setPreviewImg(URL.createObjectURL(file));
+    }
+  };
+
+  const removeImage = () => {
+    setPreviewImg('');
+  };
 
   return (
     <div className='card step-root'>
@@ -21,22 +34,35 @@ const RepairStepInput = (props) => {
       </div>
 
       <div className='step-body'>
+
         <div>
           <span className="img-info">Image (optional)</span>
-          <div className="img-preview" style={img ? { backgroundImage: `url(${imagesBaseUrl}${img})` } : {}}>
+          <div className="img-preview" style={previewImg ? { backgroundImage: `url(${previewImg})` } : {}}>
             <div className="img-btns-box">
               <label className='wrapping-label'>
-                <span className="add-img-label">Add Image</span>
+                <span className="add-img-label"
+                  style={previewImg
+                    ? {
+                      backgroundColor: '#0000007a',
+                      color: 'white',
+                      border: 'none',
+                      boxShadow: 'inset 0 0 0 1px #0000007a, inset 0 0 0 2px white'
+                    }
+                    : {}}>
+                  {previewImg ? 'Change' : 'Add Image'}
+                </span>
                 <input className="hidden-img-input"
                   type="file"
                   accept=".jpg, .jpeg, .png, .bmp, .gif"
                   {...imgField}
-                  name={imgFieldName} />
+                  name={imgFieldName}
+                  onChange={handleImageChoice} />
               </label>
-              <button type="button" className="remove-img-btn">Remove</button>
+              {previewImg ? <button type="button" className="remove-img-btn" onClick={removeImage}>Remove</button> : null}
             </div>
           </div>
         </div>
+
         <div className="textarea-and-label">
           <label htmlFor={textFieldName} className='step-text-label'>Enter instructions for this step</label>
           <textarea

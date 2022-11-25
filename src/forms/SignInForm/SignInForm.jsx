@@ -7,8 +7,13 @@ import TextInput from '../../form-components/TextInput/TextInput';
 const SignInForm = () => {
 
   const yupValidation = Yup.object({
-    email: Yup.string().required('Email address is required'),
-    password: Yup.string().required('Password is required')
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email address is required'),
+    password: Yup.string()
+      .min(8, 'Must be 8 to 128 characters')
+      .max(128, 'Must be 8 to 128 characters')
+      .required('Password is required')
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
