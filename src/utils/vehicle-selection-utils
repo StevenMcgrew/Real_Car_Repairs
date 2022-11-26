@@ -1,4 +1,4 @@
-import { getCurrentYear } from "./general-utils";
+import { getCurrentYear, toTitleCase } from "./general-utils";
 
 export const MANUFACTURERS = ["Acura", "Alfa Romeo", "Aston Martin", "Audi", "Bentley",
   "BMW", "Bugatti", "Buick", "Cadillac", "Chevrolet", "Chrysler",
@@ -62,6 +62,84 @@ export const getYearDecoderDict = () => {
   return dict;
 };
 
-export const fetchVehicleDataByVin = (vin, year) => {
+const getValueByVariableId = (objects, variableId) => {
+  let value = '';
+  for (let i = 0; i < objects.length; i++) {
+    if (objects[i].VariableId == variableId) {
+      let dataWeWant = objects[i].Value;
+      if (dataWeWant) { value = dataWeWant; }
+      break;
+    }
+  }
+  return value;
+};
 
+const emptyStringIfDuplicate = (string, dupCheck1, dupCheck2) => {
+  let str = string.toLowerCase();
+  dupCheck1 = dupCheck1.toLowerCase();
+  if (dupCheck1.includes(str)) { string = ''; }
+  if (str.includes(dupCheck1)) { string = ''; }
+  if (dupCheck2) {
+    dupCheck2 = dupCheck2.toLowerCase();
+    if (dupCheck2.includes(str)) { string = ''; }
+    if (str.includes(dupCheck2)) { string = ''; }
+  }
+  return string;
+};
+
+const formatFuel = (fuel) => {
+  (fuel[0] === 'D' || fuel[0] === 'd') ? 'Diesel' : '';
+};
+
+const formatMake = (make, forMatching) => {
+  make = make.toLowerCase();
+  if (make.slice(0, 2) == 'al') { make = 'alfa romeo'; } // if make starts with 'al' (this is to handle an edge case for Alfa Romeo)
+  if (!forMatching) { make = toTitleCase(make); } // if not for matching to dropdown menu value, then title case it
+  return make;
+};
+
+const formatModel = (model, series, trim, fuel) => {
+  // Initial formatting of individual strings
+  series = series ? emptyStringIfDuplicate(series, model, trim) : '';
+  trim = trim ? emptyStringIfDuplicate(trim, model, null) : '';
+  fuel = fuel ? formatFuel(fuel) : '';
+  // Put it all together
+  model = toTitleCase(model);
+  if (series) { model += ' ' + series; }
+  if (trim) { model += ' ' + trim; }
+  if (fuel) { model += ' ' + fuel; }
+  return model;
+};
+
+const formatEngine = (engine) => {
+  engine = parseFloat(engine);
+  engine = engine.toFixed(1);
+  engine = engine + 'L';
+  return engine;
+};
+
+export const extractRelevantData = (json) => {
+  // The API at https://vpic.nhtsa.dot.gov/api/ returns a JSON object, and
+  // the data we need to sort through is located at json.Results as an array of objects.
+  let vehicleData = json.Results;
+
+  // We have to search the vehicleData objects by a VariableId value because of how the API data is structured,
+  // and because the data isn't always in the same order.
+  let year = getValueByVariableId(vehicleData, 29); // For instance, the object with VariableId 29 is where the value for "Model Year" is found.
+  let make = getValueByVariableId(vehicleData, 26);
+  let model = getValueByVariableId(vehicleData, 28);
+  let series = getValueByVariableId(vehicleData, 34);
+  let trim = getValueByVariableId(vehicleData, 38);
+  let engine = getValueByVariableId(vehicleData, 13);
+  let fuel = getValueByVariableId(vehicleData, 24);
+  // let errorCode = getValueByVariableId(vehicleData, 143); // The API returns an error code even for successfull decodes
+
+  const vehicle = {
+    year: (year ? year : ''),
+    make: (make ? formatMake(make, true) : ''),
+    model: (model ? formatModel(model, series, trim, fuel) : ''),
+    engine: (engine ? formatEngine(engine) : '')
+  };
+
+  return vehicle;
 };

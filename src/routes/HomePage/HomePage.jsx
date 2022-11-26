@@ -19,22 +19,22 @@ const HomePage = () => {
       });
   }, []);
 
-  if (fetchError) {
-    return (
-      <>
-        <h3>Failed to fetch data</h3>
-        <p>{fetchError.message}</p>
-      </>
-    );
-  }
+  // if (fetchError) {
+  //   return (
+  //     <>
+  //       <h3>Failed to fetch data</h3>
+  //       <p>{fetchError.message}</p>
+  //     </>
+  //   );
+  // }
 
-  if (posts.length) {
-    return (
-      <div className="auto-grid">
-        {posts.map(post => <GridItem post={post} key={post.id} />)}
-      </div>
-    );
-  }
+  // if (posts.length) {
+  //   return (
+  //     <div className="auto-grid">
+  //       {posts.map(post => <GridItem post={post} key={post.id} />)}
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="auto-grid">

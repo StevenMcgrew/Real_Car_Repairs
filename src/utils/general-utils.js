@@ -10,3 +10,10 @@ export const range = (min, max, step = 1) => {
   }
   return arr;
 };
+
+export const toTitleCase = (str) => {
+  return str.toLowerCase()
+    .split(' ')
+    .map(s => s.charAt(0).toUpperCase() + s.slice(1))
+    .join(' ');
+};

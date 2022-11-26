@@ -1,20 +1,31 @@
 import './CreationForm.scoped.css';
 import { range, getCurrentYear } from '../../utils/general-utils';
 import * as Yup from 'yup';
+import axios from "axios";
+import { useState, useEffect } from 'react';
 import {
   MANUFACTURERS,
   getEngineSizes,
   getYearDecoderDict,
-  fetchVehicleDataByVin
+  extractRelevantData,
 } from '../../utils/vehicle-selection-utils';
 
 import { Formik, Form, FieldArray } from 'formik';
 import TextInput from '../../form-components/TextInput/TextInput';
 import SelectInput from '../../form-components/SelectInput/SelectInput';
 import RepairStepInput from '../../form-components/RepairStepInput/RepairStepInput';
+import LoadingIndicator from '../../loaders/LoadingIndicator/LoadingIndicator';
 
 const CreationForm = () => {
+  const [isFetchingVinData, setIsFetchingVinData] = useState(false);
+  const [myValue, setMyValue] = useState(null);
   const yearDecoderDict = getYearDecoderDict();
+
+  useEffect(() => {
+    if (myValue) {
+      document.getElementById('repairFormUpdater').click();
+    }
+  }, [myValue]);
 
   const vinFormValidation = Yup.object({
     vin: Yup.string()
@@ -26,11 +37,28 @@ const CreationForm = () => {
     // define validation rules
   });
 
-  const handleVinSubmit = (values, { setSubmitting }) => {
+  const updateVehicleFields = (vehicle, setFieldValue) => {
+    setFieldValue('year', vehicle.year);
+    setFieldValue('make', vehicle.make);
+    setFieldValue('model', vehicle.model);
+    setFieldValue('engine', vehicle.engine);
+  };
+
+  const handleVinSubmit = async (values, { setSubmitting }) => {
+    setIsFetchingVinData(true);
     const tenthDigit = values.vin[9];
     const year = yearDecoderDict[tenthDigit];
-    const vehicle = fetchVehicleDataByVin(values.vin, year);
-    // do something with vehicle data
+    axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${values.vin}?format=json&modelyear=${year}`)
+      .then(function (response) {
+        const vehicle = extractRelevantData(response.data);
+        setMyValue(vehicle);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        setIsFetchingVinData(false);
+      });
     setSubmitting(false); // Formik requires this to be set manually in this onSubmit handler
   };
 
@@ -44,25 +72,28 @@ const CreationForm = () => {
       <h1 className='page-title'>Create Post</h1>
       <h3 className='sub-header'>Vehicle Selection:</h3>
 
-      <Formik
-        initialValues={{
-          vin: '',
-        }}
-        validationSchema={vinFormValidation}
-        onSubmit={handleVinSubmit}
-      >
-        <Form>
-          <div className="sub-body">
-            <TextInput
-              name='vin'
-              label={`VIN Decoder (USA ${(getCurrentYear() - 27)}-present)`}
-            />
-          </div>
-          <div className='decode-options'>
-            <button type='submit'>Decode</button>
-          </div>
-        </Form>
-      </Formik>
+      <div className='vin-form-container'>
+        <Formik
+          initialValues={{
+            vin: '',
+          }}
+          validationSchema={vinFormValidation}
+          onSubmit={handleVinSubmit}
+        >
+          <Form>
+            <div className="sub-body">
+              <TextInput
+                name='vin'
+                label={`VIN Decoder (USA ${(getCurrentYear() - 27)}-present)`}
+              />
+            </div>
+            <div className='decode-options'>
+              <button type='submit'>Decode</button>
+            </div>
+          </Form>
+        </Formik>
+        {isFetchingVinData ? <LoadingIndicator msg='Fetching VIN data...' /> : null}
+      </div>
 
       <div className='decode-options'>
         <p>or enter vehicle manually...</p>
@@ -82,8 +113,14 @@ const CreationForm = () => {
         onSubmit={handleRepairSubmit}
       >
         {
-          ({ values }) => (
+          ({ values, setFieldValue }) => (
             <Form>
+              <button
+                id="repairFormUpdater"
+                className='sr-only'
+                type="button"
+                onClick={() => updateVehicleFields(myValue, setFieldValue)}>
+              </button>
               <div className='sub-body'>
 
                 <SelectInput name='year' label='Year' labelWidth='3.4rem' fieldWidth='24rem'>
@@ -95,7 +132,9 @@ const CreationForm = () => {
 
                 <SelectInput name='make' label='Make' labelWidth='3.4rem' fieldWidth='24rem'>
                   <option value=""></option>
-                  {MANUFACTURERS.map((mfr, idx) => <option key={idx} value={mfr}>{mfr}</option>)}
+                  {MANUFACTURERS.map((mfr, idx) => (
+                    <option key={idx} value={mfr.toLowerCase()}>{mfr}</option>
+                  ))}
                 </SelectInput>
 
                 <TextInput name='model' label='Model' labelWidth='3.4rem' fieldWidth='24rem' />

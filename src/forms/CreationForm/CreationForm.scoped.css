@@ -1,3 +1,7 @@
+.vin-form-container {
+  position: relative;
+}
+
 .sub-header {
   font-weight: 400;
   text-decoration: underline;

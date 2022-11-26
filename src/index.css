@@ -144,7 +144,7 @@ input:focus-visible {
 }
 
 input {
-  padding: 0.625rem 1.125rem;
+  padding: 0.625rem 0.75rem;
   border: 1px solid var(--neutral-gray);
   border-radius: 0.4285rem;
   font-size: .9rem;
@@ -200,6 +200,11 @@ select {
 select:focus {
   border-color: var(--accent-color);
   background-color: transparent;
+}
+
+option {
+  background-color: var(--body-bg);
+  color: var(--text);
 }
 
 button {
