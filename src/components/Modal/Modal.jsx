@@ -14,15 +14,18 @@ const Modal = () => {
     const isOpen = useSelector((state) => state.modal.isOpen);
     const dispatch = useDispatch();
 
-    const closeModal = () => dispatch(hideModal());
+    const closeModal = (e) => {
+        if (e.currentTarget.id === e.target.id) {
+            dispatch(hideModal());
+        }
+    };
 
     return (
-        <>
-            <div className={classNames('modal-backdrop', { 'backdrop-fade-in': isOpen })} onClick={closeModal}></div>
-            <div className={classNames('modal card', { 'modal-fade-in': isOpen })}>
+        <div id='modalBackdrop' className={classNames('modal-backdrop', { 'backdrop-fade-in': isOpen })} onClick={closeModal}>
+            <div className='modal card'>
                 <div className="modal-header">
                     <span className='title'>{title}</span>
-                    <span className="close-btn" onClick={closeModal}>&times;</span>
+                    <span id='modalCloseBtn' className="close-btn" onClick={closeModal}>&times;</span>
                 </div>
                 {
                     content === 'SignInForm' ? <SignInForm />
@@ -31,7 +34,7 @@ const Modal = () => {
                                 : content
                 }
             </div>
-        </>
+        </div>
     );
 };
 

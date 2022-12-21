@@ -1,7 +1,6 @@
 .upload-preview-container {
-    padding: 10px;
-    width: 340px;
-    margin: 0px auto 20px auto;
+    padding: 0.625rem;
+    width: 21.25rem;
 }
 
 .upload-preview {
@@ -11,22 +10,31 @@
     background-position-y: center;
     background-size: contain;
     border: 1px solid #767676;
-    width: 320px;
-    height: 320px;
+    width: 20rem;
+    height: 20rem;
     margin: 0 auto;
 }
 
 .upload-btn-panel {
     display: flex;
-    padding-top: 10px;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
+.rotate-btns-panel {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+    padding: 1.5rem;
+}
+
 .rotate-btn {
-    font-size: 32px;
-    padding: 5px 12px 9px 13px;
-    margin-right: 10px;
+    border-radius: 100%;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-size: 1.25rem;
 }
 
 .clockwise-btn {
@@ -38,5 +46,5 @@
 }
 
 .upload-btn {
-    margin-left: 20px;
+    width: 100%;
 }

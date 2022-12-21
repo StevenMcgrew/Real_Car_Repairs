@@ -36,6 +36,21 @@ const ImageUploader = () => {
         setPreviewBgImage(`url(${canvasRef.current.toDataURL()})`);
     };
 
+    const rotateImage = (rotationDirection) => {
+        const newDegrees = drawOptimizedImage(canvasRef.current, imgRef.current, MAX_SIZE, degreesRef.current, rotationDirection);
+        degreesRef.current = newDegrees;
+        updatePreview();
+    };
+
+    const uploadImage = () => {
+        let formData = new FormData();
+        canvas.toBlob(function (blob) {
+            formData.append('image', blob);
+            // let url = baseUrl + '/api/save/image/' + urlParams.id;
+            // sendFormData(url, formData, sendImageCallback);
+        }, 'image/jpeg', 1.0);
+    };
+
     return (
         <div className="upload-preview-container">
             <div
@@ -49,9 +64,12 @@ const ImageUploader = () => {
                 {isUploading ? <LoadingIndicator msg='Please wait! Uploading...' /> : null}
             </div>
             <div className="upload-btn-panel">
-                <button id="anticlockwiseBtn" className="anticlockwise-btn rotate-btn">&#8634;</button>
-                <button id="clockwiseBtn" className="clockwise-btn rotate-btn">&#8635;</button>
-                <button id="uploadBtn" className="upload-btn">Upload Image</button>
+                <div className='rotate-btns-panel'>
+                    <button className="anticlockwise-btn rotate-btn" onClick={() => rotateImage('anticlockwise')}>&#8634;</button>
+                    <span>Rotate</span>
+                    <button className="clockwise-btn rotate-btn" onClick={() => rotateImage('clockwise')}>&#8635;</button>
+                </div>
+                <button className="upload-btn" onClick={uploadImage}>Upload Image</button>
             </div>
             <img ref={imgRef} onLoad={onImageLoad} style={{ display: 'none' }} />
             <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
