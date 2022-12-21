@@ -6,31 +6,33 @@ import { hideModal } from './modalSlice';
 // Available components to be inserted into the modal
 import SignInForm from '../../forms/SignInForm/SignInForm';
 import SignUpForm from '../../forms/SignUpForm/SignUpForm';
+import ImageUploader from '../ImageUploader/ImageUploader';
 
 const Modal = () => {
-  const title = useSelector((state) => state.modal.title);
-  const content = useSelector((state) => state.modal.content);
-  const isOpen = useSelector((state) => state.modal.isOpen);
-  const dispatch = useDispatch();
+    const title = useSelector((state) => state.modal.title);
+    const content = useSelector((state) => state.modal.content);
+    const isOpen = useSelector((state) => state.modal.isOpen);
+    const dispatch = useDispatch();
 
-  const closeModal = () => dispatch(hideModal());
+    const closeModal = () => dispatch(hideModal());
 
-  return (
-    <>
-      <div className={classNames('modal-backdrop', { 'backdrop-fade-in': isOpen })} onClick={closeModal}></div>
-      <div className={classNames('modal card', { 'modal-fade-in': isOpen })}>
-        <div className="modal-header">
-          <span className='title'>{title}</span>
-          <span className="close-btn" onClick={closeModal}>&times;</span>
-        </div>
-        {
-          content === 'SignInForm' ? <SignInForm />
-            : content === 'SignUpForm' ? <SignUpForm />
-              : content
-        }
-      </div>
-    </>
-  );
+    return (
+        <>
+            <div className={classNames('modal-backdrop', { 'backdrop-fade-in': isOpen })} onClick={closeModal}></div>
+            <div className={classNames('modal card', { 'modal-fade-in': isOpen })}>
+                <div className="modal-header">
+                    <span className='title'>{title}</span>
+                    <span className="close-btn" onClick={closeModal}>&times;</span>
+                </div>
+                {
+                    content === 'SignInForm' ? <SignInForm />
+                        : content === 'SignUpForm' ? <SignUpForm />
+                            : content === 'ImageUploader' ? <ImageUploader />
+                                : content
+                }
+            </div>
+        </>
+    );
 };
 
 export default Modal;

@@ -24,6 +24,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "rollup-plugin-react-scoped-css": "^0.7.0",
+    "sortablejs": "^1.15.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

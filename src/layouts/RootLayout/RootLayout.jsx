@@ -11,36 +11,36 @@ import Footer from "../../components/Footer/Footer";
 import Modal from "../../components/Modal/Modal";
 
 const RootLayout = () => {
-  const navigation = useNavigation();
+    const navigation = useNavigation();
 
-  let mainClassNames = classNames("main-area", {
-    loading: navigation.state === "loading",
-  });
+    let mainClassNames = classNames("main-area", {
+        loading: navigation.state === "loading",
+    });
 
-  return (
-    <>
-      <div className="root-grid">
-        <div className="head-area">
-          <Header logoSrc={carServiceImgUrl} title="Real Car Repairs">
-            <UserDropdown />
-          </Header>
-        </div>
+    return (
+        <>
+            <div className="root-grid">
+                <div className="head-area">
+                    <Header logoSrc={carServiceImgUrl} title="Real Car Repairs">
+                        <UserDropdown />
+                    </Header>
+                </div>
 
-        <div className="side-area">
-          <Sidebar />
-        </div>
+                <div className="side-area">
+                    <Sidebar />
+                </div>
 
-        <div className={mainClassNames}>
-          <Outlet />
-        </div>
+                <div className={mainClassNames}>
+                    <Outlet />
+                </div>
 
-        <div className="foot-area">
-          <Footer />
-        </div>
-      </div>
-      <Modal />
-    </>
-  );
+                <div className="foot-area">
+                    <Footer />
+                </div>
+            </div>
+            <Modal />
+        </>
+    );
 };
 
 export default RootLayout;
