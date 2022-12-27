@@ -1,123 +1,152 @@
 import './UserDropdown.scoped.css';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../Modal/modalSlice';
+import { apiBaseUrl } from '../../config.js';
+import { setUsername } from '../UserDropdown/userDropdownSlice.js';
 
 // Components
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Avatar from '@radix-ui/react-avatar';
 import { PersonIcon, DotFilledIcon } from '@radix-ui/react-icons';
+import axios from 'axios';
 
 const UserDropdown = () => {
-  const getInitialDarkMode = () => {
-    let darkMode = localStorage.getItem('isDarkMode');
-    return darkMode === 'true' ? true : false;
-  };
 
-  const getInitialColor = () => {
-    return localStorage.getItem('accentColor');
-  };
+    const getInitialDarkMode = () => {
+        let darkMode = localStorage.getItem('isDarkMode');
+        return darkMode === 'true' ? true : false;
+    };
 
-  const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
-  const [accentColor, setAccentColor] = useState(getInitialColor);
+    const getInitialColor = () => {
+        return localStorage.getItem('accentColor');
+    };
 
-  const handleDarkModeChange = (value) => {
-    setIsDarkMode(value);
-  };
+    const [isDarkMode, setIsDarkMode] = useState(getInitialDarkMode);
+    const [accentColor, setAccentColor] = useState(getInitialColor);
+    const username = useSelector((state) => state.userDropdown.username);
+    const dispatch = useDispatch();
 
-  const handleColorChange = (value) => {
-    setAccentColor(value);
-  };
+    const handleDarkModeChange = (value) => {
+        setIsDarkMode(value);
+    };
 
-  useEffect(() => {
-    document.body.className = isDarkMode ? 'dark-theme' : '';
-    localStorage.setItem('isDarkMode', isDarkMode);
-  }, [isDarkMode]);
+    const handleColorChange = (value) => {
+        setAccentColor(value);
+    };
 
-  useEffect(() => {
-    document.documentElement.className = accentColor === 'blue' ? '' : accentColor;
-    localStorage.setItem('accentColor', accentColor);
-  }, [accentColor]);
+    const logOutClicked = () => {
+        let url = apiBaseUrl + '/auth/logout';
+        axios.delete(url)
+            .then(function (response) {
+                dispatch(setUsername(''));
+                // TODO: reset view_history, profile_pic, and theme
+                dispatch(showModal({ title: 'Log out', content: 'You have been logged out.' }));
+            })
+            .catch(function (error) {
+                alert(`${error.message}. ${error.response?.statusText ? error.response.statusText : ''}`);
+            });
+    };
 
-  const dispatch = useDispatch()
+    useEffect(() => {
+        document.body.className = isDarkMode ? 'dark-theme' : '';
+        localStorage.setItem('isDarkMode', isDarkMode);
+    }, [isDarkMode]);
 
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <Avatar.Root className='AvatarRoot'>
-          <Avatar.Image className='AvatarImage' src='' alt='image of user' />
-          <Avatar.Fallback className='AvatarFallback' delayMs={600}>
-            <PersonIcon className='user-icon' />
-          </Avatar.Fallback>
-        </Avatar.Root>
-      </DropdownMenu.Trigger>
+    useEffect(() => {
+        document.documentElement.className = accentColor === 'blue' ? '' : accentColor;
+        localStorage.setItem('accentColor', accentColor);
+    }, [accentColor]);
 
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content className='DropdownMenuContent' sideOffset={5}>
-          <DropdownMenu.Label className='DropdownMenuLabel'>ACCOUNT</DropdownMenu.Label>
+    return (
+        <DropdownMenu.Root>
+            <span className='usernameSpan'>{username ? username : null}</span>
+            <DropdownMenu.Trigger asChild>
+                <Avatar.Root className='AvatarRoot'>
+                    <Avatar.Image className='AvatarImage' src='' alt='image of user' />
+                    <Avatar.Fallback className='AvatarFallback' delayMs={600}>
+                        <PersonIcon className='user-icon' />
+                    </Avatar.Fallback>
+                </Avatar.Root>
+            </DropdownMenu.Trigger>
 
-          <DropdownMenu.Item className='DropdownMenuItem'
-            onSelect={() => dispatch(showModal({ title: 'Sign In', content: 'SignInForm' }))}>
-            Sign In
-          </DropdownMenu.Item>
+            <DropdownMenu.Portal>
+                <DropdownMenu.Content className='DropdownMenuContent' sideOffset={5}>
+                    <DropdownMenu.Label className='DropdownMenuLabel'>ACCOUNT</DropdownMenu.Label>
 
-          <DropdownMenu.Item className='DropdownMenuItem'
-            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
-            Sign Up
-          </DropdownMenu.Item>
+                    {username
+                        ?
+                        <DropdownMenu.Item className='DropdownMenuItem'
+                            onSelect={logOutClicked}>
+                            Log Out
+                        </DropdownMenu.Item>
+                        :
+                        <>
+                            <DropdownMenu.Item className='DropdownMenuItem'
+                                onSelect={() => dispatch(showModal({ title: 'Sign In', content: 'SignInForm' }))}>
+                                Sign In
+                            </DropdownMenu.Item>
 
-          <DropdownMenu.Separator className='DropdownMenuSeparator' />
+                            <DropdownMenu.Item className='DropdownMenuItem'
+                                onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                Sign Up
+                            </DropdownMenu.Item>
 
-          <DropdownMenu.Label className='DropdownMenuLabel'>MODE</DropdownMenu.Label>
-          <DropdownMenu.RadioGroup value={isDarkMode} onValueChange={handleDarkModeChange}>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={false} onSelect={(e) => e.preventDefault()}>
-              <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              <div className='color-dot light-dot'></div>
-              Light
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={true} onSelect={(e) => e.preventDefault()}>
-              <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              <div className='color-dot dark-dot'></div>
-              Dark
-            </DropdownMenu.RadioItem>
-          </DropdownMenu.RadioGroup>
+                        </>
+                    }
 
-          <DropdownMenu.Separator className='DropdownMenuSeparator' />
+                    <DropdownMenu.Separator className='DropdownMenuSeparator' />
 
-          <DropdownMenu.Label className='DropdownMenuLabel'>COLOR</DropdownMenu.Label>
-          <DropdownMenu.RadioGroup value={accentColor} onValueChange={handleColorChange}>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='blue' onSelect={(e) => e.preventDefault()}>
-              <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              <div className='color-dot blue-dot'></div>
-              Blue
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='green' onSelect={(e) => e.preventDefault()}>
-              <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              <div className='color-dot green-dot'></div>
-              Green
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='pink' onSelect={(e) => e.preventDefault()}>
-              <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              <div className='color-dot pink-dot'></div>
-              Pink
-            </DropdownMenu.RadioItem>
-          </DropdownMenu.RadioGroup>
+                    <DropdownMenu.Label className='DropdownMenuLabel'>MODE</DropdownMenu.Label>
+                    <DropdownMenu.RadioGroup value={isDarkMode} onValueChange={handleDarkModeChange}>
+                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={false} onSelect={(e) => e.preventDefault()}>
+                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                <DotFilledIcon />
+                            </DropdownMenu.ItemIndicator>
+                            <div className='color-dot light-dot'></div>
+                            Light
+                        </DropdownMenu.RadioItem>
+                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={true} onSelect={(e) => e.preventDefault()}>
+                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                <DotFilledIcon />
+                            </DropdownMenu.ItemIndicator>
+                            <div className='color-dot dark-dot'></div>
+                            Dark
+                        </DropdownMenu.RadioItem>
+                    </DropdownMenu.RadioGroup>
 
-          <DropdownMenu.Arrow className='DropdownMenuArrow' />
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
-  );
+                    <DropdownMenu.Separator className='DropdownMenuSeparator' />
+
+                    <DropdownMenu.Label className='DropdownMenuLabel'>COLOR</DropdownMenu.Label>
+                    <DropdownMenu.RadioGroup value={accentColor} onValueChange={handleColorChange}>
+                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='blue' onSelect={(e) => e.preventDefault()}>
+                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                <DotFilledIcon />
+                            </DropdownMenu.ItemIndicator>
+                            <div className='color-dot blue-dot'></div>
+                            Blue
+                        </DropdownMenu.RadioItem>
+                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='green' onSelect={(e) => e.preventDefault()}>
+                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                <DotFilledIcon />
+                            </DropdownMenu.ItemIndicator>
+                            <div className='color-dot green-dot'></div>
+                            Green
+                        </DropdownMenu.RadioItem>
+                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='pink' onSelect={(e) => e.preventDefault()}>
+                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                <DotFilledIcon />
+                            </DropdownMenu.ItemIndicator>
+                            <div className='color-dot pink-dot'></div>
+                            Pink
+                        </DropdownMenu.RadioItem>
+                    </DropdownMenu.RadioGroup>
+
+                    <DropdownMenu.Arrow className='DropdownMenuArrow' />
+                </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+    );
 };
 
 export default UserDropdown;

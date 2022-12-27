@@ -2,6 +2,8 @@ import './ImageUploader.scoped.css';
 import { useState, useEffect, useRef } from 'react';
 import { drawOptimizedImage } from '../../utils/image-utils';
 import { useSelector } from 'react-redux';
+import { apiBaseUrl } from '../../config.js';
+import axios from 'axios';
 
 import LoadingIndicator from '../../loaders/LoadingIndicator/LoadingIndicator';
 
@@ -13,6 +15,7 @@ const ImageUploader = () => {
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
     const imageFile = useSelector((state) => state.imageUploader.imageFile);
+    const postId = useSelector((state) => state.creationForm.postId);
     const MAX_SIZE = { width: 800, height: 600 };
 
     useEffect(() => {
@@ -46,8 +49,14 @@ const ImageUploader = () => {
         let formData = new FormData();
         canvas.toBlob(function (blob) {
             formData.append('image', blob);
-            // let url = baseUrl + '/api/save/image/' + urlParams.id;
-            // sendFormData(url, formData, sendImageCallback);
+            let url = `${apiBaseUrl}/images?postId=${postId}`;
+            axios.post(url, formData)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }, 'image/jpeg', 1.0);
     };
 

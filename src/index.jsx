@@ -4,8 +4,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store.js";
+import { store, persistor } from "./store.js";
 
+import { PersistGate } from 'redux-persist/integration/react';
 import RootLayout from "./layouts/RootLayout/RootLayout";
 import ErrorPage from "./routes/ErrorPage/ErrorPage";
 import HomePage from "./routes/HomePage/HomePage";
@@ -59,7 +60,9 @@ const router = createHashRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <Provider store={store}>
-            <RouterProvider router={router} />
+            <PersistGate loading={null} persistor={persistor}>
+                <RouterProvider router={router} />
+            </PersistGate>
         </Provider>
     </React.StrictMode>
 );
