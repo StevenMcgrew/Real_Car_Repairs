@@ -3,25 +3,35 @@ import './CreationForm.scoped.css';
 import { range, getCurrentYear } from '../../utils/general-utils';
 import * as Yup from 'yup';
 import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux';
+import { setPostId } from './creationFormSlice';
 import { useState, useEffect } from 'react';
-import { imagesBaseUrl } from '../../config';
+import { apiBaseUrl, imagesBaseUrl } from '../../config';
 import { MANUFACTURERS, getEngineSizes, getYearDecoderDict, extractRelevantData, } from '../../utils/vehicle-selection-utils';
 
-import { Formik, Form, FieldArray } from 'formik';
+import { Formik, Form } from 'formik';
 import TextInput from '../../form-components/TextInput/TextInput';
-import SelectInput from '../../form-components/SelectInput/SelectInput';
 import RepairStepInput from '../../form-components/RepairStepInput/RepairStepInput';
 import LoadingIndicator from '../../loaders/LoadingIndicator/LoadingIndicator';
 
 const CreationForm = () => {
-    const [isFetchingVinData, setIsFetchingVinData] = useState(false);
-    const [vehicle, setVehicle] = useState({ year: '', make: '', model: '', engine: '' });
+    const dispatch = useDispatch();
+    const postId = useSelector((state) => state.creationForm.postId);
+    const [year, setYear] = useState('');
+    const [make, setMake] = useState('');
+    const [model, setModel] = useState('');
+    const [engine, setEngine] = useState('');
+    const [title, setTitle] = useState('');
+    const [tags, setTags] = useState(['', '', '', '', '']);
+    const [steps, setSteps] = useState([]);
+    const [thumbnail, setThumbnail] = useState('');
+    const [isPublished, setIsPublished] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
     const [yearError, setYearError] = useState('');
     const [makeError, setMakeError] = useState('');
     const [modelError, setModelError] = useState('');
     const [engineError, setEngineError] = useState('');
     const [titleError, setTitleError] = useState('');
-    const [steps, setSteps] = useState([{ img: '', text: '' }]);
     const yearDecoderDict = getYearDecoderDict();
 
     const vinFormValidation = Yup.object({
@@ -31,7 +41,7 @@ const CreationForm = () => {
     });
 
     const handleVinSubmit = async (values, { setSubmitting }) => {
-        setIsFetchingVinData(true);
+        setShowLoader(true);
         const tenthDigit = values.vin[9];
         const year = yearDecoderDict[tenthDigit];
         axios.get(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${values.vin}?format=json&modelyear=${year}`)
@@ -41,34 +51,32 @@ const CreationForm = () => {
                 setMakeError('');
                 setModelError('');
                 setEngineError('');
-                setVehicle(decodedVehicle);
+                setYear(decodedVehicle.year);
+                setMake(decodedVehicle.make);
+                setModel(decodedVehicle.model);
+                setEngine(decodedVehicle.engine);
             })
             .catch(function (error) {
                 alert(error);
             })
             .finally(function () {
-                setIsFetchingVinData(false);
+                setShowLoader(false);
             });
         setSubmitting(false); // Formik requires this to be set manually in this onSubmit handler
     };
 
-    useEffect(() => {
-        let form = document.getElementById('repairForm');
-        form.year.value = vehicle.year;
-        form.make.value = vehicle.make;
-        form.model.value = vehicle.model;
-        form.engine.value = vehicle.engine;
-    }, [vehicle]);
-
     const onSelectChange = (e) => {
         const target = e.currentTarget;
         if (target.name === 'year') {
+            setYear(target.value);
             setYearError(target.value ? '' : 'Year is required');
         }
         if (target.name === 'make') {
+            setMake(target.value);
             setMakeError(target.value ? '' : 'Make is required');
         }
         if (target.name === 'engine') {
+            setEngine(target.value);
             setEngineError(target.value ? '' : 'Engine is required');
         }
     };
@@ -76,35 +84,78 @@ const CreationForm = () => {
     const onInputChange = (e) => {
         const target = e.currentTarget;
         if (target.name === 'model') {
+            setModel(target.value);
             let model = target.value;
             if (!model) { setModelError('Model is required'); return; }
             if (model.length > 40) { setModelError('Must be 40 characters or less'); return; }
             setModelError('');
         }
         if (target.name === 'title') {
+            setTitle(target.value);
             let title = target.value;
             if (!title) { setTitleError('Title is required'); return; }
             if (title.length > 100) { setTitleError('Must be 100 characters or less'); return; }
             setTitleError('');
         }
         if (target.name.startsWith('tag')) {
-            const tag = target.value;
+            const tagIndex = (target.id.slice(target.id.length - 1)) - 1;
+            setTags(tags.map((tag, index) => index === tagIndex ? target.value : tag));
             const errorSpan = target.parentElement.lastElementChild;
-            if (tag.length > 20) { errorSpan.textContent = 'Must be 20 characters or less'; return; }
+            if (target.value.length > 20) { errorSpan.textContent = 'Must be 20 characters or less'; return; }
             errorSpan.textContent = '';
         }
     };
 
-    const deleteStep = () => {
-        // TODO: handle deleting a step
+    const saveProgress = () => {
+        let repair = {
+            id: postId,
+            year: year,
+            make: make,
+            model: model,
+            engine: engine,
+            title: title,
+            tags: tags,
+            steps: steps,
+            thumbnail: thumbnail,
+            is_published: isPublished,
+        };
+        let url = apiBaseUrl + '/posts';
+
+        axios.post(url, repair)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const onImageChange = () => {
+        // TODO
+    };
+
+    const onDeleteStepClick = () => {
+        // TODO
+    };
+
+    const addStep = () => {
+        // TODO
+    };
+
+    const publishRepair = () => {
+        // TODO
+    };
+
+    const deleteRepair = () => {
+        // TODO
     };
 
     return (
-        <>
+        <div style={{ position: 'relative' }}>
             <h1 className='page-title'>Create Post</h1>
             <h3 className='sub-header'>Vehicle Selection:</h3>
 
-            <div className='vin-form-container'>
+            <div style={{ position: 'relative' }}>
                 <Formik
                     initialValues={{
                         vin: '',
@@ -124,7 +175,6 @@ const CreationForm = () => {
                         </div>
                     </Form>
                 </Formik>
-                {isFetchingVinData ? <LoadingIndicator msg='Fetching VIN data...' /> : null}
             </div>
 
             <div className='decode-options'>
@@ -138,7 +188,7 @@ const CreationForm = () => {
                     <div className="custom-form-group">
                         <label htmlFor='year' style={{ width: '3.4rem' }}>Year</label>
                         <div className="input-and-error-group">
-                            <select onChange={onSelectChange} id='year' name='year' style={{ maxWidth: '24rem' }}>
+                            <select onChange={onSelectChange} value={year} id='year' name='year' style={{ maxWidth: '24rem' }}>
                                 <option value=""></option>
                                 {range(1900, getCurrentYear() + 2)
                                     .reverse()
@@ -152,10 +202,10 @@ const CreationForm = () => {
                     <div className="custom-form-group">
                         <label htmlFor='make' style={{ width: '3.4rem' }}>Make</label>
                         <div className="input-and-error-group">
-                            <select onChange={onSelectChange} id='make' name='make' style={{ maxWidth: '24rem' }}>
+                            <select onChange={onSelectChange} value={make} id='make' name='make' style={{ maxWidth: '24rem' }}>
                                 <option value=""></option>
                                 {MANUFACTURERS.map((mfr, idx) => (
-                                    <option key={idx} value={mfr.toLowerCase()}>{mfr}</option>
+                                    <option key={idx} value={mfr}>{mfr}</option>
                                 ))}                            </select>
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'>{makeError}</span>
@@ -165,7 +215,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='model' style={{ width: '3.4rem' }}>Model</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='model' name='model' style={{ maxWidth: '24rem' }} />
+                            <input onChange={onInputChange} value={model} id='model' name='model' style={{ maxWidth: '24rem' }} />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'>{modelError}</span>
                         </div>
@@ -174,7 +224,7 @@ const CreationForm = () => {
                     <div className="custom-form-group">
                         <label htmlFor='engine' style={{ width: '3.4rem' }}>Engine</label>
                         <div className="input-and-error-group">
-                            <select onChange={onSelectChange} id='engine' name='engine' style={{ maxWidth: '24rem' }}>
+                            <select onChange={onSelectChange} value={engine} id='engine' name='engine' style={{ maxWidth: '24rem' }}>
                                 <option value=""></option>
                                 {getEngineSizes().map((engSize, idx) => (
                                     <option key={idx} value={engSize}>{engSize}</option>
@@ -194,7 +244,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='title' style={{ width: '3.4rem' }}>Title</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='title' name='title' />
+                            <input onChange={onInputChange} value={title} id='title' name='title' />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'>{titleError}</span>
                         </div>
@@ -205,7 +255,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='tag1' style={{ width: '3.4rem' }}>Tag 1</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='tag1' name='tag1' style={{ maxWidth: '24rem' }} />
+                            <input onChange={onInputChange} value={tags.length ? tags[0] : ''} id='tag1' name='tag1' style={{ maxWidth: '24rem' }} />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'></span>
                         </div>
@@ -214,7 +264,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='tag2' style={{ width: '3.4rem' }}>Tag 2</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='tag2' name='tag2' style={{ maxWidth: '24rem' }} />
+                            <input onChange={onInputChange} value={tags.length > 1 ? tags[1] : ''} id='tag2' name='tag2' style={{ maxWidth: '24rem' }} />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'></span>
                         </div>
@@ -223,7 +273,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='tag3' style={{ width: '3.4rem' }}>Tag 3</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='tag3' name='tag3' style={{ maxWidth: '24rem' }} />
+                            <input onChange={onInputChange} value={tags.length > 2 ? tags[2] : ''} id='tag3' name='tag3' style={{ maxWidth: '24rem' }} />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'></span>
                         </div>
@@ -232,7 +282,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='tag4' style={{ width: '3.4rem' }}>Tag 4</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='tag4' name='tag4' style={{ maxWidth: '24rem' }} />
+                            <input onChange={onInputChange} value={tags.length > 3 ? tags[3] : ''} id='tag4' name='tag4' style={{ maxWidth: '24rem' }} />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'></span>
                         </div>
@@ -241,7 +291,7 @@ const CreationForm = () => {
                     <div className='custom-form-group'>
                         <label htmlFor='tag5' style={{ width: '3.4rem' }}>Tag 5</label>
                         <div className='input-and-error-group'>
-                            <input onChange={onInputChange} id='tag5' name='tag5' style={{ maxWidth: '24rem' }} />
+                            <input onChange={onInputChange} value={tags.length === 5 ? tags[4] : ''} id='tag5' name='tag5' style={{ maxWidth: '24rem' }} />
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'></span>
                         </div>
@@ -249,131 +299,43 @@ const CreationForm = () => {
 
                 </div>
 
-                <h3 className='sub-header'>Repair Instructions:</h3>
+                {postId
+                    ?
+                    <>
+                        <h3 className='sub-header'>Repair Instructions:</h3>
+                        <div className='steps-container'>
+                            {
+                                steps.map((step, idx) => (
+                                    <RepairStepInput
+                                        key={idx}
+                                        index={idx}
+                                        img={step.img}
+                                        text={step.text}
+                                        imageChanged={onImageChange}
+                                        deleteClicked={onDeleteStepClick}
+                                        imgFieldName={`steps[${idx}].img`}
+                                        textFieldName={`steps[${idx}].text`}
+                                        style={{ backgroundImage: step.img ? `url(${imagesBaseUrl + step.img})` : '' }}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <div className="btns-panel">
+                            <button type="button" onClick={addStep}>Add Step</button>
+                            <button type="button" onClick={saveProgress}>Save</button>
+                            <button type="button" onClick={publishRepair}>Publish</button>
+                            <button type="button" onClick={deleteRepair}>Delete</button>
+                        </div>
 
-                <div className='steps-container'>
-                    {
-                        steps.map((step, idx) => (
-                            <RepairStepInput
-                                key={idx}
-                                index={idx}
-                                img={step.img}
-                                text={step.text}
-                                deleteClicked={deleteStep}
-                                imgFieldName={`steps[${idx}].img`}
-                                textFieldName={`steps[${idx}].text`}
-                                style={{ backgroundImage: step.img ? `url(${imagesBaseUrl + step.img})` : '' }}
-                            />
-                        ))
-                    }
-                </div>
-
-                <div className="btns-panel">
-                    <button type="button" onClick={() => {
-                        // arrayHelpers.push({ img: '', text: '' })
-                    }}>Add Step</button>
-                    <button type="button" onClick={() => {
-                        // saveProgress(values)
-                    }}>Save</button>
-                    <button type="submit">Publish</button>
-                    <button type="button">Delete</button>
-                </div>
-
-            </form>
-
-            {/* <Formik
-                initialValues={{
-                    year: '',
-                    make: '',
-                    model: '',
-                    engine: '',
-                    title: '',
-                    tags: ['', '', '', '', ''],
-                    steps: [{ img: '', text: '' }],
-                }}
-                validationSchema={repairFormValidation}
-                onSubmit={handleRepairSubmit}
-            >
-                {
-                    ({ values, setFieldValue }) => (
-                        <Form>
-                            <button
-                                id="repairFormUpdater"
-                                className='sr-only'
-                                type="button"
-                                onClick={() => updateVehicleFields(myValue, setFieldValue)}>
-                            </button>
-                            <div className='sub-body'>
-
-                                <SelectInput name='year' label='Year' labelWidth='3.4rem' fieldWidth='24rem'>
-                                    <option value=""></option>
-                                    {range(1900, getCurrentYear() + 2)
-                                        .reverse()
-                                        .map((year, idx) => <option key={idx} value={year}>{year}</option>)}
-                                </SelectInput>
-
-                                <SelectInput name='make' label='Make' labelWidth='3.4rem' fieldWidth='24rem'>
-                                    <option value=""></option>
-                                    {MANUFACTURERS.map((mfr, idx) => (
-                                        <option key={idx} value={mfr.toLowerCase()}>{mfr}</option>
-                                    ))}
-                                </SelectInput>
-
-                                <TextInput name='model' label='Model' labelWidth='3.4rem' fieldWidth='24rem' />
-
-                                <SelectInput name='engine' label='Engine' labelWidth='3.4rem' fieldWidth='24rem'>
-                                    <option value=""></option>
-                                    {getEngineSizes().map((engSize, idx) => <option key={idx} value={engSize}>{engSize}</option>)}
-                                </SelectInput>
-
-                            </div>
-
-                            <h3 className='sub-header'>Title and Tags:</h3>
-                            <div className='sub-body'>
-                                <TextInput name='title' label='Title' labelWidth='3.4rem' />
-                                <p className='tags-p'>Give your post up to 5 tags (optional)</p>
-                                <TextInput name='tags[0]' label='Tag 1' labelWidth='3.4rem' fieldWidth='24rem' />
-                                <TextInput name='tags[1]' label='Tag 2' labelWidth='3.4rem' fieldWidth='24rem' />
-                                <TextInput name='tags[2]' label='Tag 3' labelWidth='3.4rem' fieldWidth='24rem' />
-                                <TextInput name='tags[3]' label='Tag 4' labelWidth='3.4rem' fieldWidth='24rem' />
-                                <TextInput name='tags[4]' label='Tag 5' labelWidth='3.4rem' fieldWidth='24rem' />
-                            </div>
-
-                            <h3 className='sub-header'>Repair Instructions:</h3>
-                            <FieldArray
-                                name='steps'
-                                render={arrayHelpers => (
-                                    <>
-                                        <div className='steps-container'>
-                                            {
-                                                values.steps.map((step, idx) => (
-                                                    <RepairStepInput
-                                                        key={idx}
-                                                        index={idx}
-                                                        img={step.img}
-                                                        text={step.text}
-                                                        deleteClicked={arrayHelpers.remove}
-                                                        setImgField={setFieldValue}
-                                                        imgFieldName={`steps[${idx}].img`}
-                                                        textFieldName={`steps[${idx}].text`}
-                                                    />
-                                                ))
-                                            }
-                                        </div>
-                                        <div className="btns-panel">
-                                            <button type="button" onClick={() => arrayHelpers.push({ img: '', text: '' })}>Add Step</button>
-                                            <button type="button" onClick={() => saveProgress(values)}>Save</button>
-                                            <button type="submit">Publish</button>
-                                            <button type="button">Delete</button>
-                                        </div>
-                                    </>
-                                )}
-                            />
-                        </Form>
-                    )
+                    </>
+                    :
+                    <div className='save-and-continue'>
+                        <button type="button" onClick={saveProgress}>Save and Continue</button>
+                    </div>
                 }
-            </Formik> */}
-        </>
+            </form>
+            {showLoader ? <LoadingIndicator msg='Please wait...' /> : null}
+        </div>
     );
 };
 

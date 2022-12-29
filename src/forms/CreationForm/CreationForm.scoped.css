@@ -1,39 +1,40 @@
-.vin-form-container {
-  position: relative;
-}
-
 .sub-header {
-  font-weight: 400;
-  text-decoration: underline;
-  margin-top: 2.125rem;
+    font-weight: 400;
+    text-decoration: underline;
+    margin-top: 2.125rem;
 }
 
 .sub-body {
-  padding-left: 1.25rem;
+    padding-left: 1.25rem;
 }
 
 .decode-options {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .tags-p {
-  padding-left: 1.4375rem;
-  margin-top: 0;
+    padding-left: 1.4375rem;
+    margin-top: 0;
 }
 
 .btns-panel {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .btns-panel>*:not(:last-child) {
-  margin-right: 0.375rem;
+    margin-right: 0.375rem;
+}
+
+.save-and-continue {
+    display: flex;
+    justify-content: center;
 }
 
 @media only screen and (max-width: 415px) {
-  .sub-body {
-    padding-left: 0;
-  }
+    .sub-body {
+        padding-left: 0;
+    }
 }

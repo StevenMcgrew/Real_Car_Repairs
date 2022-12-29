@@ -1,18 +1,18 @@
 import './RepairStepInput.scoped.css';
 import { isValidMIME } from '../../utils/image-utils';
 import { imagesBaseUrl } from '../../config';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../components/Modal/modalSlice';
 import { setImageFile } from '../../components/ImageUploader/imageUploaderSlice';
 
-
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
 const RepairStepInput = (props) => {
-    const { index, img, text, deleteClicked, imgFieldName, textFieldName } = props;
+    const { index, img, text, imageChanged, deleteClicked, imgFieldName, textFieldName } = props;
     const [previewBgSize, setPreviewBgSize] = useState('auto');
     const [previewBgImage, setPreviewBgImage] = useState('');
+    const [repairText, setRepairText] = useState('');
     const canvasRef = useRef(document.getElementById('uploadCanvas'));
     const previewRef = useRef(document.getElementById('uploadPreview'));
     const imageRef = useRef(document.getElementById('uploadImage'));
@@ -34,13 +34,21 @@ const RepairStepInput = (props) => {
         else {
             setPreviewBgSize('contain');
         }
-        setPreviewBgImage(`url(${canvasRef.current.toDataURL()})`);
+        setPreviewBgImage(canvasRef.current.toDataURL());
     };
 
     const removeImage = () => {
         setPreviewBgImage('');
     };
 
+    const onTextChange = (e) => {
+        setRepairText(e.currentTarget.value);
+    };
+
+    useEffect(() => {
+        setRepairText(text);
+        setPreviewBgImage(img);
+    }, []);
     return (
         <div className='card step-root'>
 
@@ -62,7 +70,7 @@ const RepairStepInput = (props) => {
                         className="img-preview"
                         style={{
                             backgroundSize: previewBgSize,
-                            backgroundImage: previewBgImage,
+                            backgroundImage: `url(${previewBgImage})`,
                         }}
                     >
                         <div className="img-btns-box">
@@ -103,7 +111,8 @@ const RepairStepInput = (props) => {
                         autoCapitalize="none"
                         autoComplete="off"
                         autoFocus={false}
-                        defaultValue={text}
+                        value={repairText}
+                        onChange={onTextChange}
                     >
                     </textarea>
                     <span className='form-error-text-spacer'>&nbsp;</span>

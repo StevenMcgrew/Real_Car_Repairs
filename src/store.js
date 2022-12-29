@@ -14,6 +14,7 @@ import sidebarReducer from './components/Sidebar/sidebarSlice';
 import modalReducer from './components/Modal/modalSlice';
 import imageUploaderReducer from './components/ImageUploader/imageUploaderSlice';
 import userDropdownReducer from './components/UserDropdown/userDropdownSlice';
+import creationFormReducer from './forms/CreationForm/creationFormSlice';
 
 const persistConfig = {
     key: 'root',
@@ -27,6 +28,7 @@ export const store = configureStore({
         modal: modalReducer,
         imageUploader: imageUploaderReducer,
         userDropdown: userDropdownReducer,
+        creationForm: creationFormReducer
     }),
     middleware: getDefaultMiddleware => getDefaultMiddleware({
         serializableCheck: {
