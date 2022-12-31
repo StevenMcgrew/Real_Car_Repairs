@@ -46,5 +46,43 @@
 }
 
 .upload-btn {
-    width: 100%;
+    width: 10rem;
+}
+
+.wrapping-label {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.7rem;
+}
+
+.add-img-label {
+    font-family: inherit;
+    line-height: inherit;
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-color);
+    color: var(--btn-text-color);
+    padding: 0rem 1.25rem;
+    border-radius: var(--default-radius);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.add-img-label:active {
+    transform: scale(0.98);
+}
+
+.hidden-img-input {
+    display: inline;
+    opacity: 0;
+    padding: 0;
+    height: 1px;
+    width: 1px;
+    min-width: 1px;
 }

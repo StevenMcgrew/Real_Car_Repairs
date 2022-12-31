@@ -1,145 +1,144 @@
 import { getCurrentYear, toTitleCase } from "./general-utils";
 
 export const MANUFACTURERS = ["Acura", "Alfa Romeo", "Aston Martin", "Audi", "Bentley",
-  "BMW", "Bugatti", "Buick", "Cadillac", "Chevrolet", "Chrysler",
-  "Citroen", "Daewoo", "Daihatsu", "Dodge", "Eagle", "Ferrari",
-  "Fiat", "Ford", "Freightliner", "Geo", "GMC", "Honda", "Hummer",
-  "Hyundai", "Infiniti", "Isuzu", "Jaguar", "Jeep", "Kia", "Lamborghini",
-  "Land Rover", "Lexus", "Lincoln", "Lotus", "Maserati", "Maybach",
-  "Mazda", "Mercedes-Benz", "Mercury", "MINI", "Mitsubishi", "Nissan",
-  "Oldsmobile", "Opel", "Plymouth", "Pontiac", "Porsche", "Ram",
-  "Renault", "Rolls Royce", "Rover", "Saab", "Saturn", "Scion", "Seat",
-  "Skoda", "Smart", "Subaru", "Suzuki", "Toyota", "Volkswagen", "Volvo"];
+    "BMW", "Bugatti", "Buick", "Cadillac", "Chevrolet", "Chrysler",
+    "Citroen", "Daewoo", "Daihatsu", "Dodge", "Eagle", "Ferrari",
+    "Fiat", "Ford", "Freightliner", "Geo", "GMC", "Honda", "Hummer",
+    "Hyundai", "Infiniti", "Isuzu", "Jaguar", "Jeep", "Kia", "Lamborghini",
+    "Land Rover", "Lexus", "Lincoln", "Lotus", "Maserati", "Maybach",
+    "Mazda", "Mercedes-Benz", "Mercury", "MINI", "Mitsubishi", "Nissan",
+    "Oldsmobile", "Opel", "Plymouth", "Pontiac", "Porsche", "Ram",
+    "Renault", "Rolls Royce", "Rover", "Saab", "Saturn", "Scion", "Seat",
+    "Skoda", "Smart", "Subaru", "Suzuki", "Toyota", "Volkswagen", "Volvo"];
 
 export const getEngineSizes = function (min = 0.1, max = 9.0) {
-  let arr = [];
-  for (let i = min; i <= max; i = i + 0.1) {
-    arr.push(i.toFixed(1) + 'L');
-  }
-  return arr;
+    let arr = [];
+    for (let i = min; i <= max; i = i + 0.1) {
+        arr.push(i.toFixed(1) + 'L');
+    }
+    return arr;
 };
 
 const getStartingIndex = (startingYear, referenceYear, referenceIndex) => {
-  if (startingYear === referenceYear) {
-    return referenceIndex;
-  }
-
-  if (startingYear < referenceIndex) {
-    let startIdx = referenceIndex - (referenceYear - startingYear);
-    if (startIdx < 0) {
-      startIdx = startIdx + 30;
+    if (startingYear === referenceYear) {
+        return referenceIndex;
     }
-    return startIdx;
-  }
 
-  if (startingYear > referenceYear) {
-    let startIdx = referenceIndex + (startingYear - referenceYear);
-    if (startIdx > 29) {
-      startIdx = startIdx - 30;
+    if (startingYear < referenceIndex) {
+        let startIdx = referenceIndex - (referenceYear - startingYear);
+        if (startIdx < 0) {
+            startIdx = startIdx + 30;
+        }
+        return startIdx;
     }
-    return startIdx;
-  }
+
+    if (startingYear > referenceYear) {
+        let startIdx = referenceIndex + (startingYear - referenceYear);
+        if (startIdx > 29) {
+            startIdx = startIdx - 30;
+        }
+        return startIdx;
+    }
 };
 
 export const getYearDecoderDict = () => {
-  let dict = {};
-  let tenthDigitPattern = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'W', 'X', 'Y'];
-  let startingYear = getCurrentYear() - 27;
-  let referenceYear = 2018;
-  let referenceIndex = 17; // the value at tenthDigitPattern[17] is L, which is for model year 2018
-  let startingIndex = getStartingIndex(startingYear, referenceYear, referenceIndex);
+    let dict = {};
+    let tenthDigitPattern = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'W', 'X', 'Y'];
+    let startingYear = getCurrentYear() - 27;
+    let referenceYear = 2018;
+    let referenceIndex = 17; // the value at tenthDigitPattern[17] is L, which is for model year 2018
+    let startingIndex = getStartingIndex(startingYear, referenceYear, referenceIndex);
 
-  // Now we can build the dictionary
-  let i = startingYear;
-  let max = startingYear + 30;
-  for (i; i < max; i++) {
-    dict[tenthDigitPattern[startingIndex]] = i;
-    startingIndex++;
-    if (startingIndex > 29) { // If we get to the end of the array, we need to go to the start of the array. (The tenth digit pattern starts over every 30 years, so we also need to start over at the start of the array.)
-      startingIndex = 0;
+    // Now we can build the dictionary
+    let i = startingYear;
+    let max = startingYear + 30;
+    for (i; i < max; i++) {
+        dict[tenthDigitPattern[startingIndex]] = i;
+        startingIndex++;
+        if (startingIndex > 29) { // If we get to the end of the array, we need to go to the start of the array. (The tenth digit pattern starts over every 30 years, so we also need to start over at the start of the array.)
+            startingIndex = 0;
+        }
     }
-  }
-  return dict;
+    return dict;
 };
 
 const getValueByVariableId = (objects, variableId) => {
-  let value = '';
-  for (let i = 0; i < objects.length; i++) {
-    if (objects[i].VariableId == variableId) {
-      let dataWeWant = objects[i].Value;
-      if (dataWeWant) { value = dataWeWant; }
-      break;
+    let value = '';
+    for (let i = 0; i < objects.length; i++) {
+        if (objects[i].VariableId == variableId) {
+            let dataWeWant = objects[i].Value;
+            if (dataWeWant) { value = dataWeWant; }
+            break;
+        }
     }
-  }
-  return value;
+    return value;
 };
 
 const emptyStringIfDuplicate = (string, dupCheck1, dupCheck2) => {
-  let str = string.toLowerCase();
-  dupCheck1 = dupCheck1.toLowerCase();
-  if (dupCheck1.includes(str)) { string = ''; }
-  if (str.includes(dupCheck1)) { string = ''; }
-  if (dupCheck2) {
-    dupCheck2 = dupCheck2.toLowerCase();
-    if (dupCheck2.includes(str)) { string = ''; }
-    if (str.includes(dupCheck2)) { string = ''; }
-  }
-  return string;
+    let str = string.toLowerCase();
+    dupCheck1 = dupCheck1.toLowerCase();
+    if (dupCheck1.includes(str)) { string = ''; }
+    if (str.includes(dupCheck1)) { string = ''; }
+    if (dupCheck2) {
+        dupCheck2 = dupCheck2.toLowerCase();
+        if (dupCheck2.includes(str)) { string = ''; }
+        if (str.includes(dupCheck2)) { string = ''; }
+    }
+    return string;
 };
 
 const formatFuel = (fuel) => {
-  (fuel[0] === 'D' || fuel[0] === 'd') ? 'Diesel' : '';
+    (fuel[0] === 'D' || fuel[0] === 'd') ? 'Diesel' : '';
 };
 
-const formatMake = (make, forMatching) => {
-  make = make.toLowerCase();
-  if (make.slice(0, 2) == 'al') { make = 'alfa romeo'; } // if make starts with 'al' (this is to handle an edge case for Alfa Romeo)
-  if (!forMatching) { make = toTitleCase(make); } // if not for matching to dropdown menu value, then title case it
-  return make;
+const formatMake = (make) => {
+    make = make.toLowerCase();
+    if (make.slice(0, 2) == 'al') { make = 'alfa romeo'; } // edge case for Alfa Romeo
+    return MANUFACTURERS.find(manuf => manuf.toLowerCase() === make);
 };
 
 const formatModel = (model, series, trim, fuel) => {
-  // Initial formatting of individual strings
-  series = series ? emptyStringIfDuplicate(series, model, trim) : '';
-  trim = trim ? emptyStringIfDuplicate(trim, model, null) : '';
-  fuel = fuel ? formatFuel(fuel) : '';
-  // Put it all together
-  model = toTitleCase(model);
-  if (series) { model += ' ' + series; }
-  if (trim) { model += ' ' + trim; }
-  if (fuel) { model += ' ' + fuel; }
-  return model;
+    // Initial formatting of individual strings
+    series = series ? emptyStringIfDuplicate(series, model, trim) : '';
+    trim = trim ? emptyStringIfDuplicate(trim, model, null) : '';
+    fuel = fuel ? formatFuel(fuel) : '';
+    // Put it all together
+    model = toTitleCase(model);
+    if (series) { model += ' ' + series; }
+    if (trim) { model += ' ' + trim; }
+    if (fuel) { model += ' ' + fuel; }
+    return model;
 };
 
 const formatEngine = (engine) => {
-  engine = parseFloat(engine);
-  engine = engine.toFixed(1);
-  engine = engine + 'L';
-  return engine;
+    engine = parseFloat(engine);
+    engine = engine.toFixed(1);
+    engine = engine + 'L';
+    return engine;
 };
 
 export const extractRelevantData = (json) => {
-  // The API at https://vpic.nhtsa.dot.gov/api/ returns a JSON object, and
-  // the data we need to sort through is located at json.Results as an array of objects.
-  let vehicleData = json.Results;
+    // The API at https://vpic.nhtsa.dot.gov/api/ returns a JSON object, and
+    // the data we need to sort through is located at json.Results as an array of objects.
+    let vehicleData = json.Results;
 
-  // We have to search the vehicleData objects by a VariableId value because of how the API data is structured,
-  // and because the data isn't always in the same order.
-  let year = getValueByVariableId(vehicleData, 29); // For instance, the object with VariableId 29 is where the value for "Model Year" is found.
-  let make = getValueByVariableId(vehicleData, 26);
-  let model = getValueByVariableId(vehicleData, 28);
-  let series = getValueByVariableId(vehicleData, 34);
-  let trim = getValueByVariableId(vehicleData, 38);
-  let engine = getValueByVariableId(vehicleData, 13);
-  let fuel = getValueByVariableId(vehicleData, 24);
-  // let errorCode = getValueByVariableId(vehicleData, 143); // The API returns an error code even for successfull decodes
+    // We have to search the vehicleData objects by a VariableId value because of how the API data is structured,
+    // and because the data isn't always in the same order.
+    let year = getValueByVariableId(vehicleData, 29); // For instance, the object with VariableId 29 is where the value for "Model Year" is found.
+    let make = getValueByVariableId(vehicleData, 26);
+    let model = getValueByVariableId(vehicleData, 28);
+    let series = getValueByVariableId(vehicleData, 34);
+    let trim = getValueByVariableId(vehicleData, 38);
+    let engine = getValueByVariableId(vehicleData, 13);
+    let fuel = getValueByVariableId(vehicleData, 24);
+    // let errorCode = getValueByVariableId(vehicleData, 143); // The API returns an error code even for successfull decodes
 
-  const vehicle = {
-    year: (year ? year : ''),
-    make: (make ? formatMake(make, true) : ''),
-    model: (model ? formatModel(model, series, trim, fuel) : ''),
-    engine: (engine ? formatEngine(engine) : '')
-  };
+    const vehicle = {
+        year: (year ? year : ''),
+        make: (make ? formatMake(make) : ''),
+        model: (model ? formatModel(model, series, trim, fuel) : ''),
+        engine: (engine ? formatEngine(engine) : '')
+    };
 
-  return vehicle;
+    return vehicle;
 };

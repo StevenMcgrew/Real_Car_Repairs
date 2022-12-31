@@ -1,10 +1,12 @@
 import Sortable from 'sortablejs';
 import './CreationForm.scoped.css';
-import { range, getCurrentYear } from '../../utils/general-utils';
+import { range, getCurrentYear, scrollToBottom } from '../../utils/general-utils';
 import * as Yup from 'yup';
 import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux';
-import { setPostId } from './creationFormSlice';
+import { setPostId, deleteStep } from './creationFormSlice';
+import { showToast } from '../../components/Toast/toastSlice.js';
+import { showModal } from '../../components/Modal/modalSlice';
 import { useState, useEffect } from 'react';
 import { apiBaseUrl, imagesBaseUrl } from '../../config';
 import { MANUFACTURERS, getEngineSizes, getYearDecoderDict, extractRelevantData, } from '../../utils/vehicle-selection-utils';
@@ -16,14 +18,14 @@ import LoadingIndicator from '../../loaders/LoadingIndicator/LoadingIndicator';
 
 const CreationForm = () => {
     const dispatch = useDispatch();
-    const postId = useSelector((state) => state.creationForm.postId);
+    const postId = useSelector(state => state.creationForm.postId);
+    const steps = useSelector(state => state.creationForm.steps);
     const [year, setYear] = useState('');
     const [make, setMake] = useState('');
     const [model, setModel] = useState('');
     const [engine, setEngine] = useState('');
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState(['', '', '', '', '']);
-    const [steps, setSteps] = useState([]);
     const [thumbnail, setThumbnail] = useState('');
     const [isPublished, setIsPublished] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
@@ -57,7 +59,7 @@ const CreationForm = () => {
                 setEngine(decodedVehicle.engine);
             })
             .catch(function (error) {
-                alert(error);
+                dispatch(showModal({ title: 'Oops!', content: `Error while fetching VIN data:  ${error}` }));
             })
             .finally(function () {
                 setShowLoader(false);
@@ -107,6 +109,8 @@ const CreationForm = () => {
     };
 
     const saveProgress = () => {
+        setShowLoader(true);
+
         let repair = {
             id: postId,
             year: year,
@@ -123,10 +127,19 @@ const CreationForm = () => {
 
         axios.post(url, repair)
             .then((response) => {
-                console.log(response);
+                dispatch(showToast({ content: 'Progress saved' }));
+                dispatch(setPostId(response.data.id));
+                setTimeout(() => {
+                    // Wait a second for DOM elements to load, then scroll to bottom
+                    scrollToBottom();
+                }, 700);
             })
             .catch((error) => {
                 console.log(error);
+                dispatch(showModal({ title: 'Oops!', content: `Error while saving progress:  ${error}` }));
+            })
+            .finally(function () {
+                setShowLoader(false);
             });
     };
 
@@ -315,7 +328,7 @@ const CreationForm = () => {
                                         deleteClicked={onDeleteStepClick}
                                         imgFieldName={`steps[${idx}].img`}
                                         textFieldName={`steps[${idx}].text`}
-                                        style={{ backgroundImage: step.img ? `url(${imagesBaseUrl + step.img})` : '' }}
+                                        style={{ backgroundImage: step.img ? `url(${imagesBaseUrl}/${step.img})` : '' }}
                                     />
                                 ))
                             }

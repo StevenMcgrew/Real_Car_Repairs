@@ -1,9 +1,13 @@
 import './ImageUploader.scoped.css';
 import { useState, useEffect, useRef } from 'react';
-import { drawOptimizedImage } from '../../utils/image-utils';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setStepNum, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
+import { showToast } from '../Toast/toastSlice';
+import { hideModal } from '../Modal/modalSlice';
+import { drawOptimizedImage, isValidMIME } from '../../utils/image-utils';
 import { apiBaseUrl } from '../../config.js';
 import axios from 'axios';
+import classNames from 'classnames';
 
 import LoadingIndicator from '../../loaders/LoadingIndicator/LoadingIndicator';
 
@@ -14,13 +18,18 @@ const ImageUploader = () => {
     const degreesRef = useRef(0);
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
-    const imageFile = useSelector((state) => state.imageUploader.imageFile);
-    const postId = useSelector((state) => state.creationForm.postId);
+    const postId = useSelector(state => state.creationForm.postId);
+    const stepNum = useSelector(state => state.creationForm.stepNum);
     const MAX_SIZE = { width: 800, height: 600 };
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        imgRef.current.src = URL.createObjectURL(imageFile);
-    }, []);
+    const onImageChange = (e) => {
+        if (!e.target.files.length) { return; }
+        let file = e.target.files[0];
+        if (!isValidMIME(file.type)) { dispatch(showToast({ content: 'Invalid image type. Must be one of:  .jpg, .jpeg, .png, .bmp' })); return; }
+        // Set the src of the img element, which will then trigger the onLoad event for the img element
+        imgRef.current.src = URL.createObjectURL(file);
+    };
 
     const onImageLoad = () => {
         degreesRef.current = 0;
@@ -46,40 +55,52 @@ const ImageUploader = () => {
     };
 
     const uploadImage = () => {
+        setIsUploading(true);
         let formData = new FormData();
-        canvas.toBlob(function (blob) {
+        canvasRef.current.toBlob(function (blob) {
             formData.append('image', blob);
             let url = `${apiBaseUrl}/images?postId=${postId}`;
             axios.post(url, formData)
                 .then(function (response) {
-                    console.log(response);
+                    dispatch(setStepImg({ stepNum: stepNum, newImg: response.data.fileName }));
+                    dispatch(hideModal());
                 })
                 .catch(function (error) {
                     console.log(error);
+                    dispatch(showToast({ content: error.response.data.warning }));
+                })
+                .finally(function () {
+                    setIsUploading(false);
                 });
         }, 'image/jpeg', 1.0);
     };
 
     return (
         <div className="upload-preview-container">
-            <div
-                id='uploadPreview'
-                className="upload-preview"
-                style={{
-                    backgroundSize: previewBgSize,
-                    backgroundImage: previewBgImage,
-                }}
-            >
-                {isUploading ? <LoadingIndicator msg='Please wait! Uploading...' /> : null}
-            </div>
+
+            <label className='wrapping-label'>
+                <span className="add-img-label">{previewBgImage ? 'CHANGE IMAGE' : 'GET IMAGE'}</span>
+                <input
+                    className="hidden-img-input"
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .bmp"
+                    onChange={onImageChange}
+                />
+            </label>
+
+            <div id='uploadPreview' className="upload-preview" style={{ backgroundSize: previewBgSize, backgroundImage: previewBgImage, }}></div>
+
             <div className="upload-btn-panel">
                 <div className='rotate-btns-panel'>
-                    <button className="anticlockwise-btn rotate-btn" onClick={() => rotateImage('anticlockwise')}>&#8634;</button>
-                    <span>Rotate</span>
-                    <button className="clockwise-btn rotate-btn" onClick={() => rotateImage('clockwise')}>&#8635;</button>
+                    <button className={classNames('anticlockwise-btn rotate-btn', { 'disabled': !previewBgImage })} onClick={() => rotateImage('anticlockwise')}>&#8634;</button>
+                    <span className={classNames({ 'disabled': !previewBgImage })} style={{ backgroundColor: 'transparent' }}>Rotate</span>
+                    <button className={classNames('clockwise-btn rotate-btn', { 'disabled': !previewBgImage })} onClick={() => rotateImage('clockwise')}>&#8635;</button>
                 </div>
-                <button className="upload-btn" onClick={uploadImage}>Upload Image</button>
+                <button className={classNames('upload-btn', { 'disabled': !previewBgImage })} onClick={uploadImage}>Upload Image</button>
             </div>
+
+            {isUploading ? <LoadingIndicator msg='Please wait! Uploading...' /> : null}
+
             <img ref={imgRef} onLoad={onImageLoad} style={{ display: 'none' }} />
             <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
         </div>

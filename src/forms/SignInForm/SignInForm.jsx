@@ -4,7 +4,8 @@ import axios from 'axios';
 import { apiBaseUrl } from '../../config.js';
 import { useDispatch } from 'react-redux';
 import { setUsername } from '../../components/UserDropdown/userDropdownSlice';
-import { hideModal } from '../../components/Modal/modalSlice';
+import { hideModal, showModal } from '../../components/Modal/modalSlice';
+import { showToast } from '../../components/Toast/toastSlice.js';
 
 import { Formik, Form } from 'formik';
 import TextInput from '../../form-components/TextInput/TextInput';
@@ -29,13 +30,14 @@ const SignInForm = () => {
                 dispatch(setUsername(response.data.username));
                 // TODO: set view_history, profile_pic, theme
                 dispatch(hideModal());
+                dispatch(showToast({ content: 'You are now logged in' }));
             })
             .catch(function (error) {
                 if (error.response?.status === 400) {
-                    alert(error.response.data.warning);
+                    dispatch(showModal({ title: 'Oops!', content: error.response.data.warning }));
                 }
                 else {
-                    alert(`${error.message}. ${error.response?.statusText ? error.response.statusText : ''}`);
+                    dispatch(showModal({ title: 'Oops!', content: `Error while attempting to log in:  ${error.message}. ${error.response?.statusText ? error.response.statusText : ''}` }));
                 }
             });
         setSubmitting(false); // Formik requires this to be set manually in this onSubmit handler

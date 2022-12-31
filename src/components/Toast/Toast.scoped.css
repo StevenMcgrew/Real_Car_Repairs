@@ -1,0 +1,51 @@
+.toast {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    visibility: hidden;
+    position: fixed;
+    z-index: 1;
+    bottom: 1.875rem;
+}
+
+.primary {
+    background-color: var(--text);
+    color: var(--body-bg);
+}
+
+.toast-content {
+    min-width: 15.625rem;
+    max-width: 100vw;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+}
+
+.toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 1.875rem;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 1.875rem;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}

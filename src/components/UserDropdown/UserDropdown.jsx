@@ -2,6 +2,7 @@ import './UserDropdown.scoped.css';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../Modal/modalSlice';
+import { showToast } from '../Toast/toastSlice';
 import { apiBaseUrl } from '../../config.js';
 import { setUsername } from '../UserDropdown/userDropdownSlice.js';
 
@@ -41,10 +42,10 @@ const UserDropdown = () => {
             .then(function (response) {
                 dispatch(setUsername(''));
                 // TODO: reset view_history, profile_pic, and theme
-                dispatch(showModal({ title: 'Log out', content: 'You have been logged out.' }));
+                dispatch(showToast({ content: 'You have been logged out.' }));
             })
             .catch(function (error) {
-                alert(`${error.message}. ${error.response?.statusText ? error.response.statusText : ''}`);
+                dispatch(showModal({ title: 'Oops!', content: `${error.message}. ${error.response?.statusText ? error.response.statusText : ''}` }));
             });
     };
 

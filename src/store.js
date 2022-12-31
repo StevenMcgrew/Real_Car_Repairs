@@ -12,7 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import sidebarReducer from './components/Sidebar/sidebarSlice';
 import modalReducer from './components/Modal/modalSlice';
-import imageUploaderReducer from './components/ImageUploader/imageUploaderSlice';
+import toastReducer from './components/Toast/toastSlice';
 import userDropdownReducer from './components/UserDropdown/userDropdownSlice';
 import creationFormReducer from './forms/CreationForm/creationFormSlice';
 
@@ -26,23 +26,13 @@ export const store = configureStore({
     reducer: persistCombineReducers(persistConfig, {
         sidebar: sidebarReducer,
         modal: modalReducer,
-        imageUploader: imageUploaderReducer,
+        toast: toastReducer,
         userDropdown: userDropdownReducer,
         creationForm: creationFormReducer
     }),
     middleware: getDefaultMiddleware => getDefaultMiddleware({
         serializableCheck: {
-            ignoredActions: [
-                'imageUploader/setImageFile',
-                FLUSH,
-                REHYDRATE,
-                PAUSE,
-                PERSIST,
-                PURGE,
-                REGISTER
-            ],
-            // ignoredActionPaths: [],
-            ignoredPaths: ['imageUploader.imageFile']
+            ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         }
     })
 });

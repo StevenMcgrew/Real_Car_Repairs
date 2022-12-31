@@ -1,40 +1,23 @@
 import './RepairStepInput.scoped.css';
-import { isValidMIME } from '../../utils/image-utils';
 import { imagesBaseUrl } from '../../config';
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../components/Modal/modalSlice';
-import { setImageFile } from '../../components/ImageUploader/imageUploaderSlice';
+import { setStepNum } from '../../forms/CreationForm/creationFormSlice.js';
+import classNames from 'classnames';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
 const RepairStepInput = (props) => {
     const { index, img, text, imageChanged, deleteClicked, imgFieldName, textFieldName } = props;
-    const [previewBgSize, setPreviewBgSize] = useState('auto');
+    const [previewBgSize, setPreviewBgSize] = useState('contain');
     const [previewBgImage, setPreviewBgImage] = useState('');
     const [repairText, setRepairText] = useState('');
-    const canvasRef = useRef(document.getElementById('uploadCanvas'));
-    const previewRef = useRef(document.getElementById('uploadPreview'));
-    const imageRef = useRef(document.getElementById('uploadImage'));
     const dispatch = useDispatch();
 
-    const onImageChange = (e) => {
-        if (!e.target.files.length) { return; }
-        let file = e.target.files[0];
-        if (!isValidMIME(file.type)) { alert('Invalid image type. Must be one of:  .jpg, .jpeg, .png, .bmp'); return; }
-        dispatch(setImageFile(file));
+    const showImageUploader = () => {
+        dispatch(setStepNum(index + 1));
         dispatch(showModal({ title: 'Image Uploader', content: 'ImageUploader' }));
-    };
-
-    const updatePreview = () => {
-        if (canvasRef.current.width < previewRef.current.clientWidth &&
-            canvasRef.current.height < previewRef.current.clientHeight) {
-            setPreviewBgSize('auto');
-        }
-        else {
-            setPreviewBgSize('contain');
-        }
-        setPreviewBgImage(canvasRef.current.toDataURL());
     };
 
     const removeImage = () => {
@@ -70,31 +53,21 @@ const RepairStepInput = (props) => {
                         className="img-preview"
                         style={{
                             backgroundSize: previewBgSize,
-                            backgroundImage: `url(${previewBgImage})`,
+                            backgroundImage: previewBgImage ? `url(${imagesBaseUrl}/${previewBgImage})` : 'none',
                         }}
                     >
                         <div className="img-btns-box">
-                            <label className='wrapping-label'>
-                                <span className="add-img-label"
-                                    style={previewBgImage
-                                        ? {
-                                            backgroundColor: '#0000007a',
-                                            color: 'white',
-                                            border: 'none',
-                                            boxShadow: 'inset 0 0 0 1px #0000007a, inset 0 0 0 2px white'
-                                        }
-                                        : {}}>
-                                    {previewBgImage ? 'Change' : 'Add Image'}
-                                </span>
-                                <input
-                                    className="hidden-img-input"
-                                    name={imgFieldName}
-                                    type="file"
-                                    accept=".jpg, .jpeg, .png, .bmp"
-                                    onChange={onImageChange}
-                                />
-                            </label>
-                            {previewBgImage ? <button type="button" className="remove-img-btn" onClick={removeImage}>Remove</button> : null}
+                            <button
+                                type="button"
+                                className={classNames({
+                                    'transparent-btn': previewBgImage,
+                                    'add-img-btn': !previewBgImage
+                                })}
+                                onClick={showImageUploader}
+                            >
+                                {previewBgImage ? 'Change' : 'Add Image'}
+                            </button>
+                            {previewBgImage ? <button type="button" className="transparent-btn" onClick={removeImage}>Remove</button> : null}
                         </div>
                     </div>
                 </div>

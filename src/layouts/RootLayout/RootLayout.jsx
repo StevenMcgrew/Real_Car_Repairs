@@ -9,6 +9,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import UserDropdown from "../../components/UserDropdown/UserDropdown";
 import Footer from "../../components/Footer/Footer";
 import Modal from "../../components/Modal/Modal";
+import Toast from "../../components/Toast/Toast";
 
 const RootLayout = () => {
     const navigation = useNavigation();
@@ -39,6 +40,7 @@ const RootLayout = () => {
                 </div>
             </div>
             <Modal />
+            <Toast />
         </>
     );
 };
