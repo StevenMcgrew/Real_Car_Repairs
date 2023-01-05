@@ -3,8 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStepNum, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
 import { showToast } from '../Toast/toastSlice';
-import { hideModal } from '../Modal/modalSlice';
+import { hideModal, showModal } from '../Modal/modalSlice';
 import { drawOptimizedImage, isValidMIME } from '../../utils/image-utils';
+import { formatAxiosError } from '../../utils/general-utils';
 import { apiBaseUrl } from '../../config.js';
 import axios from 'axios';
 import classNames from 'classnames';
@@ -20,6 +21,7 @@ const ImageUploader = () => {
     const imgRef = useRef(null);
     const postId = useSelector(state => state.creationForm.postId);
     const stepNum = useSelector(state => state.creationForm.stepNum);
+    const steps = useSelector(state => state.creationForm.steps);
     const MAX_SIZE = { width: 800, height: 600 };
     const dispatch = useDispatch();
 
@@ -40,10 +42,10 @@ const ImageUploader = () => {
     const updatePreview = () => {
         if (canvasRef.current.width < imgRef.current.clientWidth &&
             canvasRef.current.height < imgRef.current.clientHeight) {
-            setPreviewBgSize('auto');
+            setPreviewBgSize('contain');
         }
         else {
-            setPreviewBgSize('contain');
+            setPreviewBgSize('auto');
         }
         setPreviewBgImage(`url(${canvasRef.current.toDataURL()})`);
     };
@@ -57,9 +59,16 @@ const ImageUploader = () => {
     const uploadImage = () => {
         setIsUploading(true);
         let formData = new FormData();
+
+        // Append old file name if exists
+        if (steps[stepNum - 1].img) {
+            formData.append('oldFileName', steps[stepNum - 1].img);
+        }
+
+        // canvas.toBlob, append to formData, send to server
         canvasRef.current.toBlob(function (blob) {
             formData.append('image', blob);
-            let url = `${apiBaseUrl}/images?postId=${postId}`;
+            let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${stepNum}`;
             axios.post(url, formData)
                 .then(function (response) {
                     dispatch(setStepImg({ stepNum: stepNum, newImg: response.data.fileName }));
@@ -67,7 +76,8 @@ const ImageUploader = () => {
                 })
                 .catch(function (error) {
                     console.log(error);
-                    dispatch(showToast({ content: error.response.data.warning }));
+                    const msg = formatAxiosError(error);
+                    dispatch(showModal({ title: 'Error', content: msg }));
                 })
                 .finally(function () {
                     setIsUploading(false);

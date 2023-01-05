@@ -21,3 +21,11 @@ export const toTitleCase = (str) => {
 export const scrollToBottom = () => {
     window.scrollTo({ top: document.body.scrollHeight });
 };
+
+export const formatAxiosError = (error) => {
+    return error.response.data.warning
+        ? error.response.data.warning
+        : error.response.data
+            ? error.response.data
+            : error.message;
+};

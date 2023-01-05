@@ -1,10 +1,10 @@
 import Sortable from 'sortablejs';
 import './CreationForm.scoped.css';
-import { range, getCurrentYear, scrollToBottom } from '../../utils/general-utils';
+import { range, getCurrentYear, scrollToBottom, formatAxiosError } from '../../utils/general-utils';
 import * as Yup from 'yup';
 import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux';
-import { setPostId, deleteStep } from './creationFormSlice';
+import { setPostId, deleteStep, addStep } from './creationFormSlice';
 import { showToast } from '../../components/Toast/toastSlice.js';
 import { showModal } from '../../components/Modal/modalSlice';
 import { useState, useEffect } from 'react';
@@ -39,7 +39,6 @@ const CreationForm = () => {
     const vinFormValidation = Yup.object({
         vin: Yup.string()
             .length(17, "Must be 17 characters in length")
-            .required('Required, if you want to decode VIN.')
     });
 
     const handleVinSubmit = async (values, { setSubmitting }) => {
@@ -108,8 +107,10 @@ const CreationForm = () => {
         }
     };
 
-    const saveProgress = () => {
-        setShowLoader(true);
+    const saveProgress = (isSilent = false) => {
+        if (!isSilent) {
+            setShowLoader(true);
+        }
 
         let repair = {
             id: postId,
@@ -127,16 +128,23 @@ const CreationForm = () => {
 
         axios.post(url, repair)
             .then((response) => {
-                dispatch(showToast({ content: 'Progress saved' }));
-                dispatch(setPostId(response.data.id));
-                setTimeout(() => {
-                    // Wait a second for DOM elements to load, then scroll to bottom
-                    scrollToBottom();
-                }, 700);
+                if (!postId) {
+                    console.log('setting postId');
+                    dispatch(setPostId(response.data.id));
+                }
+                console.log('isSilent:  ', isSilent);
+                if (!isSilent) {
+                    dispatch(showToast({ content: 'Progress saved' }));
+                    setTimeout(() => {
+                        // Wait a second for DOM elements to load, then scroll to bottom
+                        scrollToBottom();
+                    }, 700);
+                }
             })
             .catch((error) => {
                 console.log(error);
-                dispatch(showModal({ title: 'Oops!', content: `Error while saving progress:  ${error}` }));
+                const msg = formatAxiosError(error);
+                dispatch(showModal({ title: 'Error', content: `Error while saving progress:  ${msg}` }));
             })
             .finally(function () {
                 setShowLoader(false);
@@ -151,8 +159,8 @@ const CreationForm = () => {
         // TODO
     };
 
-    const addStep = () => {
-        // TODO
+    const addAnotherStep = () => {
+        dispatch(addStep());
     };
 
     const publishRepair = () => {
@@ -324,18 +332,15 @@ const CreationForm = () => {
                                         index={idx}
                                         img={step.img}
                                         text={step.text}
-                                        imageChanged={onImageChange}
-                                        deleteClicked={onDeleteStepClick}
-                                        imgFieldName={`steps[${idx}].img`}
                                         textFieldName={`steps[${idx}].text`}
-                                        style={{ backgroundImage: step.img ? `url(${imagesBaseUrl}/${step.img})` : '' }}
+                                        saveProgress={saveProgress}
                                     />
                                 ))
                             }
                         </div>
                         <div className="btns-panel">
-                            <button type="button" onClick={addStep}>Add Step</button>
-                            <button type="button" onClick={saveProgress}>Save</button>
+                            <button type="button" onClick={addAnotherStep}>Add Step</button>
+                            <button type="button" onClick={() => saveProgress(true)}>Save</button>
                             <button type="button" onClick={publishRepair}>Publish</button>
                             <button type="button" onClick={deleteRepair}>Delete</button>
                         </div>
@@ -343,7 +348,7 @@ const CreationForm = () => {
                     </>
                     :
                     <div className='save-and-continue'>
-                        <button type="button" onClick={saveProgress}>Save and Continue</button>
+                        <button type="button" onClick={() => saveProgress()}>Save and Continue</button>
                     </div>
                 }
             </form>

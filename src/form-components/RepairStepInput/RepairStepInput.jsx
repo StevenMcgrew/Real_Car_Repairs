@@ -1,18 +1,21 @@
 import './RepairStepInput.scoped.css';
-import { imagesBaseUrl } from '../../config';
+import { imagesBaseUrl, apiBaseUrl } from '../../config';
+import { formatAxiosError } from '../../utils/general-utils';
 import { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../components/Modal/modalSlice';
-import { setStepNum } from '../../forms/CreationForm/creationFormSlice.js';
+import { deleteStep, setStepNum, setStepText, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
 import classNames from 'classnames';
+import axios from 'axios';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
 const RepairStepInput = (props) => {
-    const { index, img, text, imageChanged, deleteClicked, imgFieldName, textFieldName } = props;
-    const [previewBgSize, setPreviewBgSize] = useState('contain');
-    const [previewBgImage, setPreviewBgImage] = useState('');
+    const { index, img, text, textFieldName, saveProgress } = props;
+    // const [previewBgSize, setPreviewBgSize] = useState('contain');
+    // const [previewBgImage, setPreviewBgImage] = useState('');
     const [repairText, setRepairText] = useState('');
+    const postId = useSelector(state => state.creationForm.postId);
     const dispatch = useDispatch();
 
     const showImageUploader = () => {
@@ -21,17 +24,42 @@ const RepairStepInput = (props) => {
     };
 
     const removeImage = () => {
-        setPreviewBgImage('');
+        // TODO: show Loading indicator
+
+        let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${index + 1}`;
+        axios.delete(url)
+            .then(function (response) {
+                dispatch(setStepImg({ stepNum: (index + 1), newImg: '' }));
+            })
+            .catch(function (error) {
+                console.log(error);
+                const msg = formatAxiosError(error);
+                dispatch(showModal({ title: 'Error', content: msg }));
+            })
+            .finally(function () {
+                // TODO: hide Loading indicator
+            });
     };
 
     const onTextChange = (e) => {
-        setRepairText(e.currentTarget.value);
+        dispatch(setStepText({ stepNum: (index + 1), newText: e.currentTarget.value }));
+    };
+
+    const removeStep = (e) => {
+        //
     };
 
     useEffect(() => {
+        if (text === repairText) {
+            return;
+        }
         setRepairText(text);
-        setPreviewBgImage(img);
-    }, []);
+        const timerId = setTimeout(() => {
+            saveProgress(true);
+        }, 3000);
+        return () => clearTimeout(timerId);
+    }, [text]);
+
     return (
         <div className='card step-root'>
 
@@ -42,7 +70,7 @@ const RepairStepInput = (props) => {
 
                 <span>{`Repair Step ${index + 1}`}</span>
 
-                <span className="close-btn" onClick={() => deleteClicked(index)}>&times;</span>
+                <span className="close-btn" onClick={removeStep}>&times;</span>
             </div>
 
             <div className='step-body'>
@@ -52,22 +80,22 @@ const RepairStepInput = (props) => {
                         id='imgPreview'
                         className="img-preview"
                         style={{
-                            backgroundSize: previewBgSize,
-                            backgroundImage: previewBgImage ? `url(${imagesBaseUrl}/${previewBgImage})` : 'none',
+                            backgroundSize: 'contain',
+                            backgroundImage: img ? `url(${imagesBaseUrl}/${img})` : 'none',
                         }}
                     >
                         <div className="img-btns-box">
                             <button
                                 type="button"
                                 className={classNames({
-                                    'transparent-btn': previewBgImage,
-                                    'add-img-btn': !previewBgImage
+                                    'transparent-btn': img,
+                                    'add-img-btn': !img
                                 })}
                                 onClick={showImageUploader}
                             >
-                                {previewBgImage ? 'Change' : 'Add Image'}
+                                {img ? 'Change' : 'Add Image'}
                             </button>
-                            {previewBgImage ? <button type="button" className="transparent-btn" onClick={removeImage}>Remove</button> : null}
+                            {img ? <button type="button" className="transparent-btn" onClick={removeImage}>Remove</button> : null}
                         </div>
                     </div>
                 </div>
@@ -84,7 +112,7 @@ const RepairStepInput = (props) => {
                         autoCapitalize="none"
                         autoComplete="off"
                         autoFocus={false}
-                        value={repairText}
+                        value={text}
                         onChange={onTextChange}
                     >
                     </textarea>
