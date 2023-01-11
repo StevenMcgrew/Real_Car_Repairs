@@ -1,28 +1,30 @@
-import './VerifyStepDelete.scoped.css';
+import './VerifyPostDelete.scoped.css';
 import axios from 'axios';
 import { formatAxiosError } from '../../utils/general-utils';
+import { useNavigate } from 'react-router-dom';
 import { apiBaseUrl } from '../../config.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteStep } from '../../forms/CreationForm/creationFormSlice';
 import { hideModal, showModal } from '../Modal/modalSlice.js';
 import { hideLoader, showLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
+import { showToast } from '../Toast/toastSlice';
+import { resetPost } from '../../forms/CreationForm/creationFormSlice';
 
 
-
-const VerifyStepDelete = () => {
+const VerifyPostDelete = () => {
     const postId = useSelector(state => state.creationForm.post.id);
-    const deleteStepNum = useSelector(state => state.verifyStepDelete.deleteStepNum);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleYesClick = () => {
         dispatch(hideModal());
-        dispatch(showLoader('Deleting step...'));
-        dispatch(deleteStep(deleteStepNum));
+        dispatch(showLoader('Deleting post...'));
 
-        let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${deleteStepNum}`;
+        let url = `${apiBaseUrl}/posts/${postId}`;
         axios.delete(url)
             .then(function (response) {
-                console.log('Successfully deleted image on server during step deletion.');
+                dispatch(resetPost());
+                dispatch(showToast({ content: 'Deleted post' }));
+                navigate('/');
             })
             .catch(function (error) {
                 console.log(error);
@@ -36,7 +38,7 @@ const VerifyStepDelete = () => {
 
     return (
         <>
-            <p>Delete step {deleteStepNum} ?</p>
+            <p>Delete this post completely?</p>
             <div className='btn-container'>
                 <button className='btn' onClick={() => handleYesClick()}>Yes</button>
                 <button className='btn' onClick={() => dispatch(hideModal())}>No</button>
@@ -44,4 +46,4 @@ const VerifyStepDelete = () => {
         </>
     );
 };
-export default VerifyStepDelete;
+export default VerifyPostDelete;

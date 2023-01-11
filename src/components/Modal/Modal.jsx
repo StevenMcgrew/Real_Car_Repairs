@@ -8,6 +8,7 @@ import SignInForm from '../../forms/SignInForm/SignInForm';
 import SignUpForm from '../../forms/SignUpForm/SignUpForm';
 import ImageUploader from '../ImageUploader/ImageUploader';
 import VerifyStepDelete from '../VerifyStepDelete/VerifyStepDelete';
+import VerifyPostDelete from '../VerifyPostDelete/VerifyPostDelete';
 
 const Modal = () => {
     const title = useSelector((state) => state.modal.title);
@@ -33,7 +34,8 @@ const Modal = () => {
                         : content === 'SignUpForm' ? <SignUpForm />
                             : content === 'ImageUploader' ? <ImageUploader />
                                 : content === 'VerifyStepDelete' ? <VerifyStepDelete />
-                                    : content
+                                    : content === 'VerifyPostDelete' ? <VerifyPostDelete />
+                                        : content
                 }
             </div>
         </div>
