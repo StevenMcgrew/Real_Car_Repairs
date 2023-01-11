@@ -1,7 +1,8 @@
 import './ImageUploader.scoped.css';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStepNum, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
+import { setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
+import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
 import { showToast } from '../Toast/toastSlice';
 import { hideModal, showModal } from '../Modal/modalSlice';
 import { drawOptimizedImage, isValidMIME } from '../../utils/image-utils';
@@ -10,18 +11,16 @@ import { apiBaseUrl } from '../../config.js';
 import axios from 'axios';
 import classNames from 'classnames';
 
-import LoadingIndicator from '../../loaders/LoadingIndicator/LoadingIndicator';
 
 const ImageUploader = () => {
-    const [isUploading, setIsUploading] = useState(false);
     const [previewBgSize, setPreviewBgSize] = useState('auto');
     const [previewBgImage, setPreviewBgImage] = useState('');
     const degreesRef = useRef(0);
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
-    const postId = useSelector(state => state.creationForm.postId);
-    const stepNum = useSelector(state => state.creationForm.stepNum);
-    const steps = useSelector(state => state.creationForm.steps);
+    const postId = useSelector(state => state.creationForm.post.id);
+    const imgStepNum = useSelector(state => state.creationForm.imgStepNum);
+    const steps = useSelector(state => state.creationForm.post.steps);
     const MAX_SIZE = { width: 800, height: 600 };
     const dispatch = useDispatch();
 
@@ -57,21 +56,21 @@ const ImageUploader = () => {
     };
 
     const uploadImage = () => {
-        setIsUploading(true);
+        dispatch(showLoader('Please Wait! Uploading image...'));
         let formData = new FormData();
 
         // Append old file name if exists
-        if (steps[stepNum - 1].img) {
-            formData.append('oldFileName', steps[stepNum - 1].img);
+        if (steps[imgStepNum - 1].img) {
+            formData.append('oldFileName', steps[imgStepNum - 1].img);
         }
 
         // canvas.toBlob, append to formData, send to server
         canvasRef.current.toBlob(function (blob) {
             formData.append('image', blob);
-            let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${stepNum}`;
+            let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${imgStepNum}`;
             axios.post(url, formData)
                 .then(function (response) {
-                    dispatch(setStepImg({ stepNum: stepNum, newImg: response.data.fileName }));
+                    dispatch(setStepImg({ stepNum: imgStepNum, newImg: response.data.fileName }));
                     dispatch(hideModal());
                 })
                 .catch(function (error) {
@@ -80,7 +79,7 @@ const ImageUploader = () => {
                     dispatch(showModal({ title: 'Error', content: msg }));
                 })
                 .finally(function () {
-                    setIsUploading(false);
+                    dispatch(hideLoader());
                 });
         }, 'image/jpeg', 1.0);
     };
@@ -108,8 +107,6 @@ const ImageUploader = () => {
                 </div>
                 <button className={classNames('upload-btn', { 'disabled': !previewBgImage })} onClick={uploadImage}>Upload Image</button>
             </div>
-
-            {isUploading ? <LoadingIndicator msg='Please wait! Uploading...' /> : null}
 
             <img ref={imgRef} onLoad={onImageLoad} style={{ display: 'none' }} />
             <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>

@@ -10,6 +10,7 @@ import UserDropdown from "../../components/UserDropdown/UserDropdown";
 import Footer from "../../components/Footer/Footer";
 import Modal from "../../components/Modal/Modal";
 import Toast from "../../components/Toast/Toast";
+import LoadingIndicator from "../../loaders/LoadingIndicator/LoadingIndicator";
 
 const RootLayout = () => {
     const navigation = useNavigation();
@@ -41,6 +42,7 @@ const RootLayout = () => {
             </div>
             <Modal />
             <Toast />
+            <LoadingIndicator />
         </>
     );
 };

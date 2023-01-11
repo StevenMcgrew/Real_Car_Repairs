@@ -1,25 +1,63 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useDispatch } from 'react-redux';
+import { showToast } from '../../components/Toast/toastSlice.js';
+import { showModal } from '../../components/Modal/modalSlice';
+import { showLoader, hideLoader } from "../../loaders/LoadingIndicator/loadingIndicatorSlice.js";
+import { scrollToBottom } from '../../utils/general-utils';
+
 
 const initialState = {
-    postId: 0,
-    stepNum: 0,
-    steps: [{ img: '', text: '' }],
+    imgStepNum: 0,
+    post: {
+        id: 0,
+        year: 0,
+        make: '',
+        model: '',
+        engine: '',
+        title: '',
+        tags: ['', '', '', '', ''],
+        steps: [{ img: '', text: '' }],
+        thumbnail: '',
+        is_published: false
+    }
 };
 
 const creationFormSlice = createSlice({
     name: "creationForm",
     initialState,
     reducers: {
-        setPostId(state, action) {
-            state.postId = action.payload;
+        setImgStepNum(state, action) {
+            state.imgStepNum = action.payload;
         },
-        setStepNum(state, action) {
-            state.stepNum = action.payload;
+        setPostId(state, action) {
+            state.post.id = action.payload;
+        },
+        setYear(state, action) {
+            state.post.year = action.payload;
+        },
+        setMake(state, action) {
+            state.post.make = action.payload;
+        },
+        setModel(state, action) {
+            state.post.model = action.payload;
+        },
+        setEngine(state, action) {
+            state.post.engine = action.payload;
+        },
+        setTitle(state, action) {
+            state.post.title = action.payload;
+        },
+        setTag(state, action) {
+            const targetIndex = action.payload.index;
+            const newTag = action.payload.newTag;
+            const newArray = [...state.post.tags];
+            newArray[targetIndex] = newTag;
+            state.post.tags = newArray;
         },
         setStepText(state, action) {
             const targetIndex = action.payload.stepNum - 1;
             const newText = action.payload.newText;
-            const step = state.steps.find((step, index) => index === targetIndex);
+            const step = state.post.steps.find((step, index) => index === targetIndex);
             if (step) {
                 step.text = newText;
             }
@@ -27,20 +65,61 @@ const creationFormSlice = createSlice({
         setStepImg(state, action) {
             const targetIndex = action.payload.stepNum - 1;
             const newImg = action.payload.newImg;
-            const step = state.steps.find((step, index) => index === targetIndex);
+            const step = state.post.steps.find((step, index) => index === targetIndex);
             if (step) {
                 step.img = newImg;
             }
         },
+        setThumbnail(state, action) {
+            state.post.thumbnail = action.payload;
+        },
+        setIsPublished(state, action) {
+            state.post.is_published = action.payload;
+        },
         deleteStep(state, action) {
-            // Need to refactor
-            // state.steps.splice(action.payload - 1, 1);
+            const newSteps = state.post.steps.filter((step, index) => index !== (action.payload - 1));
+            state.post.steps = newSteps;
+            // state.post.steps.splice(action.payload - 1, 1);
         },
         addStep(state) {
-            state.steps.push({ img: '', text: '' });
-        }
+            state.post.steps.push({ img: '', text: '' });
+            setTimeout(() => {
+                // Wait a little for DOM elements to load, then scroll to bottom
+                scrollToBottom();
+            }, 300);
+        },
+        resetPost(state) {
+            state.post = {
+                id: 0,
+                year: 0,
+                make: '',
+                model: '',
+                engine: '',
+                title: '',
+                tags: ['', '', '', '', ''],
+                steps: [{ img: '', text: '' }],
+                thumbnail: '',
+                is_published: false
+            };
+        },
     },
 });
 
-export const { setPostId, setStepNum, setStepText, setStepImg, deleteStep, addStep } = creationFormSlice.actions;
+export const {
+    setImgStepNum,
+    setPostId,
+    setYear,
+    setMake,
+    setModel,
+    setEngine,
+    setTitle,
+    setTag,
+    setStepText,
+    setStepImg,
+    setThumbnail,
+    setIsPublished,
+    deleteStep,
+    addStep,
+    resetPost, } = creationFormSlice.actions;
+
 export default creationFormSlice.reducer;

@@ -24,7 +24,7 @@ const getStartingIndex = (startingYear, referenceYear, referenceIndex) => {
         return referenceIndex;
     }
 
-    if (startingYear < referenceIndex) {
+    if (startingYear < referenceYear) {
         let startIdx = referenceIndex - (referenceYear - startingYear);
         if (startIdx < 0) {
             startIdx = startIdx + 30;
@@ -59,6 +59,7 @@ export const getYearDecoderDict = () => {
             startingIndex = 0;
         }
     }
+
     return dict;
 };
 

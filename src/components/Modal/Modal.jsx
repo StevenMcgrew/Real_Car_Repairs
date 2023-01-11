@@ -7,6 +7,7 @@ import { hideModal } from './modalSlice';
 import SignInForm from '../../forms/SignInForm/SignInForm';
 import SignUpForm from '../../forms/SignUpForm/SignUpForm';
 import ImageUploader from '../ImageUploader/ImageUploader';
+import VerifyStepDelete from '../VerifyStepDelete/VerifyStepDelete';
 
 const Modal = () => {
     const title = useSelector((state) => state.modal.title);
@@ -31,7 +32,8 @@ const Modal = () => {
                     content === 'SignInForm' ? <SignInForm />
                         : content === 'SignUpForm' ? <SignUpForm />
                             : content === 'ImageUploader' ? <ImageUploader />
-                                : content
+                                : content === 'VerifyStepDelete' ? <VerifyStepDelete />
+                                    : content
                 }
             </div>
         </div>

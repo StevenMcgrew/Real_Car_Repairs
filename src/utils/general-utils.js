@@ -23,9 +23,10 @@ export const scrollToBottom = () => {
 };
 
 export const formatAxiosError = (error) => {
-    return error.response.data.warning
-        ? error.response.data.warning
-        : error.response.data
-            ? error.response.data
-            : error.message;
+    let msg = '';
+    msg = error.message;
+    if (error.response) {
+        msg = error.response.data.warning ? error.response.data.warning : error.response.data;
+    }
+    return msg;
 };

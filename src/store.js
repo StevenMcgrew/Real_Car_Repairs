@@ -15,6 +15,8 @@ import modalReducer from './components/Modal/modalSlice';
 import toastReducer from './components/Toast/toastSlice';
 import userDropdownReducer from './components/UserDropdown/userDropdownSlice';
 import creationFormReducer from './forms/CreationForm/creationFormSlice';
+import verifyStepDeleteReducer from './components/VerifyStepDelete/verifyStepDeleteSlice';
+import loadingIndicatorReducer from './loaders/LoadingIndicator/loadingIndicatorSlice';
 
 const persistConfig = {
     key: 'root',
@@ -28,7 +30,9 @@ export const store = configureStore({
         modal: modalReducer,
         toast: toastReducer,
         userDropdown: userDropdownReducer,
-        creationForm: creationFormReducer
+        creationForm: creationFormReducer,
+        verifyStepDelete: verifyStepDeleteReducer,
+        loadingIndicator: loadingIndicatorReducer,
     }),
     middleware: getDefaultMiddleware => getDefaultMiddleware({
         serializableCheck: {

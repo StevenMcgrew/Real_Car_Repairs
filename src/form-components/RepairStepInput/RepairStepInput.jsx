@@ -1,30 +1,33 @@
 import './RepairStepInput.scoped.css';
 import { imagesBaseUrl, apiBaseUrl } from '../../config';
 import { formatAxiosError } from '../../utils/general-utils';
-import { useState, useRef, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showModal } from '../../components/Modal/modalSlice';
-import { deleteStep, setStepNum, setStepText, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
+import { hideModal, showModal } from '../../components/Modal/modalSlice';
+import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
+import { deleteStep, setImgStepNum, setStepText, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
+import { setDeleteStepNum } from '../../components/VerifyStepDelete/verifyStepDeleteSlice.js';
 import classNames from 'classnames';
 import axios from 'axios';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
+
 const RepairStepInput = (props) => {
-    const { index, img, text, textFieldName, saveProgress } = props;
+    const { index, img, text, textFieldName } = props;
     // const [previewBgSize, setPreviewBgSize] = useState('contain');
     // const [previewBgImage, setPreviewBgImage] = useState('');
-    const [repairText, setRepairText] = useState('');
-    const postId = useSelector(state => state.creationForm.postId);
+    const postId = useSelector(state => state.creationForm.post.id);
     const dispatch = useDispatch();
+    const SILENT = true;
 
     const showImageUploader = () => {
-        dispatch(setStepNum(index + 1));
+        dispatch(setImgStepNum(index + 1));
         dispatch(showModal({ title: 'Image Uploader', content: 'ImageUploader' }));
     };
 
     const removeImage = () => {
-        // TODO: show Loading indicator
+        dispatch(showLoader('Deleting image...'));
 
         let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${index + 1}`;
         axios.delete(url)
@@ -37,7 +40,7 @@ const RepairStepInput = (props) => {
                 dispatch(showModal({ title: 'Error', content: msg }));
             })
             .finally(function () {
-                // TODO: hide Loading indicator
+                dispatch(hideLoader());
             });
     };
 
@@ -45,20 +48,10 @@ const RepairStepInput = (props) => {
         dispatch(setStepText({ stepNum: (index + 1), newText: e.currentTarget.value }));
     };
 
-    const removeStep = (e) => {
-        //
+    const askToDeleteStep = (e) => {
+        dispatch(setDeleteStepNum(index + 1));
+        dispatch(showModal({ title: 'Confirm', content: 'VerifyStepDelete' }));
     };
-
-    useEffect(() => {
-        if (text === repairText) {
-            return;
-        }
-        setRepairText(text);
-        const timerId = setTimeout(() => {
-            saveProgress(true);
-        }, 3000);
-        return () => clearTimeout(timerId);
-    }, [text]);
 
     return (
         <div className='card step-root'>
@@ -70,7 +63,7 @@ const RepairStepInput = (props) => {
 
                 <span>{`Repair Step ${index + 1}`}</span>
 
-                <span className="close-btn" onClick={removeStep}>&times;</span>
+                <span className="close-btn" onClick={askToDeleteStep}>&times;</span>
             </div>
 
             <div className='step-body'>
