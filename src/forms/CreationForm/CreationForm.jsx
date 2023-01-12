@@ -1,4 +1,3 @@
-import Sortable from 'sortablejs';
 import './CreationForm.scoped.css';
 import { range, getCurrentYear, scrollToBottom, formatAxiosError } from '../../utils/general-utils';
 import * as Yup from 'yup';
@@ -35,6 +34,7 @@ const CreationForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const post = useSelector(state => state.creationForm.post);
+    const [repairSteps, setRepairSteps] = useState([]);
     const [yearError, setYearError] = useState('');
     const [makeError, setMakeError] = useState('');
     const [modelError, setModelError] = useState('');
@@ -168,20 +168,9 @@ const CreationForm = () => {
     }, [post.is_published]);
 
     useEffect(() => {
-        // Make the repair steps into a sortable list
-        // For more info, visit https://github.com/SortableJS/Sortable
-        let stepsContainer = document.querySelector('.steps-container');
-        console.log('useEffect for stepsContainer');
-        Sortable.create(stepsContainer, {
-            forceFallback: true,
-            handle: '.drag-handle',
-            animation: 300,
-            onEnd: (e) => {
-                console.log('oldIndex:  ', e.oldIndex);
-                console.log('newIndex:  ', e.newIndex);
-            }
-        });
-    }, []);
+        let steps = [...post.steps];
+        setRepairSteps(steps);
+    }, [post.steps]);
 
     return (
         <div style={{ position: 'relative' }}>
@@ -334,40 +323,30 @@ const CreationForm = () => {
 
                 {post.id
                     ?
-                    <h3 className='sub-header'>Repair Instructions:</h3>
+                    <>
+                        <h3 className='sub-header'>Repair Instructions:</h3>
+                        <div className='steps-container'>
+                            {post.steps.map((step, idx) => (
+                                <RepairStepInput
+                                    key={idx}
+                                    index={idx}
+                                    img={step.img}
+                                    text={step.text}
+                                    textFieldName={`steps[${idx}].text`}
+                                />
+                            ))}
+                        </div>
+                        <div className="btns-panel">
+                            <button type="button" onClick={() => addAnotherStep()}>Add Step</button>
+                            <button type="button" onClick={() => saveProgress()}>Save</button>
+                            <button type="button" onClick={() => publishRepair()}>Publish</button>
+                            <button type="button" onClick={() => askToDeletePost()}>Delete</button>
+                        </div>
+                    </>
                     :
                     <div className='save-and-continue'>
                         <button type="button" onClick={() => saveProgress()}>Save and Continue</button>
                     </div>
-                }
-
-                <div className='steps-container'>
-                    {post.id
-                        ?
-                        post.steps.map((step, idx) => (
-                            <RepairStepInput
-                                key={idx}
-                                index={idx}
-                                img={step.img}
-                                text={step.text}
-                                textFieldName={`steps[${idx}].text`}
-                            />
-                        ))
-                        :
-                        null
-                    }
-                </div>
-
-                {post.id
-                    ?
-                    <div className="btns-panel">
-                        <button type="button" onClick={() => addAnotherStep()}>Add Step</button>
-                        <button type="button" onClick={() => saveProgress()}>Save</button>
-                        <button type="button" onClick={() => publishRepair()}>Publish</button>
-                        <button type="button" onClick={() => askToDeletePost()}>Delete</button>
-                    </div>
-                    :
-                    null
                 }
 
             </form>
