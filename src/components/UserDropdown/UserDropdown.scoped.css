@@ -118,24 +118,19 @@ button {
 .DropdownMenuCheckboxItem,
 .DropdownMenuRadioItem,
 .DropdownMenuSubTrigger {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     line-height: 1;
     border-radius: 3px;
     display: flex;
     align-items: center;
     height: 25px;
-    padding: 0 5px;
     position: relative;
     padding-left: 25px;
+    padding-block: 1.125rem;
     user-select: none;
     outline: none;
     color: var(--muted-text);
     cursor: pointer;
-}
-
-.DropdownMenuSubTrigger[data-state="open"] {
-    background-color: var(--primary4);
-    color: var(--primary11);
 }
 
 .DropdownMenuItem[data-disabled],
@@ -147,8 +142,8 @@ button {
 }
 
 .DropdownMenuLabel {
-    font-size: 14px;
-    padding-left: 15px;
+    font-size: 1rem;
+    padding-left: 0.6rem;
     line-height: 2;
 }
 

@@ -98,55 +98,66 @@ const UserDropdown = () => {
 
                     <DropdownMenu.Separator className='DropdownMenuSeparator' />
 
-                    <DropdownMenu.Label className='DropdownMenuLabel'>MODE</DropdownMenu.Label>
-                    <DropdownMenu.RadioGroup value={isDarkMode} onValueChange={handleDarkModeChange}>
-                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={false} onSelect={(e) => e.preventDefault()}>
-                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                                <DotFilledIcon />
-                            </DropdownMenu.ItemIndicator>
-                            <div className='color-dot light-dot'></div>
-                            Light
-                        </DropdownMenu.RadioItem>
-                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={true} onSelect={(e) => e.preventDefault()}>
-                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                                <DotFilledIcon />
-                            </DropdownMenu.ItemIndicator>
-                            <div className='color-dot dark-dot'></div>
-                            Dark
-                        </DropdownMenu.RadioItem>
-                    </DropdownMenu.RadioGroup>
 
-                    <DropdownMenu.Separator className='DropdownMenuSeparator' />
 
-                    <DropdownMenu.Label className='DropdownMenuLabel'>COLOR</DropdownMenu.Label>
-                    <DropdownMenu.RadioGroup value={accentColor} onValueChange={handleColorChange}>
-                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='blue' onSelect={(e) => e.preventDefault()}>
-                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                                <DotFilledIcon />
-                            </DropdownMenu.ItemIndicator>
-                            <div className='color-dot blue-dot'></div>
-                            Blue
-                        </DropdownMenu.RadioItem>
-                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='green' onSelect={(e) => e.preventDefault()}>
-                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                                <DotFilledIcon />
-                            </DropdownMenu.ItemIndicator>
-                            <div className='color-dot green-dot'></div>
-                            Green
-                        </DropdownMenu.RadioItem>
-                        <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='pink' onSelect={(e) => e.preventDefault()}>
-                            <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
-                                <DotFilledIcon />
-                            </DropdownMenu.ItemIndicator>
-                            <div className='color-dot pink-dot'></div>
-                            Pink
-                        </DropdownMenu.RadioItem>
-                    </DropdownMenu.RadioGroup>
+                    <DropdownMenu.Sub>
+                        <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                            Theme
+                        </DropdownMenu.SubTrigger>
+                        <DropdownMenu.Portal>
+                            <DropdownMenu.SubContent className="DropdownMenuSubContent">
+                                <DropdownMenu.Label className='DropdownMenuLabel'>MODE</DropdownMenu.Label>
+                                <DropdownMenu.RadioGroup value={isDarkMode} onValueChange={handleDarkModeChange}>
+                                    <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={false} onSelect={(e) => e.preventDefault()}>
+                                        <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                            <DotFilledIcon />
+                                        </DropdownMenu.ItemIndicator>
+                                        <div className='color-dot light-dot'></div>
+                                        Light
+                                    </DropdownMenu.RadioItem>
+                                    <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value={true} onSelect={(e) => e.preventDefault()}>
+                                        <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                            <DotFilledIcon />
+                                        </DropdownMenu.ItemIndicator>
+                                        <div className='color-dot dark-dot'></div>
+                                        Dark
+                                    </DropdownMenu.RadioItem>
+                                </DropdownMenu.RadioGroup>
+
+                                <DropdownMenu.Separator className='DropdownMenuSeparator' />
+
+                                <DropdownMenu.Label className='DropdownMenuLabel'>COLOR</DropdownMenu.Label>
+                                <DropdownMenu.RadioGroup value={accentColor} onValueChange={handleColorChange}>
+                                    <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='blue' onSelect={(e) => e.preventDefault()}>
+                                        <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                            <DotFilledIcon />
+                                        </DropdownMenu.ItemIndicator>
+                                        <div className='color-dot blue-dot'></div>
+                                        Blue
+                                    </DropdownMenu.RadioItem>
+                                    <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='green' onSelect={(e) => e.preventDefault()}>
+                                        <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                            <DotFilledIcon />
+                                        </DropdownMenu.ItemIndicator>
+                                        <div className='color-dot green-dot'></div>
+                                        Green
+                                    </DropdownMenu.RadioItem>
+                                    <DropdownMenu.RadioItem className='DropdownMenuRadioItem' value='pink' onSelect={(e) => e.preventDefault()}>
+                                        <DropdownMenu.ItemIndicator className='DropdownMenuItemIndicator'>
+                                            <DotFilledIcon />
+                                        </DropdownMenu.ItemIndicator>
+                                        <div className='color-dot pink-dot'></div>
+                                        Pink
+                                    </DropdownMenu.RadioItem>
+                                </DropdownMenu.RadioGroup>
+                            </DropdownMenu.SubContent>
+                        </DropdownMenu.Portal>
+                    </DropdownMenu.Sub>
 
                     <DropdownMenu.Arrow className='DropdownMenuArrow' />
                 </DropdownMenu.Content>
             </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+        </DropdownMenu.Root >
     );
 };
 
