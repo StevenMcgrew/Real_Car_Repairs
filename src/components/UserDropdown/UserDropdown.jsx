@@ -9,7 +9,7 @@ import { setUsername } from '../UserDropdown/userDropdownSlice.js';
 // Components
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Avatar from '@radix-ui/react-avatar';
-import { PersonIcon, DotFilledIcon } from '@radix-ui/react-icons';
+import { PersonIcon, DotFilledIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
 
 const UserDropdown = () => {
@@ -98,11 +98,12 @@ const UserDropdown = () => {
 
                     <DropdownMenu.Separator className='DropdownMenuSeparator' />
 
-
-
                     <DropdownMenu.Sub>
                         <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
                             Theme
+                            <div className="RightSlot">
+                                <ChevronRightIcon />
+                            </div>
                         </DropdownMenu.SubTrigger>
                         <DropdownMenu.Portal>
                             <DropdownMenu.SubContent className="DropdownMenuSubContent">

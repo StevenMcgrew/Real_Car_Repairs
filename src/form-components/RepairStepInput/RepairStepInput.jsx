@@ -10,7 +10,8 @@ import { setDeleteStepNum } from '../../components/VerifyStepDelete/verifyStepDe
 import classNames from 'classnames';
 import axios from 'axios';
 
-import { CaretSortIcon } from '@radix-ui/react-icons';
+import { DotsVerticalIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 
 const RepairStepInput = (props) => {
@@ -57,13 +58,86 @@ const RepairStepInput = (props) => {
         <div className='card step-root'>
 
             <div className='step-header'>
-                <div className='drag-handle'>
-                    <CaretSortIcon className='sort-icon' />
-                </div>
+                <span className='step-header-text'>{`Repair Step ${index + 1}`}</span>
 
-                <span>{`Repair Step ${index + 1}`}</span>
+                <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild>
+                        <div className="options-icon-container">
+                            <DotsVerticalIcon className='options-icon' />
+                        </div>
+                    </DropdownMenu.Trigger>
 
-                <span className="close-btn" onClick={askToDeleteStep}>&times;</span>
+                    <DropdownMenu.Portal>
+                        <DropdownMenu.Content className='DropdownMenuContent'>
+                            <DropdownMenu.Sub>
+                                <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                                    Move
+                                    <div className="RightSlot">
+                                        <ChevronRightIcon />
+                                    </div>
+                                </DropdownMenu.SubTrigger>
+                                <DropdownMenu.Portal>
+                                    <DropdownMenu.SubContent className="DropdownMenuSubContent">
+                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            To Beginning
+                                        </DropdownMenu.Item>
+                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            To End
+                                        </DropdownMenu.Item>
+                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            To Between _ and _
+                                        </DropdownMenu.Item>
+                                    </DropdownMenu.SubContent>
+                                </DropdownMenu.Portal>
+                            </DropdownMenu.Sub>
+
+                            <DropdownMenu.Sub>
+                                <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                                    Insert New
+                                    <div className="RightSlot">
+                                        <ChevronRightIcon />
+                                    </div>
+                                </DropdownMenu.SubTrigger>
+                                <DropdownMenu.Portal>
+                                    <DropdownMenu.SubContent className="DropdownMenuSubContent">
+                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            Before
+                                        </DropdownMenu.Item>
+                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            After
+                                        </DropdownMenu.Item>
+                                    </DropdownMenu.SubContent>
+                                </DropdownMenu.Portal>
+                            </DropdownMenu.Sub>
+
+                            <DropdownMenu.Sub>
+                                <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                                    Delete Step
+                                    <div className="RightSlot">
+                                        <ChevronRightIcon />
+                                    </div>
+                                </DropdownMenu.SubTrigger>
+                                <DropdownMenu.Portal>
+                                    <DropdownMenu.SubContent className="DropdownMenuSubContent">
+                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            Click here to confirm
+                                        </DropdownMenu.Item>
+                                    </DropdownMenu.SubContent>
+                                </DropdownMenu.Portal>
+                            </DropdownMenu.Sub>
+
+
+                            <DropdownMenu.Arrow className='DropdownMenuArrow' />
+                        </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                </DropdownMenu.Root >
+
             </div>
 
             <div className='step-body'>
