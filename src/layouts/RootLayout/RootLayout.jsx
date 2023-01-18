@@ -1,9 +1,11 @@
 import classNames from "classnames";
 import "./RootLayout.scoped.css";
 import carServiceImgUrl from '/car-service-96x96.png';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { resetPost } from "../../forms/CreationForm/creationFormSlice";
 
-//Components
-import { Outlet, useNavigation } from "react-router-dom";
+import { Outlet, useNavigation, useLocation } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import UserDropdown from "../../components/UserDropdown/UserDropdown";
@@ -14,10 +16,26 @@ import LoadingIndicator from "../../loaders/LoadingIndicator/LoadingIndicator";
 
 const RootLayout = () => {
     const navigation = useNavigation();
+    const [previousPathName, setPreviousPathName] = useState('/');
+    let location = useLocation();
+    const dispatch = useDispatch();
 
     let mainClassNames = classNames("main-area", {
         loading: navigation.state === "loading",
     });
+
+    useEffect(() => {
+        if (location.pathname === previousPathName) { return; }
+
+        if (previousPathName === '/create') {
+            // TODO: put saveProgress function in creationFormSlice.js and invoke it
+            console.log('Resetting post');
+            dispatch(resetPost());
+        }
+
+        // Update previousPathName
+        setPreviousPathName(location.pathname);
+    }, [location]);
 
     return (
         <>

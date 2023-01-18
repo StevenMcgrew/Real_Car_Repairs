@@ -16,6 +16,7 @@ const ImageUploader = () => {
     const [previewBgSize, setPreviewBgSize] = useState('auto');
     const [previewBgImage, setPreviewBgImage] = useState('');
     const degreesRef = useRef(0);
+    const previewRef = useRef(null);
     const canvasRef = useRef(null);
     const imgRef = useRef(null);
     const postId = useSelector(state => state.creationForm.post.id);
@@ -39,12 +40,12 @@ const ImageUploader = () => {
     };
 
     const updatePreview = () => {
-        if (canvasRef.current.width < imgRef.current.clientWidth &&
-            canvasRef.current.height < imgRef.current.clientHeight) {
-            setPreviewBgSize('contain');
+        if (canvasRef.current.width < previewRef.current.clientWidth &&
+            canvasRef.current.height < previewRef.current.clientHeight) {
+            setPreviewBgSize('auto');
         }
         else {
-            setPreviewBgSize('auto');
+            setPreviewBgSize('contain');
         }
         setPreviewBgImage(`url(${canvasRef.current.toDataURL()})`);
     };
@@ -97,7 +98,7 @@ const ImageUploader = () => {
                 />
             </label>
 
-            <div id='uploadPreview' className="upload-preview" style={{ backgroundSize: previewBgSize, backgroundImage: previewBgImage, }}></div>
+            <div ref={previewRef} id='uploadPreview' className="upload-preview" style={{ backgroundSize: previewBgSize, backgroundImage: previewBgImage, }}></div>
 
             <div className="upload-btn-panel">
                 <div className='rotate-btns-panel'>

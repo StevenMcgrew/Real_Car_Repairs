@@ -35,6 +35,10 @@
     height: 1.4rem;
 }
 
+.delete-option {
+    color: var(--error-text);
+}
+
 .step-body {
     display: flex;
     flex-wrap: wrap;

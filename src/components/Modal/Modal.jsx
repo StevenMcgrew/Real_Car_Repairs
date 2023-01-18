@@ -7,7 +7,6 @@ import { hideModal } from './modalSlice';
 import SignInForm from '../../forms/SignInForm/SignInForm';
 import SignUpForm from '../../forms/SignUpForm/SignUpForm';
 import ImageUploader from '../ImageUploader/ImageUploader';
-import VerifyStepDelete from '../VerifyStepDelete/VerifyStepDelete';
 import VerifyPostDelete from '../VerifyPostDelete/VerifyPostDelete';
 
 const Modal = () => {
@@ -33,9 +32,8 @@ const Modal = () => {
                     content === 'SignInForm' ? <SignInForm />
                         : content === 'SignUpForm' ? <SignUpForm />
                             : content === 'ImageUploader' ? <ImageUploader />
-                                : content === 'VerifyStepDelete' ? <VerifyStepDelete />
-                                    : content === 'VerifyPostDelete' ? <VerifyPostDelete />
-                                        : content
+                                : content === 'VerifyPostDelete' ? <VerifyPostDelete />
+                                    : content
                 }
             </div>
         </div>

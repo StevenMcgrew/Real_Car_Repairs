@@ -34,7 +34,6 @@ const CreationForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const post = useSelector(state => state.creationForm.post);
-    const [repairSteps, setRepairSteps] = useState([]);
     const [yearError, setYearError] = useState('');
     const [makeError, setMakeError] = useState('');
     const [modelError, setModelError] = useState('');
@@ -167,11 +166,6 @@ const CreationForm = () => {
         }
     }, [post.is_published]);
 
-    useEffect(() => {
-        let steps = [...post.steps];
-        setRepairSteps(steps);
-    }, [post.steps]);
-
     return (
         <div style={{ position: 'relative' }}>
             <h1 className='page-title'>Create Post</h1>
@@ -228,7 +222,8 @@ const CreationForm = () => {
                                 <option value=""></option>
                                 {MANUFACTURERS.map((mfr, idx) => (
                                     <option key={idx} value={mfr}>{mfr}</option>
-                                ))}                            </select>
+                                ))}
+                            </select>
                             <span className='form-error-text-spacer'>&nbsp;</span>
                             <span className='form-error-text'>{makeError}</span>
                         </div>
@@ -329,7 +324,7 @@ const CreationForm = () => {
                             {post.steps.map((step, idx) => (
                                 <RepairStepInput
                                     key={idx}
-                                    index={idx}
+                                    stepNum={idx + 1}
                                     img={step.img}
                                     text={step.text}
                                     textFieldName={`steps[${idx}].text`}

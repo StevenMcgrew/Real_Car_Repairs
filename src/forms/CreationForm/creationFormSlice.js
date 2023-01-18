@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { showToast } from '../../components/Toast/toastSlice.js';
 import { showModal } from '../../components/Modal/modalSlice';
 import { showLoader, hideLoader } from "../../loaders/LoadingIndicator/loadingIndicatorSlice.js";
-import { scrollToBottom } from '../../utils/general-utils';
+import { scrollToBottom, arrayMove } from '../../utils/general-utils';
 
 
 const initialState = {
@@ -88,6 +88,18 @@ const creationFormSlice = createSlice({
                 scrollToBottom();
             }, 300);
         },
+        addStepAt(state, action) {
+            let targetIndex = action.payload;
+            let newStep = { img: '', text: '' };
+            state.post.steps.splice(targetIndex, 0, newStep);
+        },
+        moveStep(state, action) {
+            let newSteps = [...state.post.steps];
+            let from = action.payload.from - 1;
+            let to = action.payload.to - 1;
+            arrayMove(newSteps, from, to);
+            state.post.steps = newSteps;
+        },
         resetPost(state) {
             state.post = {
                 id: 0,
@@ -120,6 +132,8 @@ export const {
     setIsPublished,
     deleteStep,
     addStep,
+    addStepAt,
+    moveStep,
     resetPost, } = creationFormSlice.actions;
 
 export default creationFormSlice.reducer;

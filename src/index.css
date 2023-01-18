@@ -395,7 +395,6 @@ textarea:focus-visible {
 
 .DropdownMenuContent,
 .DropdownMenuSubContent {
-    margin-right: 20px;
     min-width: 175px;
     background-color: var(--card-bg);
     border-radius: var(--default-radius);
@@ -404,6 +403,10 @@ textarea:focus-visible {
     animation-duration: 400ms;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, opacity;
+}
+
+.DropdownMenuContent {
+    margin-right: 20px;
 }
 
 .DropdownMenuContent[data-side="top"],
@@ -481,7 +484,8 @@ textarea:focus-visible {
 .RightSlot {
     margin-left: auto;
     padding-left: 20px;
-    color: transparent
+    color: transparent;
+    ;
 }
 
 [data-highlighted]>.RightSlot {

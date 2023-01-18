@@ -1,12 +1,11 @@
 import './RepairStepInput.scoped.css';
 import { imagesBaseUrl, apiBaseUrl } from '../../config';
 import { formatAxiosError } from '../../utils/general-utils';
-import { useCallback } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideModal, showModal } from '../../components/Modal/modalSlice';
 import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
-import { deleteStep, setImgStepNum, setStepText, setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
-import { setDeleteStepNum } from '../../components/VerifyStepDelete/verifyStepDeleteSlice.js';
+import { deleteStep, setImgStepNum, setStepText, setStepImg, addStepAt, moveStep } from '../../forms/CreationForm/creationFormSlice.js';
 import classNames from 'classnames';
 import axios from 'axios';
 
@@ -15,25 +14,26 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 
 const RepairStepInput = (props) => {
-    const { index, img, text, textFieldName } = props;
+    const { stepNum, img, text, textFieldName } = props;
     // const [previewBgSize, setPreviewBgSize] = useState('contain');
     // const [previewBgImage, setPreviewBgImage] = useState('');
-    const postId = useSelector(state => state.creationForm.post.id);
+    const [moveTo, setMoveTo] = useState('');
+    const post = useSelector(state => state.creationForm.post);
     const dispatch = useDispatch();
     const SILENT = true;
 
     const showImageUploader = () => {
-        dispatch(setImgStepNum(index + 1));
+        dispatch(setImgStepNum(stepNum));
         dispatch(showModal({ title: 'Image Uploader', content: 'ImageUploader' }));
     };
 
     const removeImage = () => {
         dispatch(showLoader('Deleting image...'));
 
-        let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${index + 1}`;
+        let url = `${apiBaseUrl}/images?postId=${post.id}&stepNum=${stepNum}`;
         axios.delete(url)
             .then(function (response) {
-                dispatch(setStepImg({ stepNum: (index + 1), newImg: '' }));
+                dispatch(setStepImg({ stepNum: stepNum, newImg: '' }));
             })
             .catch(function (error) {
                 console.log(error);
@@ -46,19 +46,45 @@ const RepairStepInput = (props) => {
     };
 
     const onTextChange = (e) => {
-        dispatch(setStepText({ stepNum: (index + 1), newText: e.currentTarget.value }));
+        dispatch(setStepText({ stepNum: stepNum, newText: e.currentTarget.value }));
     };
 
-    const askToDeleteStep = (e) => {
-        dispatch(setDeleteStepNum(index + 1));
-        dispatch(showModal({ title: 'Confirm', content: 'VerifyStepDelete' }));
+    const onDeleteStepClick = (e) => {
+        dispatch(showLoader('Deleting step...'));
+        dispatch(deleteStep(stepNum));
+
+        // If no img for this step, return
+        if (!post.steps[stepNum - 1].img) {
+            dispatch(hideLoader());
+            return;
+        }
+
+        // Delete image on server
+        let url = `${apiBaseUrl}/images?postId=${post.id}&stepNum=${stepNum}`;
+        axios.delete(url)
+            .then(function (response) {
+                console.log('Successfully deleted image on server during step deletion.');
+            })
+            .catch(function (error) {
+                console.log(error);
+                const msg = formatAxiosError(error);
+                dispatch(showModal({ title: 'Error', content: msg }));
+            })
+            .finally(function () {
+                dispatch(hideLoader());
+            });
+    };
+
+    const determineMoveTo = (inputValue) => {
+        inputValue = Math.round(inputValue);
+        return (stepNum > inputValue) ? inputValue + 1 : inputValue;
     };
 
     return (
         <div className='card step-root'>
 
             <div className='step-header'>
-                <span className='step-header-text'>{`Repair Step ${index + 1}`}</span>
+                <span className='step-header-text'>{`Repair Step ${stepNum}`}</span>
 
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild>
@@ -71,7 +97,7 @@ const RepairStepInput = (props) => {
                         <DropdownMenu.Content className='DropdownMenuContent'>
                             <DropdownMenu.Sub>
                                 <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
-                                    Move
+                                    Move to
                                     <div className="RightSlot">
                                         <ChevronRightIcon />
                                     </div>
@@ -79,24 +105,39 @@ const RepairStepInput = (props) => {
                                 <DropdownMenu.Portal>
                                     <DropdownMenu.SubContent className="DropdownMenuSubContent">
                                         <DropdownMenu.Item className='DropdownMenuItem'
-                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
-                                            To Beginning
+                                            onSelect={() => dispatch(moveStep({ from: stepNum, to: 1 }))}>
+                                            Beginning
                                         </DropdownMenu.Item>
                                         <DropdownMenu.Item className='DropdownMenuItem'
-                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
-                                            To End
+                                            onSelect={() => dispatch(moveStep({ from: stepNum, to: post.steps.length }))}>
+                                            End
                                         </DropdownMenu.Item>
-                                        <DropdownMenu.Item className='DropdownMenuItem'
-                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
-                                            To Between _ and _
-                                        </DropdownMenu.Item>
+                                        <DropdownMenu.Sub>
+                                            <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                                                After step #
+                                                <div className="RightSlot">
+                                                    <ChevronRightIcon />
+                                                </div>
+                                            </DropdownMenu.SubTrigger>
+                                            <DropdownMenu.Portal>
+                                                <DropdownMenu.SubContent className="DropdownMenuSubContent">
+                                                    {post.steps.map((step, idx) => (
+                                                        <DropdownMenu.Item className='DropdownMenuItem'
+                                                            key={idx}
+                                                            onSelect={() => dispatch(moveStep({ from: stepNum, to: determineMoveTo(idx + 1) }))}>
+                                                            {idx + 1}
+                                                        </DropdownMenu.Item>
+                                                    ))}
+                                                </DropdownMenu.SubContent>
+                                            </DropdownMenu.Portal>
+                                        </DropdownMenu.Sub>
                                     </DropdownMenu.SubContent>
                                 </DropdownMenu.Portal>
                             </DropdownMenu.Sub>
 
                             <DropdownMenu.Sub>
                                 <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
-                                    Insert New
+                                    Insert step
                                     <div className="RightSlot">
                                         <ChevronRightIcon />
                                     </div>
@@ -104,11 +145,11 @@ const RepairStepInput = (props) => {
                                 <DropdownMenu.Portal>
                                     <DropdownMenu.SubContent className="DropdownMenuSubContent">
                                         <DropdownMenu.Item className='DropdownMenuItem'
-                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            onSelect={() => dispatch(addStepAt(stepNum - 1))}>
                                             Before
                                         </DropdownMenu.Item>
                                         <DropdownMenu.Item className='DropdownMenuItem'
-                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                            onSelect={() => dispatch(addStepAt(stepNum))}>
                                             After
                                         </DropdownMenu.Item>
                                     </DropdownMenu.SubContent>
@@ -116,7 +157,7 @@ const RepairStepInput = (props) => {
                             </DropdownMenu.Sub>
 
                             <DropdownMenu.Sub>
-                                <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
+                                <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger delete-option">
                                     Delete Step
                                     <div className="RightSlot">
                                         <ChevronRightIcon />
@@ -124,8 +165,8 @@ const RepairStepInput = (props) => {
                                 </DropdownMenu.SubTrigger>
                                 <DropdownMenu.Portal>
                                     <DropdownMenu.SubContent className="DropdownMenuSubContent">
-                                        <DropdownMenu.Item className='DropdownMenuItem'
-                                            onSelect={() => dispatch(showModal({ title: 'Sign Up', content: 'SignUpForm' }))}>
+                                        <DropdownMenu.Item className='DropdownMenuItem delete-option'
+                                            onSelect={() => onDeleteStepClick()}>
                                             Click here to confirm
                                         </DropdownMenu.Item>
                                     </DropdownMenu.SubContent>

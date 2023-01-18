@@ -15,7 +15,6 @@ import modalReducer from './components/Modal/modalSlice';
 import toastReducer from './components/Toast/toastSlice';
 import userDropdownReducer from './components/UserDropdown/userDropdownSlice';
 import creationFormReducer from './forms/CreationForm/creationFormSlice';
-import verifyStepDeleteReducer from './components/VerifyStepDelete/verifyStepDeleteSlice';
 import loadingIndicatorReducer from './loaders/LoadingIndicator/loadingIndicatorSlice';
 
 const persistConfig = {
@@ -31,7 +30,6 @@ export const store = configureStore({
         toast: toastReducer,
         userDropdown: userDropdownReducer,
         creationForm: creationFormReducer,
-        verifyStepDelete: verifyStepDeleteReducer,
         loadingIndicator: loadingIndicatorReducer,
     }),
     middleware: getDefaultMiddleware => getDefaultMiddleware({
