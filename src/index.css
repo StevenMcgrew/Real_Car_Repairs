@@ -220,11 +220,11 @@ button {
     color: var(--btn-text-color);
     padding: 0.625rem 1.25rem;
     border-radius: var(--default-radius);
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    font-weight: 600;
     box-sizing: border-box;
     cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 button:active {
@@ -328,6 +328,7 @@ textarea:focus-visible {
     border: 1px solid #636363;
     border-radius: 2.125rem;
     padding: 1.875rem;
+    min-height: 100%;
 }
 
 .page-title {

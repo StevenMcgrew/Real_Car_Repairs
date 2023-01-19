@@ -1,12 +1,9 @@
-import { Link } from "react-router-dom";
-
 const HistoryPage = () => {
-  return (
-    <>
-      <div>HistoryPage</div>
-      <Link to={`/`}>Go Home</Link>
-    </>
-  );
+    return (
+        <div className='page'>
+            <h1 className="page-title">View History</h1>
+        </div>
+    );
 };
 
 export default HistoryPage;
