@@ -36,3 +36,9 @@ export const arrayMove = (arr, fromIndex, toIndex) => {
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
 };
+
+export const formatUTC = (UTC) => {
+    const date = new Date(UTC);
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+};

@@ -22,7 +22,7 @@ const ImageUploader = () => {
     const postId = useSelector(state => state.creationForm.post.id);
     const imgStepNum = useSelector(state => state.creationForm.imgStepNum);
     const steps = useSelector(state => state.creationForm.post.steps);
-    const MAX_SIZE = { width: 800, height: 600 };
+    const MAX_SIZE = { width: 800, height: 450 };
     const dispatch = useDispatch();
 
     const onImageChange = (e) => {
