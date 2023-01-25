@@ -1,7 +1,17 @@
 .und-box {
-    padding: 0;
+    padding: 0.25rem 0.25rem 2rem 0rem;
 }
 
 .av-root {
     margin: 0rem 0.6rem 0rem 0rem;
+}
+
+.title {
+    margin: 0;
+}
+
+.vehicle {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1rem;
 }
