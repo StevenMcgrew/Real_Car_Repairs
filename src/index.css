@@ -390,6 +390,95 @@ textarea:focus-visible {
 
 /***********************************************************
 
+        Avatar
+
+************************************************************/
+
+.AvatarRoot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    overflow: hidden;
+    user-select: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    border: 1.5px solid;
+    margin-right: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.AvatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.AvatarFallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+    font-weight: 500;
+}
+
+/***********************************************************
+
+        User and date container and children
+
+************************************************************/
+
+.user-and-date-container {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 0.6rem 0.6rem 0.6rem;
+}
+
+.lower-anchor-area {
+    display: flex;
+    align-items: center;
+}
+
+.unstyled-anchor {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.unstyled-anchor:hover {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.user-icon {
+    width: 1.0625rem;
+    height: 1.0625rem;
+}
+
+.username {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted-text);
+}
+
+.date {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted-text);
+}
+
+.date::before {
+    content: "•";
+    margin: 0 0.25rem;
+}
+
+/***********************************************************
+
         Dropdown
 
 ************************************************************/

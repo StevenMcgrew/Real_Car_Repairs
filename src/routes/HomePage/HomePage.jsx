@@ -14,7 +14,6 @@ const HomePage = () => {
     useEffect(() => {
         axios.get(apiBaseUrl + '/posts?featured=true')
             .then(response => {
-                console.log(response.data);
                 setPosts(response.data);
             })
             .catch(error => {

@@ -1,10 +1,5 @@
 /************ my styles **************/
 
-.user-icon {
-    width: 17px;
-    height: 17px;
-}
-
 .color-dot {
     width: 15px;
     height: 15px;
@@ -35,42 +30,6 @@
 .pink-dot {
     background-color: #e14eca;
     border: 1px solid var(--text);
-}
-
-/************ Avatar **************/
-
-.AvatarRoot {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    overflow: hidden;
-    user-select: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 100%;
-    border: 1.5px solid;
-    margin-right: 20px;
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-.AvatarImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: inherit;
-}
-
-.AvatarFallback {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    line-height: 1;
-    font-weight: 500;
 }
 
 /************ Dropdown **************/

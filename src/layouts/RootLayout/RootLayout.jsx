@@ -1,11 +1,10 @@
-import classNames from "classnames";
 import "./RootLayout.scoped.css";
 import carServiceImgUrl from '/car-service-96x96.png';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { resetPost } from "../../forms/CreationForm/creationFormSlice";
 
-import { Outlet, useNavigation, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import UserDropdown from "../../components/UserDropdown/UserDropdown";
@@ -15,14 +14,9 @@ import Toast from "../../components/Toast/Toast";
 import LoadingIndicator from "../../loaders/LoadingIndicator/LoadingIndicator";
 
 const RootLayout = () => {
-    const navigation = useNavigation();
     const [previousPathName, setPreviousPathName] = useState('/');
     let location = useLocation();
     const dispatch = useDispatch();
-
-    let mainClassNames = classNames("main-area", {
-        loading: navigation.state === "loading",
-    });
 
     useEffect(() => {
         if (location.pathname === previousPathName) { return; }
@@ -50,7 +44,8 @@ const RootLayout = () => {
                     <Sidebar />
                 </div>
 
-                <div className={mainClassNames}>
+                <div className="main-area">
+                    {/* our "pages" will be rendered at this <Outlet /> */}
                     <Outlet />
                 </div>
 
