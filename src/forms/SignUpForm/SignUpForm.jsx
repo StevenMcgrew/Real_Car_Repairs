@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setUsername } from '../../components/UserDropdown/userDropdownSlice';
 import { hideModal, showModal } from '../../components/Modal/modalSlice';
 import { showToast } from '../../components/Toast/toastSlice';
+import { formatAxiosError } from '../../utils/general-utils.js';
 
 import { Formik, Form } from 'formik';
 import TextInput from '../../form-components/TextInput/TextInput';
@@ -40,7 +41,9 @@ const SignUpForm = () => {
                     dispatch(showModal({ title: 'Oops!', content: error.response.data.warning }));
                 }
                 else {
-                    dispatch(showModal({ title: 'Oops!', content: `Error while attempting to sign up:  ${error.message}. ${error.response?.statusText ? error.response.statusText : ''}` }));
+                    console.log(error);
+                    const msg = formatAxiosError(error);
+                    dispatch(showModal({ title: 'Error', content: msg }));
                 }
             });
         setSubmitting(false); // Formik requires this to be set manually in this onSubmit handler

@@ -45,7 +45,9 @@ const UserDropdown = () => {
                 dispatch(showToast({ content: 'You have been logged out.' }));
             })
             .catch(function (error) {
-                dispatch(showModal({ title: 'Oops!', content: `${error.message}. ${error.response?.statusText ? error.response.statusText : ''}` }));
+                console.log(error);
+                const msg = formatAxiosError(error);
+                dispatch(showModal({ title: 'Error', content: msg }));
             });
     };
 

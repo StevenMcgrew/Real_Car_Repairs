@@ -63,7 +63,9 @@ const CreationForm = () => {
                 dispatch(setEngine(decodedVehicle.engine));
             })
             .catch(function (error) {
-                dispatch(showModal({ title: 'Oops!', content: `Error while fetching VIN data:  ${error}` }));
+                console.log(error);
+                const msg = formatAxiosError(error);
+                dispatch(showModal({ title: 'Error', content: msg }));
             })
             .finally(function () {
                 dispatch(hideLoader());
@@ -139,7 +141,7 @@ const CreationForm = () => {
             .catch((error) => {
                 console.log(error);
                 const msg = formatAxiosError(error);
-                dispatch(showModal({ title: 'Error', content: `Error while saving progress:  ${msg}` }));
+                dispatch(showModal({ title: 'Error', content: msg }));
             })
             .finally(function () {
                 dispatch(hideLoader());
