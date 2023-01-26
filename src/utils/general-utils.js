@@ -42,3 +42,15 @@ export const formatUTC = (UTC) => {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return date.toLocaleDateString(undefined, options);
 };
+
+export const getTitleValidationError = (title) => {
+    let error = '';
+    error += title ? '' : 'Title is required. ';
+    error += title.length > 100 ? 'Title must be 100 characters or less. ' : '';
+    return error;
+};
+
+export const getTagValidationError = (tag) => {
+    if (!tag.length) { return; }
+    return tag.length > 20 ? `Tags must be 20 characters or less. ` : '';
+};

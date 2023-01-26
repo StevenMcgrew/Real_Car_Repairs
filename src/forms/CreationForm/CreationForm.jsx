@@ -1,15 +1,3 @@
-import './CreationForm.scoped.css';
-import { range, getCurrentYear, scrollToBottom, formatAxiosError } from '../../utils/general-utils';
-import * as Yup from 'yup';
-import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { showToast } from '../../components/Toast/toastSlice.js';
-import { showModal } from '../../components/Modal/modalSlice';
-import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
-import { useEffect, useState } from 'react';
-import { apiBaseUrl } from '../../config';
-import { MANUFACTURERS, getEngineSizes, getYearDecoderDict, extractRelevantData, } from '../../utils/vehicle-selection-utils';
 import {
     setPostId,
     setYear,
@@ -23,6 +11,38 @@ import {
     addStep,
     resetPost,
 } from './creationFormSlice';
+
+import {
+    MANUFACTURERS,
+    getEngineSizes,
+    getYearDecoderDict,
+    extractRelevantData,
+    getYearValidationError,
+    getMakeValidationError,
+    getModelValidationError,
+    getEngineValidationError
+} from '../../utils/vehicle-selection-utils';
+
+import {
+    range,
+    getCurrentYear,
+    scrollToBottom,
+    formatAxiosError,
+    getTitleValidationError,
+    getTagValidationError
+} from '../../utils/general-utils';
+
+import './CreationForm.scoped.css';
+import * as Yup from 'yup';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { showToast } from '../../components/Toast/toastSlice.js';
+import { showModal } from '../../components/Modal/modalSlice';
+import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
+import { useEffect, useState } from 'react';
+import { apiBaseUrl } from '../../config';
+
 
 import { Formik, Form } from 'formik';
 import TextInput from '../../form-components/TextInput/TextInput';
@@ -74,48 +94,68 @@ const CreationForm = () => {
     };
 
     const onSelectChange = (e) => {
-        const target = e.currentTarget;
-        if (target.name === 'year') {
-            dispatch(setYear(target.value));
-            setYearError(target.value ? '' : 'Year is required');
+        const name = e.currentTarget.name;
+        const value = e.currentTarget.value;
+
+        if (name === 'year') {
+            dispatch(setYear(value));
+            setYearError(getYearValidationError(value));
         }
-        if (target.name === 'make') {
-            dispatch(setMake(target.value));
-            setMakeError(target.value ? '' : 'Make is required');
+        if (name === 'make') {
+            dispatch(setMake(value));
+            setMakeError(getMakeValidationError(value));
         }
-        if (target.name === 'engine') {
-            dispatch(setEngine(target.value));
-            setEngineError(target.value ? '' : 'Engine is required');
+        if (name === 'engine') {
+            dispatch(setEngine(value));
+            setEngineError(getEngineValidationError(value));
         }
     };
 
     const onInputChange = (e) => {
         const target = e.currentTarget;
-        if (target.name === 'model') {
-            dispatch(setModel(target.value));
-            let model = target.value;
-            if (!model) { setModelError('Model is required'); return; }
-            if (model.length > 40) { setModelError('Must be 40 characters or less'); return; }
-            setModelError('');
+        const name = target.name;
+        const value = target.value;
+
+        if (name === 'model') {
+            dispatch(setModel(value));
+            setModelError(getModelValidationError(value));
         }
-        if (target.name === 'title') {
-            dispatch(setTitle(target.value));
-            let title = target.value;
-            if (!title) { setTitleError('Title is required'); return; }
-            if (title.length > 100) { setTitleError('Must be 100 characters or less'); return; }
-            setTitleError('');
+        if (name === 'title') {
+            dispatch(setTitle(value));
+            setTitleError(getTitleValidationError(value));
         }
-        if (target.name.startsWith('tag')) {
+        if (name.startsWith('tag')) {
             const tagIndex = (target.id.slice(target.id.length - 1)) - 1;
-            dispatch(setTag({ index: tagIndex, newTag: target.value }));
+            dispatch(setTag({ index: tagIndex, newTag: value }));
             const errorSpan = target.parentElement.lastElementChild;
-            if (target.value.length > 20) { errorSpan.textContent = 'Must be 20 characters or less'; return; }
-            errorSpan.textContent = '';
+            errorSpan.textContent = getTagValidationError(value);
         }
+    };
+
+    const getAllValidationErrors = (post) => {
+        let errors = '';
+        errors += getYearValidationError(post.year);
+        errors += getMakeValidationError(post.make);
+        errors += getModelValidationError(post.model);
+        errors += getEngineValidationError(post.engine);
+        errors += getTitleValidationError(post.title);
+        for (const tag of post.tags) {
+            let tagError = getTagValidationError(tag);
+            if (tagError) {
+                errors += getTagValidationError(tag);
+                break;
+            }
+        }
+        return errors;
     };
 
     const saveProgress = (isSilent = false, isPublish = false) => {
         if (!isSilent) {
+            let validationErrors = getAllValidationErrors(post);
+            if (validationErrors) {
+                dispatch(showModal({ title: 'Please fix your inputs', content: validationErrors }));
+                return;
+            }
             dispatch(showLoader('Saving...'));
         }
 
@@ -154,7 +194,28 @@ const CreationForm = () => {
     };
 
     const publishRepair = () => {
+        // Form validation
+        let validationErrors = getAllValidationErrors(post);
+        if (validationErrors) {
+            dispatch(showModal({ title: 'Please fix your inputs', content: validationErrors }));
+        }
+        if (!post.steps.length) {
+            dispatch(showModal({ title: 'Cannot publish', content: 'There must be at least one repair step specified.' }));
+        }
+        if (!post.steps[0].text) {
+            dispatch(showModal({ title: 'Cannot publish', content: 'There must be at least one repair step, and it must have some text to describe that step.' }));
+        }
+
+        // Set remaining post values
         dispatch(setIsPublished(true));
+        for (const step of post.steps) {
+            if (step.img) {
+                dispatch(setThumbnail(step.img));
+                break;
+            }
+        }
+
+        // Save
         saveProgress(SILENT, PUBLISH);
     };
 

@@ -10,7 +10,7 @@ const initialState = {
     imgStepNum: 0,
     post: {
         id: 0,
-        year: 0,
+        year: '',
         make: '',
         model: '',
         engine: '',

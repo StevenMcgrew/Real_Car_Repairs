@@ -143,3 +143,22 @@ export const extractRelevantData = (json) => {
 
     return vehicle;
 };
+
+export const getYearValidationError = (year) => {
+    return year ? '' : 'Year is required. ';
+};
+
+export const getMakeValidationError = (make) => {
+    return make ? '' : 'Make is required. ';
+};
+
+export const getModelValidationError = (model) => {
+    let error = '';
+    error += model ? '' : 'Model is required. ';
+    error += model.length > 40 ? 'Model must be 40 characters or less. ' : '';
+    return error;
+};
+
+export const getEngineValidationError = (engine) => {
+    return engine ? '' : 'Engine is required. ';
+};
