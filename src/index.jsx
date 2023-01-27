@@ -16,6 +16,7 @@ import LibraryPage from "./routes/LibraryPage/LibraryPage";
 import AboutPage from "./routes/AboutPage/AboutPage";
 import LegalPage from "./routes/LegalPage/LegalPage";
 import RepairPage, { repairLoader } from "./routes/RepairPage/RepairPage";
+import ProfilePage, { profileLoader } from "./routes/ProfilePage/ProfilePage";
 
 const router = createHashRouter([
     {
@@ -51,6 +52,11 @@ const router = createHashRouter([
                         path: "repair/:id",
                         element: <RepairPage />,
                         loader: repairLoader,
+                    },
+                    {
+                        path: "profile/:id",
+                        element: <ProfilePage />,
+                        loader: profileLoader,
                     },
                 ],
             },

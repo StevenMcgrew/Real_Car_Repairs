@@ -32,7 +32,7 @@ const GridItem = (props) => {
             </Link>
 
             <div className='user-and-date-container'>
-                <Link className='lower-anchor-area unstyled-anchor' to={`/user/${user_id}`}>
+                <Link className='lower-anchor-area unstyled-anchor' to={`/profile/${user_id}`}>
                     <Avatar.Root className='AvatarRoot av-root'>
                         <Avatar.Image className='AvatarImage' src={`${imagesBaseUrl}/${profile_pic}`} alt='Image of user' />
                         <Avatar.Fallback className='AvatarFallback' delayMs={600}>

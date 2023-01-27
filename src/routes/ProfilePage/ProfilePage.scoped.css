@@ -1,0 +1,4 @@
+.card-head {
+    height: 12.5rem;
+    background-color: var(--accent-color-faded);
+}
