@@ -2,6 +2,8 @@ import './ProfilePage.scoped.css';
 import axios from "axios";
 import { imagesBaseUrl, apiBaseUrl } from '../../config';
 import { useLoaderData } from 'react-router-dom';
+import { formatUTC } from '../../utils/general-utils';
+import ListItem from '../../components/ListItem/ListItem';
 
 
 function getUser(id) {
@@ -29,12 +31,33 @@ const ProfilePage = () => {
 
     return (
         <div className='page'>
-            <div className='card'>
-                <div className='card-head'></div>
-                <div className='card-body'>
-                    <img src={`${imagesBaseUrl}/${profile.profile_pic}`} alt='Image of user' />
+
+            <div className='user-container'>
+                <img className='profile-pic' src={`${imagesBaseUrl}/${profile.profile_pic}`} alt='Image of user' />
+                <div className='name-and-date-container'>
+                    <p className='profile-name'>{profile.username}</p>
+                    <p className='profile-details'>Member since: {formatUTC(profile.created_on)}</p>
+                    <p className='profile-details'>Number of posts: {profile.posts.length}</p>
                 </div>
             </div>
+
+            <h3 className='posts-header'>{`${profile.username}'s Posts:`}</h3>
+
+            {profile.posts.length ? (
+                profile.posts.map((post, index) => {
+                    return (
+                        <ListItem
+                            key={index}
+                            post={post}
+                        />
+                    );
+                })
+            )
+                :
+                <>
+                    <p>This member has not posted anything yet</p>
+                </>
+            }
         </div>
     );
 };

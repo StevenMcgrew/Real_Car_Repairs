@@ -280,6 +280,7 @@ textarea:focus-visible {
     background-color: var(--card-bg);
     border-radius: var(--default-radius);
     box-shadow: var(--default-shadow);
+    overflow: hidden;
 }
 
 .default-icon-size {

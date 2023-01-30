@@ -1,4 +1,32 @@
-.card-head {
-    height: 12.5rem;
-    background-color: var(--accent-color-faded);
+.user-container {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0.4rem;
+}
+
+.posts-header {
+    font-weight: 400;
+    margin-top: 2rem;
+}
+
+.profile-pic {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 100%;
+    border: 3px solid var(--text);
+}
+
+.name-and-date-container {
+    padding: 1rem 0rem 0rem 1rem;
+}
+
+.profile-name {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.profile-details {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted-text);
 }
