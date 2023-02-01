@@ -26,7 +26,6 @@ const UserDropdown = () => {
             dispatch(setTheme(value));
             return;
         }
-
         const newTheme = { theme: value, color: color };
         const url = `${apiBaseUrl}/users/theme`;
         axios.put(url, newTheme, { withCredentials: true })
@@ -47,7 +46,6 @@ const UserDropdown = () => {
             dispatch(setColor(value));
             return;
         }
-
         const newTheme = { theme: theme, color: value };
         const url = `${apiBaseUrl}/users/theme`;
         axios.put(url, newTheme, { withCredentials: true })
@@ -65,7 +63,7 @@ const UserDropdown = () => {
 
     const logOutClicked = () => {
         let url = apiBaseUrl + '/auth/logout';
-        axios.delete(url)
+        axios.delete(url, { withCredentials: true })
             .then(function (response) {
                 dispatch(setUsername(''));
                 dispatch(setViewHistory([]));

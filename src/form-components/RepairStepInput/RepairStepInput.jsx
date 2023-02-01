@@ -31,7 +31,7 @@ const RepairStepInput = (props) => {
         dispatch(showLoader('Deleting image...'));
 
         let url = `${apiBaseUrl}/images?postId=${post.id}&stepNum=${stepNum}`;
-        axios.delete(url)
+        axios.delete(url, { withCredentials: true })
             .then(function (response) {
                 dispatch(setStepImg({ stepNum: stepNum, newImg: '' }));
             })
@@ -61,7 +61,7 @@ const RepairStepInput = (props) => {
 
         // Delete image on server
         let url = `${apiBaseUrl}/images?postId=${post.id}&stepNum=${stepNum}`;
-        axios.delete(url)
+        axios.delete(url, { withCredentials: true })
             .then(function (response) {
                 console.log('Successfully deleted image on server during step deletion.');
             })

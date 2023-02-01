@@ -7,11 +7,11 @@ import ListItem from '../../components/ListItem/ListItem';
 
 
 function getUser(id) {
-    return axios.get(`${apiBaseUrl}/users/${id}`);
+    return axios.get(`${apiBaseUrl}/users/${id}`, { withCredentials: true });
 }
 
 function getPosts(id) {
-    return axios.get(`${apiBaseUrl}/posts?userId=${id}`);
+    return axios.get(`${apiBaseUrl}/posts?userId=${id}`, { withCredentials: true });
 }
 
 export async function profileLoader({ params }) {

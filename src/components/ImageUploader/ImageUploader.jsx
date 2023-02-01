@@ -69,7 +69,7 @@ const ImageUploader = () => {
         canvasRef.current.toBlob(function (blob) {
             formData.append('image', blob);
             let url = `${apiBaseUrl}/images?postId=${postId}&stepNum=${imgStepNum}`;
-            axios.post(url, formData)
+            axios.post(url, formData, { withCredentials: true })
                 .then(function (response) {
                     dispatch(setStepImg({ stepNum: imgStepNum, newImg: response.data.fileName }));
                     dispatch(hideModal());

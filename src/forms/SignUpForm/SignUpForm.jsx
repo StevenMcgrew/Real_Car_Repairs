@@ -30,7 +30,7 @@ const SignUpForm = () => {
 
     const submitSignUp = (values, { setSubmitting }) => {
         let url = `${apiBaseUrl}/auth/signup`;
-        axios.post(url, values)
+        axios.post(url, values, { withCredentials: true })
             .then(function (response) {
                 dispatch(setUsername(response.username));
                 dispatch(hideModal());

@@ -20,7 +20,7 @@ const VerifyPostDelete = () => {
         dispatch(showLoader('Deleting post...'));
 
         let url = `${apiBaseUrl}/posts/${postId}`;
-        axios.delete(url)
+        axios.delete(url, { withCredentials: true })
             .then(function (response) {
                 dispatch(resetPost());
                 dispatch(showToast({ content: 'Deleted post' }));

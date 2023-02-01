@@ -160,7 +160,7 @@ const CreationForm = () => {
         }
 
         let url = apiBaseUrl + '/posts';
-        axios.post(url, post)
+        axios.post(url, post, { withCredentials: true })
             .then((response) => {
                 if (!post.id) {
                     dispatch(setPostId(response.data.id));

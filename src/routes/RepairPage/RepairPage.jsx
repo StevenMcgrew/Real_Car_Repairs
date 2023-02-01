@@ -9,7 +9,7 @@ import StepCard from '../../components/StepCard/StepCard';
 
 
 export async function repairLoader({ params }) {
-    return axios.get(`${apiBaseUrl}/posts/${params.id}`)
+    return axios.get(`${apiBaseUrl}/posts/${params.id}`, { withCredentials: true })
         .then(response => response.data)
         .catch(error => error);
 }
