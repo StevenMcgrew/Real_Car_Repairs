@@ -32,7 +32,7 @@ const SignUpForm = () => {
         let url = `${apiBaseUrl}/auth/signup`;
         axios.post(url, values)
             .then(function (response) {
-                dispatch(setUsername(response.data.username));
+                dispatch(setUsername(response.username));
                 dispatch(hideModal());
                 dispatch(showToast({ content: 'Success! You are now signed in.' }));
             })

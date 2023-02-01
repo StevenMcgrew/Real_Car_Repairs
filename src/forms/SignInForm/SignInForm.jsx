@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { apiBaseUrl } from '../../config.js';
 import { useDispatch } from 'react-redux';
-import { setUsername } from '../../components/UserDropdown/userDropdownSlice';
+import { setUsername, setViewHistory, setProfilePic, setTheme, setColor } from '../../components/UserDropdown/userDropdownSlice';
 import { hideModal, showModal } from '../../components/Modal/modalSlice';
 import { showToast } from '../../components/Toast/toastSlice.js';
 import { formatAxiosError } from '../../utils/general-utils.js';
@@ -26,10 +26,15 @@ const SignInForm = () => {
 
     const submitSignIn = (values, { setSubmitting }) => {
         let url = `${apiBaseUrl}/auth/login`;
-        axios.post(url, values)
+        axios.post(url, values, { withCredentials: true })
             .then(function (response) {
-                dispatch(setUsername(response.data.username));
-                // TODO: set view_history, profile_pic, theme
+                const data = response.data;
+                const theme = JSON.parse(data.theme);
+                dispatch(setUsername(data.username));
+                dispatch(setViewHistory(data.view_history));
+                dispatch(setProfilePic(data.profile_pic));
+                dispatch(setTheme(theme.theme));
+                dispatch(setColor(theme.color));
                 dispatch(hideModal());
                 dispatch(showToast({ content: 'You are now logged in' }));
             })

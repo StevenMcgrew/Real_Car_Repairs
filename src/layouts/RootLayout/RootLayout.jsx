@@ -45,7 +45,7 @@ const RootLayout = () => {
                 </div>
 
                 <div className="main-area">
-                    {/* our "pages" will be rendered at this <Outlet /> */}
+                    {/* web pages (routes) will be rendered at this <Outlet /> */}
                     <Outlet />
                 </div>
 

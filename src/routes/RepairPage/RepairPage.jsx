@@ -24,7 +24,7 @@ const RepairPage = () => {
             <h2 className='vehicle'>{`${repair.year} ${repair.make} ${repair.model} ${repair.engine}`}</h2>
 
             <div className='user-and-date-container und-box'>
-                <Link className='lower-anchor-area unstyled-anchor' to={`/user/${repair.user_id}`}>
+                <Link className='lower-anchor-area unstyled-anchor' to={`/profile/${repair.user_id}`}>
                     <Avatar.Root className='AvatarRoot av-root'>
                         <Avatar.Image className='AvatarImage' src={`${imagesBaseUrl}/${repair.profile_pic}`} alt='Image of user' />
                         <Avatar.Fallback className='AvatarFallback' delayMs={600}>

@@ -27,7 +27,6 @@ export async function profileLoader({ params }) {
 
 const ProfilePage = () => {
     const profile = useLoaderData();
-    console.log('PROFILE DATA:  ', profile);
 
     return (
         <div className='page'>
