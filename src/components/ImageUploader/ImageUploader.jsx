@@ -1,5 +1,5 @@
 import './ImageUploader.scoped.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStepImg } from '../../forms/CreationForm/creationFormSlice.js';
 import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';

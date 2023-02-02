@@ -55,7 +55,7 @@ export const getYearDecoderDict = () => {
     for (i; i < max; i++) {
         dict[tenthDigitPattern[startingIndex]] = i;
         startingIndex++;
-        if (startingIndex > 29) { // If we get to the end of the array, we need to go to the start of the array. (The tenth digit pattern starts over every 30 years, so we also need to start over at the start of the array.)
+        if (startingIndex > 29) { // If we get to the end of the array, we need to go to the start of the array. (The tenth digit pattern starts over every 30 years, so we also need to start over, at the start of the array.)
             startingIndex = 0;
         }
     }

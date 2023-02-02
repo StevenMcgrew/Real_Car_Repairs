@@ -1,8 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useDispatch } from 'react-redux';
-import { showToast } from '../../components/Toast/toastSlice.js';
-import { showModal } from '../../components/Modal/modalSlice';
-import { showLoader, hideLoader } from "../../loaders/LoadingIndicator/loadingIndicatorSlice.js";
 import { scrollToBottom, arrayMove } from '../../utils/general-utils';
 
 
@@ -79,7 +75,6 @@ const creationFormSlice = createSlice({
         deleteStep(state, action) {
             const newSteps = state.post.steps.filter((step, index) => index !== (action.payload - 1));
             state.post.steps = newSteps;
-            // state.post.steps.splice(action.payload - 1, 1);
         },
         addStep(state) {
             state.post.steps.push({ img: '', text: '' });

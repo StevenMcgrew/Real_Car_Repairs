@@ -1,8 +1,8 @@
 .auto-grid {
-  --min-column-size: 225px;
+    --min-column-size: 15rem;
 
-  display: grid;
-  gap: clamp(1rem, 5vmax, 1.625rem);
-  grid-template-columns: repeat(auto-fit,
-      minmax(min(100%, var(--min-column-size)), 1fr));
+    display: grid;
+    gap: clamp(1rem, 5vmax, 1.625rem);
+    grid-template-columns: repeat(auto-fit,
+            minmax(min(100%, var(--min-column-size)), 1fr));
 }

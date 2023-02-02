@@ -19,6 +19,10 @@ const RootLayout = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        // The purpose of this useEffect is to run some code on page unload (navigated away from a page).
+        // First, check which page unloaded, then run code if needed.
+
+        // If it is the same page (such as browser refresh), then do nothing.
         if (location.pathname === previousPathName) { return; }
 
         if (previousPathName === '/create') {

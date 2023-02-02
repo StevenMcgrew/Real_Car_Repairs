@@ -1,9 +1,8 @@
 import './RepairStepInput.scoped.css';
 import { imagesBaseUrl, apiBaseUrl } from '../../config';
 import { formatAxiosError } from '../../utils/general-utils';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideModal, showModal } from '../../components/Modal/modalSlice';
+import { showModal } from '../../components/Modal/modalSlice';
 import { showLoader, hideLoader } from '../../loaders/LoadingIndicator/loadingIndicatorSlice';
 import { deleteStep, setImgStepNum, setStepText, setStepImg, addStepAt, moveStep } from '../../forms/CreationForm/creationFormSlice.js';
 import classNames from 'classnames';
@@ -15,12 +14,8 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 const RepairStepInput = (props) => {
     const { stepNum, img, text, textFieldName } = props;
-    // const [previewBgSize, setPreviewBgSize] = useState('contain');
-    // const [previewBgImage, setPreviewBgImage] = useState('');
-    const [moveTo, setMoveTo] = useState('');
     const post = useSelector(state => state.creationForm.post);
     const dispatch = useDispatch();
-    const SILENT = true;
 
     const showImageUploader = () => {
         dispatch(setImgStepNum(stepNum));
@@ -197,7 +192,7 @@ const RepairStepInput = (props) => {
                                 type="button"
                                 className={classNames({
                                     'transparent-btn': img,
-                                    'add-img-btn': !img
+                                    'outline-btn': !img
                                 })}
                                 onClick={showImageUploader}
                             >
@@ -213,7 +208,7 @@ const RepairStepInput = (props) => {
                     <textarea
                         id={textFieldName}
                         name={textFieldName}
-                        className="step-textarea"
+                        className="step-textarea custom-scrollbars scroll-thumb-color"
                         maxLength="1000"
                         spellCheck={true}
                         wrap="hard"

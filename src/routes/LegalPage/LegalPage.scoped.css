@@ -1,11 +1,11 @@
 .legal-page-container {
-  max-width: 40rem;
-  margin: 0 auto;
-  min-height: 100vh;
+    max-width: 40rem;
+    margin: 0 auto;
+    min-height: 100vh;
 }
 
 .legal-p {
-  white-space: pre-line;
-  color: var(--muted-text);
-  font-size: 0.75rem;
+    white-space: pre-line;
+    color: var(--muted-text);
+    font-size: 0.75rem;
 }

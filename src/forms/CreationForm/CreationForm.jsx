@@ -168,7 +168,7 @@ const CreationForm = () => {
                 if (!isSilent) {
                     dispatch(showToast({ content: 'Progress saved' }));
                     setTimeout(() => {
-                        // Wait a second for DOM elements to load, then scroll to bottom
+                        // Wait a split second for DOM elements to load, then scroll to bottom
                         scrollToBottom();
                     }, 300);
                 }

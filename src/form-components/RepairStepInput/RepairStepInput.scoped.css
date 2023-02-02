@@ -79,12 +79,6 @@
     padding-bottom: 5px;
 }
 
-.add-img-btn {
-    background-color: transparent;
-    color: var(--accent-color);
-    border: 2px solid var(--accent-color);
-}
-
 .transparent-btn {
     display: inline-block;
     margin-inline: 0.3rem;

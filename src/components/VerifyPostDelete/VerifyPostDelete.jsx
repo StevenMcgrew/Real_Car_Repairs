@@ -46,4 +46,5 @@ const VerifyPostDelete = () => {
         </>
     );
 };
+
 export default VerifyPostDelete;

@@ -1,5 +1,5 @@
 import './UserDropdown.scoped.css';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../Modal/modalSlice';
 import { showToast } from '../Toast/toastSlice';
