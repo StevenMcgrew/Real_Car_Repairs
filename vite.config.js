@@ -4,6 +4,6 @@ import { reactScopedCssPlugin } from 'rollup-plugin-react-scoped-css';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: '/apps/Real-Car-Repairs/',
+    base: '/Real-Car-Repairs/',
     plugins: [react(), reactScopedCssPlugin()]
 });
