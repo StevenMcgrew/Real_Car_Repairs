@@ -32,6 +32,10 @@
     border: 1px solid var(--text);
 }
 
+.border-none {
+    border: none;
+}
+
 /************ Dropdown **************/
 
 /* reset */

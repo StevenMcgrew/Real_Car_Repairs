@@ -7,6 +7,7 @@ import { apiBaseUrl } from '../../config.js';
 import { setUsername, setViewHistory, setProfilePic, setTheme, setColor } from '../UserDropdown/userDropdownSlice.js';
 import { imagesBaseUrl } from '../../config.js';
 import { formatAxiosError } from '../../utils/general-utils';
+import classNames from 'classnames';
 
 // Components
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -86,7 +87,7 @@ const UserDropdown = () => {
         <DropdownMenu.Root>
             <span className='usernameSpan'>{username ? username : null}</span>
             <DropdownMenu.Trigger asChild>
-                <Avatar.Root className='AvatarRoot'>
+                <Avatar.Root className={classNames('AvatarRoot', { 'border-none': username })}>
                     <Avatar.Image className='AvatarImage' src={`${imagesBaseUrl}/${profile_pic}`} alt='image of user' />
                     <Avatar.Fallback className='AvatarFallback' delayMs={600}>
                         <PersonIcon className='user-icon' />
